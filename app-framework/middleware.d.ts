@@ -4,9 +4,7 @@ declare module 'edgeros:middleware' {
 }
 
 declare module "middleware" {
-
   namespace middleware {
-
     interface JSONParserOptions {
       limit: Number | String; // {Number | String} Controls the maximum request body size. If this is a number, then the value specifies the number of bytes; if it is a string, the value is passed to the bytes library for parsing. default: '100kb'.
       strict: boolean; // {Boolean} When set to true, will only accept arrays and objects; when false will accept anything JSON.parse accepts. Defaults to true.

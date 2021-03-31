@@ -5,7 +5,7 @@ declare module 'edgeros:middleware' {
 
 declare module "middleware" {
 
-  import { WebApp } from "webapp";
+  import WebApp = require("webapp");
   import { HttpClient, HttpClientResponse } from "http";
   import { WebRequest, WebResponse } from "app"
 

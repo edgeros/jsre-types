@@ -1,5 +1,5 @@
 declare module 'edgeros:tty' {
-  import Tty = require('tls');
+  import Tty = require('tty');
   export = Tty;
 }
 

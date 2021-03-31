@@ -5,7 +5,7 @@ declare module 'edgeros:mediadecoder' {
 
 declare module "mediadecoder" {
 
-  import * as events from "events";
+  import EventEmitter from "edgeros:events";
 
   interface IRemuxFormat {
     enable?: boolean;// {Boolean} Does enable remux?
@@ -133,7 +133,7 @@ declare module "mediadecoder" {
     close()
     start()
 
-    on(event: "header" | "remux" | "video" | "audio" | "eof", listener: (video?: VideoBuffer) => void): events.EventEmitter
+    on(event: "header" | "remux" | "video" | "audio" | "eof", listener: (video?: VideoBuffer) => void): EventEmitter
 
     srcVideoFormat(): VideoFormat
     destVideoFormat(fmt: VideoFormat): boolean

@@ -112,7 +112,9 @@ declare module "sqlite3" {
      * @param query {Function} If it is a query statement, each record queried will call back this function. default: no callback.
      * @param arg {Any} Callback argument. default: undefined.
      */
-    run(sql: string, ...bind?: any, query?: Function, arg?: any): number;
+    run(sql: string): number;
+    run(sql: string, ...bind: any): number;
+    run(sql: string, query?: Function, arg?: any): number;
 
     /**
      * Prepare an SQL statement and return a statement prepair object.
@@ -124,7 +126,9 @@ declare module "sqlite3" {
      * @param query {Function} If it is a query statement, each record queried will call back this function. default: no callback.
      * @param arg {Any} Callback argument. default: undefined.
      */
-    prepare(sql: string, ...bind?: any, query?: Function, arg?: any): Stmt;
+    prepare(sql: string): Stmt;
+    prepare(sql: string, ...bind: any): Stmt;
+    prepare(sql: string, query?: Function, arg?: any): Stmt;
 
   }
 
@@ -139,7 +143,8 @@ declare module "sqlite3" {
      * @param query {Function} If it is a query statement, each record queried will call back this function. default: no callback.
      * @param arg {Any} Callback argument. default: undefined.
      */
-    step(...bind?: any, query?: Function, arg?: any): number;
+    step(...bind: any): number;
+    step(query?: Function, arg?: any): number;
 
     /**
      * Reset a SQL statement, clear all variable bindings.

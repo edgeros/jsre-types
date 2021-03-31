@@ -1,10 +1,11 @@
 declare module 'edgeros:webapp' {
-  import WebApp = require('webapp');
-  export = WebApp;
+  // import WebApp = require('webapp');
+  // export = WebApp;
+  export * from 'webapp'
 }
 
 declare module "webapp" {
-  interface SockAddr {
+  export interface SockAddr {
     domain: number;
     addr: string;
     port: number;
@@ -187,5 +188,5 @@ declare module "webapp" {
     use(path?: string | RegExp, handle?: Function): void;
   }
 
-  export = WebApp;
+  // export = WebApp;
 }

@@ -18,6 +18,29 @@ declare module "web_middleware" {
     setHeaders: Function;
   }
 
+  interface JsonOpt {
+    limit: number | string; // default: '100kb'
+    strict: boolean; // default: true
+    reviver: any;
+    type: string | Array<string> | Function; // default: 'application/json'
+  }
+
+  interface RawOpt {
+    limit: number | string; // default: '100kb'
+    type: string | Array<string> | Function; // default: 'application/octet-stream'
+  }
+
+  interface TextOpt {
+    limit: number | string; // default: '100kb'
+    type: string | Array<string> | Function; // default: 'text/plain'
+  }
+
+  interface UrlencodedOpt {
+    limit: number | string; // default: '100kb'
+    type: string | Array<string> | Function; // default: 'application/x-www-form-urlencoded'
+    parameterLimit: number; // default: 1000
+  }
+
   /**
    * Create a new middleware function to serve files from within a given root directory. 
    * The file to serve will be determined by combining req.url with the provided root directory. 
