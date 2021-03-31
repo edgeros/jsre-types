@@ -1,4 +1,5 @@
 declare module 'edgeros:console' {
+  import console = require('console');
   export = console;
 }
 

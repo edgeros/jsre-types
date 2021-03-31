@@ -3,9 +3,9 @@ declare module 'edgeros:net' {
 }
 
 declare module "net" {
-  import * as stream from "stream";
-  import * as events from "events";
-  import * as dns from "dns";
+  import stream from "stream";
+  import events from "events";
+  import dns from "dns";
 
   type LookupFunction = (hostname: string, options: dns.LookupOneOptions, callback: (err: EdgerOS.ErrnoException | null, address: string, family: number) => void) => void;
 

@@ -17,12 +17,13 @@
 /// <reference path="./general/stream.d.ts" />
 /// <reference path="./general/sys.d.ts" />
 /// <reference path="./general/timers.d.ts" />
-/// <reference path="./yallist.d.ts" />
+/// <reference path="./general/yallist.d.ts" />
 
 /// <reference path="./local-device/buzzer.d.ts" />
 /// <reference path="./local-device/canbus.d.ts" />
 /// <reference path="./local-device/gpio.d.ts" />
 /// <reference path="./local-device/hotplug.d.ts" />
+/// <reference path="./local-device/thermal.d.ts" />
 /// <reference path="./local-device/tty.d.ts" />
 
 /// <reference path="./network/dns.d.ts" />
@@ -110,13 +111,10 @@
 
 /// <reference path="./edgeros-iot-device/lora.d.ts" />
 
-/// <reference path="./rcp.d.ts" />
 /// <reference path="./string_decoder.d.ts" />
-/// <reference path="./thermal.d.ts" />
 /// <reference path="./util.d.ts" />
 /// <reference path="./web_middleware.d.ts" />
 /// <reference path="./web_middlwware.d.ts" />
-/// <reference path="./web_proxy.d.ts" />
 /// <reference path="./web_request.d.ts" />
 /// <reference path="./web_router.d.ts" />
 /// <reference path="./websocket.d.ts" />

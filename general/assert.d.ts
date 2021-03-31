@@ -7,7 +7,7 @@ declare module 'assert' {
   function Assert(value: any, message?: string | Error): null | string | Assert.AssertionError;
   namespace Assert {
 
-    export class AssertionError implements Error {
+    export class AssertionError extends Error {
       name: string;
       message: string;
       actual: any;

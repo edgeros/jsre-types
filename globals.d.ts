@@ -259,6 +259,23 @@ declare class Buffer extends Uint8Array {
  *----------------------------------------------*/
 
 declare namespace EdgerOS {
+
+  interface ErrnoException extends Error {
+    errno?: number;
+    code?: string;
+    path?: string;
+    syscall?: string;
+    stack?: string;
+  }
+
+  interface WritableStream extends EventEmitter {
+    writable: boolean;
+    write(buffer: Uint8Array | string, cb?: (err?: Error | null) => void): boolean;
+    write(str: string, encoding?: BufferEncoding, cb?: (err?: Error | null) => void): boolean;
+    end(cb?: () => void): void;
+    end(data: string | Uint8Array, cb?: () => void): void;
+    end(str: string, encoding?: BufferEncoding, cb?: () => void): void;
+  }
   interface Global {
     Buffer: typeof Buffer;
     global: Global;

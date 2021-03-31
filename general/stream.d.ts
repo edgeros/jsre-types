@@ -1,5 +1,5 @@
 declare module "stream" {
-  import * as events from "events"
+  import  events from "events"
 
   class internal implements events.EventEmitter {
     addListener(event: string, listener: Function): events.EventEmitter;
@@ -108,11 +108,7 @@ declare module "stream" {
        */
       readonly readableLength: number;
 
-
       on(event: writEventTypes, listener: (chunk?: any) => void): this;
-
-
-
 
       constructor(opts?: ReadableOptions);
       _read(size: number): void;
@@ -120,15 +116,11 @@ declare module "stream" {
       /**
        * 
        * @param chunk {Buffer} Chunk of data to push into the read queue.
-* @returns {Boolean} true if additional chunks of data may continue to be pushed; false otherwise.
+       * @returns {Boolean} true if additional chunks of data may continue to be pushed; false otherwise.
        */
       push(chunk: Buffer): boolean;
 
     }
-
-
-
-
 
     interface DuplexOptions extends ReadableOptions, WritableOptions {
       /**
