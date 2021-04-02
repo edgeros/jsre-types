@@ -4,8 +4,8 @@ declare module 'edgeros:assert' {
 }
 
 declare module 'assert' {
-  function Assert(value: any, message?: string | Error): null | string | Assert.AssertionError;
-  namespace Assert {
+  function assert(value: any, message?: string | Error): null | string | assert.AssertionError;
+  namespace assert {
 
     export class AssertionError extends Error {
       name: string;
@@ -36,5 +36,5 @@ declare module 'assert' {
 
   }
 
-  export = Assert
+  export = assert;
 }

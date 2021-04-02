@@ -1,13 +1,19 @@
-declare module "stream" {
-  import  events from "events"
+declare module 'edgeros:stream' {
+  import Stream = require('stream');
+  export = Stream;
+}
 
-  class internal implements events.EventEmitter {
-    addListener(event: string, listener: Function): events.EventEmitter;
-    on(event: string, listener: Function): events.EventEmitter;
+declare module "stream" {
+  import { Buffer }  from 'buffer';
+  import EventEmitter = require("edgeros:events")
+
+  class internal extends EventEmitter {
+    addListener(event: string, listener: Function): this;
+    on(event: string, listener: Function): this;
     emit(event: string, ...args: any): boolean;
-    once(event: string, listener: Function): events.EventEmitter;
-    removeListener(event: string, listener: Function): events.EventEmitter;
-    removeAllListeners(event?: string): events.EventEmitter;
+    once(event: string, listener: Function): this;
+    removeListener(event: string, listener: Function): this;
+    removeAllListeners(event?: string): this;
     pipe<T extends EdgerOS.WritableStream>(destination: T, options?: { end?: boolean; }): T;
   }
 
@@ -21,13 +27,12 @@ declare module "stream" {
 
     interface WritableOptions {
       highWaterMark?: number;
-      emitOpen?: boolean;
       emitClose?: boolean;
       autoDestroy?: boolean;
       alertWaterMark?: number;
       autoAlert?: boolean;
-      write(chunk: String | Buffer, callback?: (error?: Error | null | undefined) => void);
-      // write(): void;
+      construct?(): void;
+      write?(): void;
       destroy?(): void;
       final?(): void;
     }
@@ -43,14 +48,18 @@ declare module "stream" {
       constructor(opts?: WritableOptions);
 
       destroy(error?: Error): this;
-      end(chunk?: String | Buffer): this;
-      end(chunk?: String | Buffer, callback?: () => void): void;
-      write(chunk: String | Buffer, callback?: (error: Error | null | undefined) => void): boolean;
+      end(cb?: () => void): void;
+      end(chunk: string | Buffer, cb?: () => void): void;
+      end(chunk: string | Buffer, encoding: string, cb?: () => void): void;
+
+      write(chunk: string | Buffer, cb?: (error: Error | null | undefined) => void): boolean;
+      write(chunk: string | Buffer, encoding: string, cb?: (error: Error | null | undefined) => void): boolean;
 
       once(event: writEventTypes, listener: (chunk?: any) => void): this;
       on(event: writEventTypes, listener: (chunk?: any) => void): this;
 
-      _write(chunk: String | Buffer, callback: (error?: Error | null) => void): void;
+      _construct(callback: (error?: Error | null) => void):void;
+      _write(chunk: string | Buffer, encoding: string, callback: (error?: Error | null) => void): void;
       _destroy(error: Error | null, callback: (error?: Error | null) => void): void;
       _final(callback: (error?: Error | null) => void): void;
 
@@ -58,12 +67,11 @@ declare module "stream" {
 
     interface ReadableOptions {
       highWaterMark?: number;
-      emitOpen?: boolean;
       emitClose?: boolean;
       autoDestroy?: boolean;
       alertWaterMark?: number;
       autoAlert?: boolean;
-      end?: boolean;
+      construct?(): void;
       read?(): void;
       destroy?(): void;
     }
@@ -72,7 +80,7 @@ declare module "stream" {
 
     class Readable {
       /**
-       * 
+       *
        * @param error Error which will be passed as payload in 'error' event.
        *  @returns this.
        */
@@ -108,13 +116,14 @@ declare module "stream" {
        */
       readonly readableLength: number;
 
-      on(event: writEventTypes, listener: (chunk?: any) => void): this;
+      on(event: readEventTypes, listener: (chunk?: any) => void): this;
 
       constructor(opts?: ReadableOptions);
-      _read(size: number): void;
+      _construct(callback: (error?: Error | null) => void):void;
+      _read(size?: number): void;
       _destroy(error: Error | null, callback: (error?: Error | null) => void): void;
       /**
-       * 
+       *
        * @param chunk {Buffer} Chunk of data to push into the read queue.
        * @returns {Boolean} true if additional chunks of data may continue to be pushed; false otherwise.
        */
@@ -123,54 +132,51 @@ declare module "stream" {
     }
 
     interface DuplexOptions extends ReadableOptions, WritableOptions {
-      /**
-       * {Boolean} If set to false, then the stream will automatically end the writable side when the readable side ends. default: true.
-       */
-      allowHalfOpen: boolean;
-      /**
-       *  {Integer} Sets highWaterMark for the readable side of the stream. Has no effect if highWaterMark is provided.
-       */
-      readableHighWaterMark: number;
-      /**
-       *  {Integer} Sets highWaterMark for the writable side of the stream. Has no effect if highWaterMark is provided.
-       */
-      writableHighWaterMark: number;
-
+      allowHalfOpen?: boolean;
+      readableHighWaterMark?: number;
+      writableHighWaterMark?: number;
     }
 
     // Note: Duplex extends both Readable and Writable.
-    class Duplex implements Readable, Writable {
-
+    class Duplex extends Readable implements Writable {
       constructor(opts?: DuplexOptions);
-      destroy(error?: Error): this;
-      isPaused(): boolean;
-      pause(): this;
-      pipe(destination: Writable, options?: ReadableOptions): Writable;
-      read(size?: number);
-      resume(): this;
-      unpipe(destination?: Writable): this;
-      destroyed: boolean;
-      readable: boolean;
-      readableEnded: boolean;
-      readableFlowing: boolean;
-      readableHighWaterMark: number;
-      readableLength: number;
-      on(event: writEventTypes, listener: (chunk?: any) => void): this;
-      _read(size: number): void;
-      _destroy(error: Error, callback: (error?: Error) => void): void;
-      push(chunk: Buffer): boolean;
-      writable: boolean;
-      writableEnded: boolean;
-      writableFinished: boolean;
-      writableHighWaterMark: number;
-      writableLength: number;
-      end(chunk?: String | Buffer): this;
-      end(chunk?: String | Buffer, cb?: () => void): void;
-      write(chunk: String | Buffer, cb?: (error: Error) => void): boolean;
-      once(event: writEventTypes, listener: (chunk?: any) => void): this;
-      _write(chunk: String | Buffer, callback: (error?: Error) => void): void;
-      _final(callback: (error?: Error) => void): void;
 
+      readonly writable: boolean;
+      readonly writableEnded: boolean;
+      readonly writableFinished: boolean;
+      readonly writableHighWaterMark: number;
+      readonly writableLength: number;
+
+      _final(callback: (error?: (Error | null)) => void): void;
+      on(event: string, listener: (chunk?: any) => void): this;
+
+      _write(chunk: string | Buffer, encoding: string, callback: (error?: (Error | null)) => void): void;
+
+      end(cb?: () => void): void;
+      end(chunk: string | Buffer, cb?: () => void): void;
+      end(chunk: string | Buffer, encoding: string, cb?: () => void): void;
+
+      once(event: writEventTypes, listener: (chunk?: any) => void): this;
+
+      write(chunk: string | Buffer, cb?: (error: (Error | null | undefined)) => void): boolean;
+      write(chunk: string | Buffer, encoding: string, cb?: (error: (Error | null | undefined)) => void): boolean;
+    }
+
+    interface TransformOptions extends DuplexOptions {
+      read?(): void;
+      write?(): void;
+      final?(): void;
+      destroy?(): void;
+      transform?(this: Transform, chunk: any, encoding: BufferEncoding, callback: TransformCallback): void;
+      flush?(this: Transform, callback: TransformCallback): void;
+    }
+
+    type TransformCallback = (error?: Error | null, data?: any) => void;
+
+    class Transform extends Duplex {
+      constructor(opts?: TransformOptions);
+      _transform(chunk: any, encoding: BufferEncoding, callback: TransformCallback): void;
+      _flush(callback: TransformCallback): void;
     }
 
   }

@@ -11,24 +11,23 @@
  *                   GENERAL                    *
  *                                              *
  *----------------------------------------------*/
-// TODO: duplicate Assert
 /// <reference path="./general/assert.d.ts" />
-/// <reference path="./general/chksum.d.ts" />
-// TODO: duplicate console
+/// <reference path="./general/buffer.d.ts" />
 /// <reference path="./general/console.d.ts" />
-// TODO: duplicate Hash
+/// <reference path="./general/chksum.d.ts" />
 /// <reference path="./general/crypto.d.ts" />
-// TODO: duplicate EventEmitter
 /// <reference path="./general/events.d.ts" />
 /// <reference path="./general/iosched.d.ts" />
-// TODO: duplicate path
 /// <reference path="./general/path.d.ts" />
-/// <reference path="./general/rbtree.d.ts" />
-// TODO: duplicate internal
-/// <reference path="./general/stream.d.ts" />
-/// <reference path="./general/sys.d.ts" />
 /// <reference path="./general/timers.d.ts" />
+/// <reference path="./general/stream.d.ts" />
+/// <reference path="./general/string_decoder.d.ts" />
+/// <reference path="./general/sys.d.ts" />
+/// <reference path="./general/bytecode.d.ts" />
+/// <reference path="./general/url.d.ts" />
+/// <reference path="./general/util.d.ts" />
 /// <reference path="./general/yallist.d.ts" />
+/// <reference path="./general/rbtree.d.ts" />
 
 /*----------------------------------------------*
  *                                              *
@@ -38,10 +37,9 @@
 /// <reference path="./local-device/buzzer.d.ts" />
 /// <reference path="./local-device/canbus.d.ts" />
 /// <reference path="./local-device/gpio.d.ts" />
-/// <reference path="./local-device/hotplug.d.ts" />
-/// <reference path="./local-device/thermal.d.ts" />
-// TODO: export error
 /// <reference path="./local-device/tty.d.ts" />
+/// <reference path="./local-device/thermal.d.ts" />
+/// <reference path="./local-device/hotplug.d.ts" />
 
 /*----------------------------------------------*
  *                                              *
@@ -49,15 +47,15 @@
  *                                              *
  *----------------------------------------------*/
 /// <reference path="./network/dns.d.ts" />
+/// <reference path="./network/inetaddr.d.ts" />
+/// <reference path="./network/netif.d.ts" />
 /// <reference path="./network/dtls.d.ts" />
 /// <reference path="./network/http_proxy.d.ts" />
 /// <reference path="./network/http_server.d.ts" />
 /// <reference path="./network/http_util.d.ts" />
-/// <reference path="./network/inetaddr.d.ts" />
 // TODO: duplicate
 /// <reference path="./network/net.d.ts" />
-/// <reference path="./network/netif.d.ts" />
-// TODO: 
+// TODO:
 /// <reference path="./network/querystring.d.ts" />
 /// <reference path="./network/socket.d.ts" />
 /// <reference path="./network/tcp.d.ts" />
@@ -199,10 +197,6 @@
  *                                              *
  *----------------------------------------------*/
 /// <reference path="./edgeros-iot-device/lora.d.ts" />
-
-// TODO: duplicate StringDecoder
-/// <reference path="./string_decoder.d.ts" />
-/// <reference path="./util.d.ts" />
 /// <reference path="./web_middleware.d.ts" />
 /// <reference path="./web_middlwware.d.ts" />
 /// <reference path="./web_request.d.ts" />

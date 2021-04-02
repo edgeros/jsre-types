@@ -14,15 +14,14 @@ declare module "yallist" {
 
   class yallist {
     constructor(initData?: Array<any>);
-    length: number
-    //
-    head(): Node
-    tail(): Node
-    push(...args: any): void
-    pop(): any
+    length: number;
+    head: Node;
+    tail: Node;
+    pop(): any;
+    push(...args: any): void;
     splice(start: number, deleteCount: number, ...item: any): Array<yallist>;
     reverse(): Array<yallist>;
-    shift(): Array<yallist>;
+    shift(): any;
     unshift(...items: any): number
     toArray(): Array<yallist>;
     toArrayReverse(): Array<yallist>;

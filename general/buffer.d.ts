@@ -1,4 +1,4 @@
-declare module 'jsre:buffer' {
+declare module 'edgeros:buffer' {
   export * from 'buffer';
 }
 

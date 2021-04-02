@@ -81,6 +81,8 @@ declare module 'console' {
        */
       trace(): void;
 
+      backtrace(): Array<any>
+
       /**
        * If the console output is a standard terminal device or file,
        * this function waits for the internal sending buffer to be sent completely.
@@ -159,7 +161,6 @@ declare module 'console' {
        */
       tagFilterDelete<T>(id:string | Array<T>): void;
     }
-
     var console: Console;
   }
 

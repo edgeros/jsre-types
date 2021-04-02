@@ -5,7 +5,7 @@ declare module 'edgeros:mediadecoder' {
 
 declare module "mediadecoder" {
 
-  import EventEmitter from "edgeros:events";
+  import EventEmitter = require("edgeros:events");
 
   interface IRemuxFormat {
     enable?: boolean;// {Boolean} Does enable remux?
@@ -92,9 +92,8 @@ declare module "mediadecoder" {
 
 
 
-  enum proto {
-    'tcp', 'udp' //	TCP protocol, default. UDP protocol.
-  }
+  type proto = 'tcp' | 'udp'; //	TCP protocol, default. UDP protocol.
+
 
   interface MediaOption {
     name: string; // {String} The name of global media decoder object.

@@ -9,6 +9,7 @@ declare var require: any;
 declare var exports: any;
 
 declare var console: Console;
+declare var sys: Sys;
 
 interface module {
   id: string;
@@ -141,7 +142,7 @@ declare class Buffer extends Uint8Array {
   toJSON(): { type: 'Buffer'; data: number[] };
 
   /**
-   * Compares whether two Buffers are identical, if the same returns true, otherwise returns false. 
+   * Compares whether two Buffers are identical, if the same returns true, otherwise returns false.
    * @param {Uint8Array} otherBuffer Buffer object.
    * @returns {boolean}
    */
@@ -368,20 +369,33 @@ interface Array<T> {
 
 interface Error {
   stackTraceLimit: number;
+  stack?: string;
+  name: string;
+  message: string;
+  code?: string;
+  errno?: number;
+  info: Object;
 }
 
+interface ErrorConstructor {
+  new(message: string): Error;
+  (message: string): Error;
+  readonly prototype: Error;
+  readonly stackTraceLimit: number;
+}
 
 interface ExtError extends Error {
   code: string;
   errno: number;
   info: any
-
 }
 
 interface ExtErrorConstructor extends ErrorConstructor {
-  new(message: string, code?: string, errno?: number, info?: object): EvalError;
-  (message: string): EvalError;
-  readonly prototype: EvalError;
+  new(message: string, code: string, errno?: number, info?: object): ExtError;
+  (message: string): ExtError;
+  readonly prototype: ExtError;
 }
 
 declare var ExtError: ExtErrorConstructor;
+
+declare var Error: ErrorConstructor;
