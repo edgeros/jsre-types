@@ -3,11 +3,8 @@ declare module 'edgeros:net' {
 }
 
 declare module "net" {
-  import stream from "stream";
-  import events from "events";
-  import dns from "dns";
-
-  type LookupFunction = (hostname: string, options: dns.LookupOneOptions, callback: (err: EdgerOS.ErrnoException | null, address: string, family: number) => void) => void;
+  import stream = require("stream");
+  import EventEmitter = require("edgeros:events");
 
   interface AddressInfo {
     address: string;
@@ -44,11 +41,8 @@ declare module "net" {
   interface TcpSocketConnectOpts extends ConnectOpts {
     port: number;
     host?: string;
-    localAddress?: string;
-    localPort?: number;
-    hints?: number;
     family?: number;
-    lookup?: LookupFunction;
+    tlsOpt?: Object;
   }
 
   interface IpcSocketConnectOpts extends ConnectOpts {
@@ -60,40 +54,44 @@ declare module "net" {
   class Socket extends stream.Duplex {
     constructor(options?: SocketConstructorOpts);
 
-    // Extended base methods
-    write(buffer: Uint8Array | string, cb?: (err?: Error) => void): boolean;
-    write(str: Uint8Array | string, encoding?: BufferEncoding, cb?: (err?: Error) => void): boolean;
+    address(): AddressInfo | {};
 
     connect(options: SocketConnectOpts, connectionListener?: () => void): this;
     connect(port: number, host: string, connectionListener?: () => void): this;
-    connect(port: number, connectionListener?: () => void): this;
-    connect(path: string, connectionListener?: () => void): this;
+    connect(saddr: Object, tlsOpt: Object, connectionListener?: () => void): this;
 
-    setEncoding(encoding?: BufferEncoding): this;
+    destroy(error?: Error): this;
+
+    // Extended base methods
+    end(cb?: () => void): void;
+    end(buffer: Uint8Array | string, cb?: () => void): void;
+    end(str: Uint8Array | string, encoding?: BufferEncoding, cb?: () => void): void;
+
     pause(): this;
     resume(): this;
-    setTimeout(timeout: number, callback?: () => void): this;
-    setNoDelay(noDelay?: boolean): this;
+
     setKeepAlive(enable?: boolean, initialDelay?: number): this;
-    address(): AddressInfo | {};
-    unref(): this;
-    ref(): this;
+    setNoDelay(noDelay?: boolean): this;
+    setTimeout(timeout: number, callback?: () => void): this;
+
+    // Extended base methods
+    write(buffer: Uint8Array | string, cb?: (err?: Error) => void): boolean;
+    write(str: Uint8Array | string, encoding?: BufferEncoding, cb?: (err?: Error) => void): boolean;
 
     readonly bufferSize: number;
     readonly bytesRead: number;
     readonly bytesWritten: number;
     readonly connecting: boolean;
     readonly destroyed: boolean;
+    readonly pending: boolean;
     readonly localAddress: string;
     readonly localPort: number;
     readonly remoteAddress?: string;
     readonly remoteFamily?: string;
     readonly remotePort?: number;
+    readonly timeout: number | undefined;
+    readonly readyState: string;
 
-    // Extended base methods
-    end(cb?: () => void): void;
-    end(buffer: Uint8Array | string, cb?: () => void): void;
-    end(str: Uint8Array | string, encoding?: BufferEncoding, cb?: () => void): void;
 
     /**
      * events.EventEmitter
@@ -105,6 +103,7 @@ declare module "net" {
      *   6. error
      *   7. lookup
      *   8. timeout
+     *   9. ready
      */
     addListener(event: string, listener: (...args: any[]) => void): this;
     addListener(event: "close", listener: (had_error: boolean) => void): this;
@@ -115,6 +114,7 @@ declare module "net" {
     addListener(event: "error", listener: (err: Error) => void): this;
     addListener(event: "lookup", listener: (err: Error, address: string, family: string | number, host: string) => void): this;
     addListener(event: "timeout", listener: () => void): this;
+    addListener(event: "ready", listener: () => void): this;
 
     emit(event: string | symbol, ...args: any[]): boolean;
     emit(event: "close", had_error: boolean): boolean;
@@ -181,10 +181,20 @@ declare module "net" {
     ipv6Only?: boolean;
   }
 
+  interface certOptions {
+    name: string;
+    ca: string;
+    cert: string;
+    key: string;
+    passwd: string;
+  }
+
   // https://github.com/nodejs/node/blob/master/lib/net.js
-  class Server extends events.EventEmitter {
+  class Server extends EventEmitter {
     constructor(connectionListener?: (socket: Socket) => void);
     constructor(options?: { allowHalfOpen?: boolean, pauseOnConnect?: boolean }, connectionListener?: (socket: Socket) => void);
+
+    address(): AddressInfo | string | null;
 
     listen(port?: number, hostname?: string, backlog?: number, listeningListener?: () => void): this;
     listen(port?: number, hostname?: string, listeningListener?: () => void): this;
@@ -195,14 +205,14 @@ declare module "net" {
     listen(options: ListenOptions, listeningListener?: () => void): this;
     listen(handle: any, backlog?: number, listeningListener?: () => void): this;
     listen(handle: any, listeningListener?: () => void): this;
+
     close(callback?: (err?: Error) => void): this;
-    address(): AddressInfo | string | null;
-    getConnections(cb: (error: Error | null, count: number) => void): void;
-    ref(): this;
-    unref(): this;
-    maxConnections: number;
-    connections: number;
-    listening: boolean;
+
+    isMaster(): boolean;
+    addcert(opt: certOptions): boolean;
+    port(): number | undefined;
+
+    groupName: {group?: string, name?: string}
 
     /**
      * events.EventEmitter
@@ -258,14 +268,10 @@ declare module "net" {
 
   type NetConnectOpts = TcpNetConnectOpts | IpcNetConnectOpts;
 
-  function createServer(connectionListener?: (socket: Socket) => void): Server;
-  function createServer(options?: { allowHalfOpen?: boolean, pauseOnConnect?: boolean }, connectionListener?: (socket: Socket) => void): Server;
-  function connect(options: NetConnectOpts, connectionListener?: () => void): Socket;
-  function connect(port: number, host?: string, connectionListener?: () => void): Socket;
-  function connect(path: string, connectionListener?: () => void): Socket;
-  function createConnection(options: NetConnectOpts, connectionListener?: () => void): Socket;
-  function createConnection(port: number, host?: string, connectionListener?: () => void): Socket;
-  function createConnection(path: string, connectionListener?: () => void): Socket;
+  function connect(options: NetConnectOpts): Socket;
+  function createConnection(options: NetConnectOpts): Socket;
+  function createServer(group: string, subs: number, subMode?: string, saddr?: Object, tlsOpt?: Object): Server;
+  function createSubServer(group: string): Server;
   function isIP(input: string): number;
   function isIPv4(input: string): boolean;
   function isIPv6(input: string): boolean;

@@ -34,6 +34,8 @@ declare module "netif" {
   interface IfAddr {
     ipaddr: string;
     netmask: string;
+    gateway: string;
+    dest: string;
   }
 
   interface IfIp6Addr {
@@ -48,7 +50,7 @@ declare module "netif" {
      *
      * Returns: {Object} Network interface object.
      *
-     * @param ifname {String} Network interface name.
+     * @param name {string} Network interface name.
      */
     constructor(name: string);
 
@@ -57,7 +59,7 @@ declare module "netif" {
      *
      * Returns: {Object} Network interface object.
      *
-     * @param index {Integer} Network interface index.
+     * @param index {number} Network interface index.
      */
     constructor(index: number);
 
@@ -67,6 +69,10 @@ declare module "netif" {
      * Returns: {Array} Network interface list array.
      */
     static list(): Array<IfNameItem>;
+
+    static type(ifname: string): string;
+
+    static stats(ifname: string): IfStats;
 
     /**
      * Get all network interfaces of the system. Each item of the return array is a network interface name {String}.
@@ -87,11 +93,11 @@ declare module "netif" {
     /**
      * Get the specified name network interface index, if not found return zero.
      *
-     * Returns: {Integer} Network interface index.
+     * Returns: {number} Network interface index.
      *
-     * @param ifname {String} Network interface name.
+     * @param ifname {string} Network interface name.
      */
-    static indexToIfname(name: string): number;
+    static ifnameToIndex(ifname: string): number;
 
     /**
      * Get this network interface index.
@@ -106,6 +112,8 @@ declare module "netif" {
      * Returns: {String} Network interface name.
      */
     ifname(): string;
+
+    type(): string;
 
     /**
      * Get this network interface name.
@@ -135,14 +143,11 @@ declare module "netif" {
      *
      * Returns: {Object} Network interface address.
      *
-     * @param addrIndex {Integer} Network interface address index.
+     * @param addrIndex {number} Network interface address index.
      */
     addr6(addrIndex: number): IfIp6Addr;
 
-    /**
-     * Returns: {Boolean} Whether the network interface is enabled.
-     */
-    up(): boolean;
+    isUp(): boolean;
 
     /**
      * Returns: {Boolean} Whether the network interface is enabled.
@@ -173,8 +178,9 @@ declare module "netif" {
      * Returns: {Boolean} Whether the operation was successful.
      *
      * @param dhcp {Boolean} Whether to use dhcp to get the ip address.
+     * @param dhcp6
      */
-    up(dhcp?: boolean): boolean;
+    up(dhcp?: boolean, dhcp6?: boolean): boolean;
 
     /**
      * Disable the specified network interface, not allowed to send and receive data packets.
@@ -182,6 +188,18 @@ declare module "netif" {
      * Returns: {Boolean} Whether the operation was successful.
      */
     down(): boolean;
+
+    /**
+     * Set or get the TCP window size of the specified network interface.
+     * @param window TCP window size (8192 ~ 262144).
+     */
+    tcpWnd(window?: number): number;
+
+    /**
+     * Set or get the TCP acknowledgment packet sending frequency of the specified network interface.
+     * @param freq TCP acknowledgment packet sending frequency (2 ~ 10).
+     */
+    ackFreq(freq: number): number;
 
   }
   export = Netif;

@@ -49,21 +49,22 @@
 /// <reference path="./network/dns.d.ts" />
 /// <reference path="./network/inetaddr.d.ts" />
 /// <reference path="./network/netif.d.ts" />
-/// <reference path="./network/dtls.d.ts" />
-/// <reference path="./network/http_proxy.d.ts" />
-/// <reference path="./network/http_server.d.ts" />
-/// <reference path="./network/http_util.d.ts" />
-// TODO: duplicate
-/// <reference path="./network/net.d.ts" />
-// TODO:
-/// <reference path="./network/querystring.d.ts" />
 /// <reference path="./network/socket.d.ts" />
 /// <reference path="./network/tcp.d.ts" />
-/// <reference path="./network/tls.d.ts" />
 /// <reference path="./network/udp.d.ts" />
-// TODO: middleware
+/// <reference path="./network/tls.d.ts" />
+/// <reference path="./network/dtls.d.ts" />
+/// <reference path="./network/net.d.ts" />
+/// <reference path="./network/dgram.d.ts" />
+/// <reference path="./network/querystring.d.ts" />
+/// <reference path="./network/http.d.ts" />
+/// <reference path="./network/http_proxy.d.ts" />
+/// <reference path="./network/http_util.d.ts" />
+/// <reference path="./network/websocket.d.ts" />
+// TODO:
 /// <reference path="./network/web_proxy.d.ts" />
 /// <reference path="./network/webget.d.ts" />
+/// <reference path="./network/mobile.d.ts" />
 
 /*----------------------------------------------*
  *                                              *
@@ -72,6 +73,7 @@
  *----------------------------------------------*/
 /// <reference path="./iot/mqtt.d.ts" />
 /// <reference path="./iot/sddc.d.ts" />
+/// <reference path="./iot/coap.d.ts" />
 
 /*----------------------------------------------*
  *                                              *
@@ -197,7 +199,5 @@
  *                                              *
  *----------------------------------------------*/
 /// <reference path="./edgeros-iot-device/lora.d.ts" />
-/// <reference path="./web_middleware.d.ts" />
-/// <reference path="./web_middlwware.d.ts" />
+
 /// <reference path="./web_request.d.ts" />
-/// <reference path="./websocket.d.ts" />

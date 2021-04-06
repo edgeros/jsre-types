@@ -4,6 +4,7 @@ declare module 'edgeros:middleware' {
 }
 
 declare module "middleware" {
+  import {WebProxy} from 'web_proxy';
   namespace middleware {
     interface JSONParserOptions {
       limit: Number | String; // {Number | String} Controls the maximum request body size. If this is a number, then the value specifies the number of bytes; if it is a string, the value is passed to the bytes library for parsing. default: '100kb'.
@@ -39,18 +40,20 @@ declare module "middleware" {
       cacheControl?: string; //	Boolean	true	Cache-Control
       dotfiles?: string; //	String	-	-
       etag?: string; //	Boolean	true	ETag
-      extensions?: string; //	Boolean / Array	false	-	
+      extensions?: string; //	Boolean / Array	false	-
       fallthrough?: string; //	Boolean	true	-
       immutable?: string; //	Boolean	false	Cache-Control
       index?: string; //	Array	['index.html']	-
       lastModified?: string; //	Boolean	true	Last-Modified
-      maxAge?: string; //	Number / String	2592000000	Max-Age	
+      maxAge?: string; //	Number / String	2592000000	Max-Age
       redirect?: string; //	Boolean	true	-
       setHeaders?: string; //	Function	-	-
       highWaterMark?: string; //	Integer	-	-
     }
 
     function serveStatic(root: string, options?: ServeStaticOptions)
+
+    var WebProxy: WebProxy;
   }
   export = middleware;
 }

@@ -23,6 +23,8 @@ declare module "http_util" {
   function parseUrl(url: string): UrlStruct;
   function parseHost(host: string): IP;
   function getHostAddr(host: string, port: number, domain?: number): null | Object;
+  function getHostAddrAsync(host: string, port: number, callback: (...args: any) => void, timeout?: number): void;
+  function getHostAddrAsync(host: string, port: number, domain: number, callback: (...args: any) => void, timeout?: number): void;
   function createError(): Error;
   function createError(status?: number, reason?: string): Error;
 }

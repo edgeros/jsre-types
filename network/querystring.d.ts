@@ -18,7 +18,7 @@ declare module "querystring" {
       [key: string]: EdgerOS.PoorMansUnknown<string | number | boolean | ReadonlyArray<string> | ReadonlyArray<number> | ReadonlyArray<boolean> | null>;
   }
 
-  function stringify(obj?: ParsedUrlQueryInput, sep?: string, eq?: string, options?: StringifyOptions): string;
+  function stringify(str: ParsedUrlQueryInput, sep?: string, eq?: string, options?: StringifyOptions): string;
   function parse(str: string, sep?: string, eq?: string, options?: ParseOptions): ParsedUrlQuery;
   /**
    * The querystring.encode() function is an alias for querystring.stringify().

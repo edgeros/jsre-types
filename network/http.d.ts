@@ -4,6 +4,8 @@ declare module 'edgeros:http' {
 
 declare module "http" {
 
+  import {Buffer} from 'buffer';
+
   interface HttpClientRequestOptions {
     domain?: string;
     method?: string;
@@ -80,14 +82,16 @@ declare module "http" {
     constructor()
     enableTimeout(enable: boolean)
     close()
+    destroy(err: Error): this;
 
     addListener(event: "start", listener: () => void): this;
     addListener(event: "stop", listener: () => void): this;
     addListener(event: "request", listener: () => void): this;
 
-    on(event: "start", listener: () => void): this;
-    on(event: "stop", listener: () => void): this;
-    on(event: "request", listener: (req: HttpServerRequest, res: HttpServerResponse) => void): this;
+    on(event: "data", listener: (buff: Buffer) => void): this;
+    on(event: "end", listener: () => void): this;
+    on(event: "close", listener: () => void): this;
+    on(event: "error", listener: () => void): this;
 
   }
 
@@ -108,6 +112,10 @@ declare module "http" {
 
     addListener(event: "end", listener: () => void): this;
     on(event: "end", listener: () => void): this;
+    on(event: "finish", listener: () => void): this;
+    on(event: "close", listener: () => void): this;
+    on(event: "error", listener: () => void): this;
+    on(event: "drain", listener: () => void): this;
 
   }
 
@@ -120,6 +128,5 @@ declare module "http" {
     constructor()
 
   }
-
 
 }

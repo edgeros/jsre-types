@@ -27,11 +27,18 @@ declare module "sddc" {
 
   class Sddc {
 
-    constructor(ifname: string)
+    constructor(ifname: string);
 
     setInfo(product: SddcSetInfoProduct, vendor: string);
     setInfo(product: SddcSetInfoProduct, vendor: string, excl?: boolean, server?: object);
     setFilter(callback: (uid: string, addr: string) => void);
+
+    /**
+     * Add the communication token of the specified device.
+     * @param uid Device unique ID.
+     * @param token Device security communication token.
+     */
+    security(uid: string, token: string): void;
     start();
     close();
     discover(dest?: string);
@@ -48,13 +55,14 @@ declare module "sddc" {
      * @param retries {Integer} When req is true, the maximum retries. default: 4.
      * @param urgent {Boolean} Whether it is an urgent packet. default: false.
      */
-    send(uid: string, msg?: object | string, req?: boolean, callback?: (error: Error) => void, retries?: number, urgent?: boolean)
+    send(uid: string, msg: object | string, req?: boolean, callback?: (error: Error) => void, retries?: number, urgent?: boolean)
 
     on(event: "found", callback: (uid: string, info: SddcFoundParams) => void);
     on(event: "update", callback: (uid: string, info: SddcFoundParams) => void);
     on(event: "lost", callback: (uid: string, info: SddcFoundParams) => void);
     on(event: "join", callback: (uid: string, info: SddcFoundParams) => void);
     on(event: "refuse", callback: (uid: string, data: object) => void);
+    on(event: "token", callback: (...args: any) => void);
     on(event: "message", callback: (uid: string, data: object) => void);
   }
   export = Sddc

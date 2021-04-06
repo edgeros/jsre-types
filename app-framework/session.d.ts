@@ -1,5 +1,5 @@
-declare module "middleware" {
-  namespace middleware {
+declare module "session" {
+  namespace session {
     function session(options: object): session.Session
     namespace session {
       export class Session {
@@ -32,5 +32,5 @@ declare module "middleware" {
       }
     }
   }
-  export = middleware
+  export = session;
 }
