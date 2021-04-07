@@ -116,11 +116,10 @@
  *                multi process                 *
  *                                              *
  *----------------------------------------------*/
+/// <reference path="./multi-process/process.d.ts" />
 /// <reference path="./multi-process/message.d.ts" />
 /// <reference path="./multi-process/monitor.d.ts" />
 /// <reference path="./multi-process/pipe.d.ts" />
-// global process duplicate
-/// <reference path="./multi-process/process.d.ts" />
 /// <reference path="./multi-process/rpc.d.ts" />
 
 /*----------------------------------------------*

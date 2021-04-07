@@ -3,141 +3,119 @@ declare module 'edgeros:rpc' {
 }
 
 declare module "rpc" {
+  import {ReadStream, WriteStream} from 'edgeros:fs';
 
-  var MAX_MSG_SIZE: number;
+  let MAX_MSG_SIZE: number;
 
   interface ToObj {
     addr: string | object;
+  }
+
+  interface ServerFrom {
+    addr: string | Object;
+    pid: number;
+    perm: number;
+    appid: number;
+    service: boolean;
+    signature: boolean;
   }
 
   class Server {
 
     /**
      * Create an RPC server using AF_UNIX multi-process communication. Only Privileged Mode supports creating servers.
-     * 
+     *
      * Returns: {Object} RPC server object.
-     * 
+     *
      * @param name {String} RPC service name. Consists of letters, numbers, and underscores, no more than 64 bytes.
+     * @param errCallback RPC service I/O error callback. default: undefined.
+     * @param onlyPrivilege Only privileged tasks to access this RPC service. default: false.
      */
-    constructor(name: string);
+    constructor(name: string, errCallback?: Function, onlyPrivilege?: boolean);
 
     /**
      * Create an RPC server using UDP protocol. Only Privileged Mode supports creating servers.
-     * 
+     *
      * Returns: {Object} RPC server object.
-     * 
+     *
      * @param saddr {Object} RPC server socket address.
+     * @param errCallback RPC service I/O error callback. default: undefined.
+     * @param onlyPrivilege Only privileged tasks to access this RPC service. default: false.
      */
-    constructor(saddr: object);
+    constructor(saddr: object, errCallback?: Function, onlyPrivilege?: boolean);
 
     /**
-     * Get current server object event file descriptor. Only for iosched readable event detection in current tasks.
-     * 
-     * Returns: {Integer} Server object file descriptor.
+     * Close this RPC server. this RPC server object is no longer allowed to be used after closed.
      */
-    fd(): number;
+    close(): void;
 
     /**
      * Send a server reply to the specified client.
-     * 
+     *
      * Returns: {Boolean} Whether to reply message send successfully.
-     * 
+     *
      * @param msg {Object} Reply object.
      * @param to {Object} Reply target.
-     * @param seq {Integer} Client command sequence number, must be the same as the client request message sequence number.
-     * @param timeout {Integer} Wait timeout in milliseconds. default: undefined means wait forever.
+     * @param seq {number} Client command sequence number, must be the same as the client request message sequence number.
+     * @param timeout {number} Wait timeout in milliseconds. default: undefined means wait forever.
      */
     reply(msg: object, to: ToObj, seq: number, timeout?: number): boolean;
 
     /**
      * Send a server asynchronous reverse message to the specified client.
-     * 
+     *
      * Returns: {Boolean} Whether to reply message send successfully.
-     * 
+     *
      * @param event {String} Client event that you want to trigger.
      * @param msg {Object} Reply object.
      * @param to {Object} Reply target.
-     * @param timeout {Integer} Wait timeout in milliseconds. default: undefined means wait forever.
+     * @param timeout {number} Wait timeout in milliseconds. default: undefined means wait forever.
      */
     reverse(event: string, msg: object, to: ToObj, timeout?: number): boolean;
 
-    /**
-     * Receiving network packet.
-     * 
-     * Returns: {Boolean} True means success, false means connection error. 
-     * When the iosched module call this function, if it returns false , 
-     * the iosched module will automatically remove the server from the event detection set.
-     * 
-     * @param timeout {Integer} Wait timeout in milliseconds. default: undefined means wait forever.
-     */
-    input(timeout?: number): boolean;
+    createReadStream(clientPid: number, alive?: number): ReadStream;
+    createWriteStream(rid: string, async?: boolean): WriteStream;
+
+    on(event: string, handler: (msg: Object, from: ServerFrom, seq: number) => void): void;
+
   }
 
   class Client {
 
     /**
      * Create an RPC client using AF_UNIX multi-process communication.
-     * 
+     *
      * Returns: {Object} RPC client object.
-     * 
+     *
      * @param name {String} RPC service name. Consists of letters, numbers, and underscores, no more than 64 bytes.
+     * @param errCallback
      */
-    constructor(name: string);
-
-    /**
-     * Create an RPC client using UDP protocol.
-     * 
-     * Returns: {Object} RPC client object.
-     * 
-     * @param saddr {Object} RPC server socket address.
-     */
-    constructor(saddr: object);
-
-    /**
-     * Get current client object event file descriptor. Only for iosched readable event detection in current tasks.
-     * 
-     * Returns: {Integer} Client object file descriptor.
-     */
-    fd(): number;
+    constructor(name: string, errCallback?: (...args: any) => void);
+    constructor(saddr: object, errCallback?: (...args: any) => void);
 
     /**
      * Close the RPC client, this RPC client object is no longer allowed to be used after closed.
      */
     close(): void;
 
-    /**
-     * Send a server reply to the specified client.
-     * 
-     * Returns: {Boolean} Whether to reply message send successfully.
-     * 
-     * @param msg {Object} Reply object.
-     * @param to {Object} Reply target.
-     * @param seq {Integer} Client command sequence number, must be the same as the client request message sequence number.
-     * @param timeout {Integer} Wait timeout in milliseconds. default: undefined means wait forever.
-     */
-    reply(msg: object, to: ToObj, seq: number, timeout?: number): boolean;
+    call(event: string, msg: Object, callback: (reply: Object) => void, timeout?: number): boolean;
 
     /**
-     * Send a call request to the server and wait for server reply. 
+     * Send a call request to the server and wait for server reply.
      * If there is no response within the time specified by timeout, return undefined.
-     * 
+     *
      * Returns: {Object} Server response message.
-     * 
+     *
      * @param event {String} Server event that you want to trigger.
      * @param msg {Object} Call command message.
-     * @param timeout {Integer} Wait timeout in milliseconds. default: 60000.
+     * @param timeout {number} Wait timeout in milliseconds. default: 60000.
      */
     callSync(event: string, msg: object, timeout?: number): object;
 
-    /**
-     * Receiving network packet.
-     * 
-     * Returns: {Boolean} True means success, false means connection error. 
-     * When the iosched module call this function, if it returns false , 
-     * the iosched module will automatically remove the client from the event detection set.
-     * 
-     * @param timeout {Integer} Wait timeout in milliseconds. default: undefined means wait forever.
-     */
-    input(timeout?: number): boolean;
+    fetch(event: string, msg: Object, timeout?: number): Promise<any>;
+
+    createReadStream(alive?: number): ReadStream;
+    createWriteStream(rid: string, async?: boolean): WriteStream;
+
   }
 }
