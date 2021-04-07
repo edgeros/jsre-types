@@ -103,13 +103,13 @@
  *                  multi task                  *
  *                                              *
  *----------------------------------------------*/
-/// <reference path="./multi-task/lpc.d.ts" />
+/// <reference path="./multi-task/task.d.ts" />
+/// <reference path="./multi-task/sigslot.d.ts" />
 /// <reference path="./multi-task/mutex.d.ts" />
 /// <reference path="./multi-task/rms.d.ts" />
+/// <reference path="./multi-task/lpc.d.ts" />
 /// <reference path="./multi-task/semaphore.d.ts" />
 /// <reference path="./multi-task/shared.d.ts" />
-/// <reference path="./multi-task/sigslot.d.ts" />
-/// <reference path="./multi-task/task.d.ts" />
 
 /*----------------------------------------------*
  *                                              *
