@@ -24,13 +24,13 @@ declare module "redis" {
     retry_strategy: Function; //	function	A function that receives an options object as parameter including the retry attempt, the total_retry_time indicating how much time passed since the last time connected, the error why the connection was lost and the number of times_connected in total. If you return a number from this function, the retry will happen exactly after that time in milliseconds. If you return a non-number, no further retry will happen and all offline commands are flushed with errors. Return an error to return that specific error to all offline commands. Example below.
   }
 
-  class Redis {
-    createClient(options: RedisOptions): Subscriber
-    createClient(redis_url: string, options?: RedisOptions): Subscriber
-    createClient(port: number, host?: string, options?: RedisOptions): Subscriber
-    print()
-    add_command(command_name: string)
-  }
+  function createClient(options: RedisOptions): RedisClient;
+  function createClient(redis_url: string, options?: RedisOptions): RedisClient;
+  function createClient(port: number, host?: string, options?: RedisOptions): RedisClient;
+
+  function print();
+
+  function add_command(command_name: string);
 
   class RedisError {
     constructor()
@@ -39,62 +39,84 @@ declare module "redis" {
   class ReplyError extends RedisError {
     constructor()
   }
+
   class AbortError extends RedisError {
     constructor()
   }
+
   class ParserError extends RedisError {
     constructor()
   }
+
   class AggregateError extends AbortError {
     constructor()
   }
 
   interface Subscriber {
     on(event: "message", cb: (channel: string, message: string) => void)
+
     on(event: "message_buffer", cb: (channel: string, message: Buffer) => void)
+
     on(event: "subscribe", cb: (channel: string, count: number) => void)
+
     on(event: "unsubscribe", cb: (channel: string, count: number) => void)
+
     on(event: "pmessage", cb: (pattern: string, channel: string, message: string) => void)
+
     on(event: "pmessage_buffer", cb: (pattern: string, channel: string, message: Buffer) => void)
+
     on(event: "psubscribe", cb: (pattern: string, count: number) => void)
+
     on(event: "punsubscribe", cb: (pattern: string, count: number) => void)
   }
 
   // TODO: http://docs.edgeros.com/edgeros/api/redis.html
   interface Multi {
     exec(callback?: () => void)
+
     exec_atomic(callback?: () => void)
   }
 
-  interface RedisClient {
+  class RedisClient {
 
-    auth(password: string, callback?: Function)
-    quit(callback: Function)
-    end(flush: boolean)
-    on(event: "ready", callback: () => void)
-    on(event: "connect", callback: () => void)
-    on(event: "reconnecting", callback: ((params: { delay: number, attempt: number }) => void))
-    on(event: "error", callback: (error: Error) => void)
-    on(event: "end", callback: () => void)
-    on(event: "warning", callback: () => void)
+    auth(password: string, callback?: (error: Error) => void);
 
-    // TODO：client.hmset(hash, key1, val1, ...keyN, valN[, callback])
+    quit(callback: (error: Error) => void);
+
+    end(flush: boolean);
+
+    on(event: "ready", callback: () => void);
+    on(event: "connect", callback: () => void);
+    on(event: "reconnecting", callback: ((params: { delay: number, attempt: number }) => void));
+    on(event: "error", callback: (error: Error) => void);
+    on(event: "end", callback: () => void);
+    on(event: "warning", callback: () => void);
+
     // http://docs.edgeros.com/edgeros/api/redis.html
-    hmset(hash: string, key1: string, val1: String | Buffer | Number | Date, ...keyN: string[])
-    hmset(hash: string, key1: string, val1: String | Buffer | Number | Date, callback?: Function)
-    hgetall(hash: string, callback?: Function)
+    hmset(hash: string, key1: string, val1: String | Buffer | Number | Date, ...keyN: string[]);
+    hmset(hash: string, key1: string, val1: String | Buffer | Number | Date, callback?: Function);
 
-    publish(channel: string, message: String | Number | Buffer | Date)
-    subscribe(channel: string)
-    unsubscribe(channel: string)
+    hgetall(hash: string, callback?: Function);
+
+    publish(channel: string, message: String | Number | Buffer | Date);
+
+    subscribe(channel: string);
+
+    unsubscribe(channel: string);
 
     multi(): Multi
-    batch(commands: Array<any>)
-    batch(callback: () => void)
 
-    duplicate(callback): Redis
-    duplicate(options?: object, callback?: Function): Redis
+    exec(callback?: Function): void;
+    exec_atomic(callback?: Function): void;
+
+    batch(commands: Array<any>);
+    monitor(callback: (error: Error, result: string) => void): void;
+
+    duplicate(callback): this;
+    duplicate(options?: object, callback?: Function): this;
+
     send_command(command_name: string, args: Array<any>, callback?: Function)
+
     server_info: string;
     connected: boolean
     command_queue_length: number

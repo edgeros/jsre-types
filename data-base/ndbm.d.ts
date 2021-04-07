@@ -4,6 +4,7 @@ declare module 'edgeros:ndbm' {
 }
 
 declare module "ndbm" {
+  import {Buffer} from "buffer";
   class Ndbm {
     public static STRING: 1;
     public static OBJECT: 2;
@@ -14,20 +15,21 @@ declare module "ndbm" {
      * @param mode {Integer} Database open mode. default: 0666.
      * @param type {Integer} Database default value type. default: Ndbm.BUFFER.
      */
-    constructor(path: string, flags?: string, mode?: string, type?: number)
+    constructor(path: string, flags?: string, mode?: string, type?: number);
+    static open(path: string, flags?: string, mode?: string, type?: number): Ndbm;
 
-    put(key: string, value: string, insertOnly?: boolean): boolean
-    set(key: string, value: string | object): boolean
-    get(key: string, type?: number): string | object | Buffer
-    delete(key: string): boolean
-    first(): string
-    next(): string
-    sync(): boolean
-    backup(path: string, cover?: boolean): boolean
-    close(): void
-    forEach(callback: (value: string, key: string, ndbm: object) => void, that?: object)
-    toMap(map?: object, getDefaultValue?: Function): object[]
-    fillin(map: object, insertOnly?: boolean)
+    put(key: string, value: string, insertOnly?: boolean): boolean;
+    set(key: string, value: string | object | Buffer): boolean;
+    get(key: string, type?: number): string | object | Buffer;
+    delete(key: string): boolean;
+    first(): string;
+    next(): string;
+    sync(): boolean;
+    backup(path: string, cover?: boolean): boolean;
+    close(): void;
+    forEach(callback: (value: string, key: string, ndbm: object) => void, that?: object);
+    toMap(map?: object, getDefaultValue?: Function): object[];
+    fillin(map: object, insertOnly?: boolean);
   }
   export = Ndbm;
 }

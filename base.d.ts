@@ -90,11 +90,13 @@
  *                   data base                  *
  *                                              *
  *----------------------------------------------*/
-/// <reference path="./data-base/leveldb.d.ts" />
+/// <reference path="./data-base/synctable.d.ts" />
 /// <reference path="./data-base/ndbm.d.ts" />
-/// <reference path="./data-base/redis.d.ts" />
-/// <reference path="./data-base/sqlite3.d.ts" />
 /// <reference path="./data-base/safendbm.d.ts" />
+/// <reference path="./data-base/lightkv.d.ts" />
+/// <reference path="./data-base/leveldb.d.ts" />
+/// <reference path="./data-base/sqlite3.d.ts" />
+/// <reference path="./data-base/redis.d.ts" />
 
 /*----------------------------------------------*
  *                                              *
