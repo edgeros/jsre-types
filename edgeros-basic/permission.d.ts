@@ -14,17 +14,19 @@ declare module "permission" {
     rtsp?: boolean; // {Boolean} Whether this app allows RTSP network such as: Webcam, Network microphone.
     lora?: boolean; // {Boolean} Whether this app allows send or receive data via LoRaWAN network.
     coap?: boolean; // {Boolean} Whether this app allows CoAP IoT network protocol.
-    miio?: boolean; // {Boolean} Whether this app allows MIIO IoT network protocol.
-    mqtt?: boolean; // {Object} MQTT Client sub object.
-    publish?: boolean; // {Boolean} Whether to allow applications to publish data using the MQTT protocol.
-    subscribe?: boolean; // {Boolean} Whether to allow applications to subscribe to messages using MQTT protocol.
+    wallpaper?: boolean;
+    mqtt?: {publish: boolean; subscribe: boolean}; // {Object} MQTT Client sub object.
+    mediacenter?: {readable: boolean; writable: boolean; removable: boolean};
+    phone?: {camera: boolean, contacts: boolean, microphone: boolean, geolocation: boolean};
+    device?: Array<any>;
   }
   namespace intenal {
-    function update(callback: Function)
-    function check(permChk: object, callback: (res: boolean) => void)
-    function device(devId: string, callback: (res: boolean) => void)
-    function request(perm?: object)
-    function request(devid?: object)
+    function update(callback: Function): void;
+    function check(permChk: object, callback: (res: boolean) => void): void;
+    function device(devId: string, callback: (res: boolean) => void): void;
+    function request(perm?: object): void;
+    function request(devid?: object): void;
+    function fetch(callback?: (error: Error, perm: Object) => void): void;
 
   }
   export = intenal

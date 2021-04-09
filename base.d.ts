@@ -163,11 +163,11 @@
  *          EDGEROS EXTENSION basic             *
  *                                              *
  *----------------------------------------------*/
-/// <reference path="./edgeros-basic/account.d.ts" />
-/// <reference path="./edgeros-basic/advnwc.d.ts" />
 /// <reference path="./edgeros-basic/master.d.ts" />
 /// <reference path="./edgeros-basic/notify.d.ts" />
 /// <reference path="./edgeros-basic/permission.d.ts" />
+/// <reference path="./edgeros-basic/advnwc.d.ts" />
+/// <reference path="./edgeros-basic/account.d.ts" />
 
 /*----------------------------------------------*
  *                                              *
