@@ -185,7 +185,6 @@
  *----------------------------------------------*/
 /// <reference path="./edgeros-multi-media/mediadecoder.d.ts" />
 /// <reference path="./edgeros-multi-media/videooverlay.d.ts" />
-// TODO: base webapp http_server
 /// <reference path="./edgeros-multi-media/webmedia.d.ts" />
 
 /*----------------------------------------------*

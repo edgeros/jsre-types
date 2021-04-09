@@ -1,5 +1,5 @@
 declare module 'edgeros:videooverlay' {
-  import VideoOverlay from 'videooverlay';
+  import VideoOverlay = require('videooverlay');
   export =VideoOverlay;
 }
 
@@ -24,18 +24,18 @@ declare module "videooverlay" {
   }
   class VideoOverlay {
     clear(): boolean
-    text(x: number, y: number, text: string, color?: number, bcolor?: number): boolean
-    point(x: number, y: number, color: number,): boolean
-    line(x0: number, y0: number, x1: number, y1: number, color: number, width?: number): boolean
-    rect(x0: number, y0: number, x1: number, y1: number, color: number): boolean
-    rect(x0: number, y0: number, x1: number, y1: number, color: number, width: number, r?: number, fill?: boolean): boolean
-    rect(x0: number, y0: number, x1: number, y1: number, color: number, width: number, r: number, fill?: boolean): boolean
+    text(x: number, y: number, text: string, color: number, bcolor?: number): boolean;
+    point(x: number, y: number, color: number,): boolean;
+    line(x0: number, y0: number, x1: number, y1: number, color: number, width?: number): boolean;
+    rect(x0: number, y0: number, x1: number, y1: number, color: number): boolean;
+    rect(x0: number, y0: number, x1: number, y1: number, color: number, width: number, r?: number, fill?: boolean): boolean;
+    rect(x0: number, y0: number, x1: number, y1: number, color: number, width: number, r: number, fill?: boolean): boolean;
 
     circle(x: number, y: number, r: number, color: number)
-    circle(x: number, y: number, r: number, color: number, width: number, fill?: boolean)
-    font(font: FontOptions): boolean
+    circle(x: number, y: number, r: number, color: number, width: number, fill?: boolean);
+    font(font: FontOptions): boolean;
 
-    draw(buf: Buffer): boolean
+    draw(buf: Buffer): boolean;
   }
 
   export = VideoOverlay;

@@ -4,8 +4,9 @@ declare module 'edgeros:webmedia' {
 
 declare module "webmedia" {
 
-  import { WebApp, SockAddr } from "webapp";
-  import { HttpServer } from "http_server";
+  import WebApp = require("edgeros:webapp");
+  import { HttpServer } from "edgeros:http";
+  import { Buffer } from "edgeros:buffer";
 
   export interface StreamChannel {
     protocol?: string;// {String} Transport protocol : xhr(http, https) | ws(ws, wss).
@@ -18,7 +19,7 @@ declare module "webmedia" {
   export interface DataChannel {
     protocol?: string; // {String} Transport protocol : ws(ws, wss).
     server?: string; // {WsServer} Use outside WsServer as ws data channel proxy server.
-    saddr?: SockAddr; // {Socket saddr} If server option not defined, create inside data channel proxy server.
+    saddr?: Object; // {Socket saddr} If server option not defined, create inside data channel proxy server.
     path?: string; // {String} Media data channel path, default to opts.path.
     tls?: object; // {TLS option} TLS options.
   }
@@ -30,7 +31,7 @@ declare module "webmedia" {
     mediaSource?: MediaSource; // {Object} Media source options.
     streamChannel?: StreamChannel; // {Object} Stream channel options.
     dataChannel?: DataChannel; // {Object} Data channel options.
-
+    ser?: HttpServer | WebApp;
   }
 
   export function createServer(opts: WebMediaServerOption | any, ser?: HttpServer | WebApp): MediaServer
@@ -40,39 +41,43 @@ declare module "webmedia" {
 
 
   export interface MediaServer {
-    source?: MediaSource
-    cliMgr?: ClientMgr
-    streamPipe?: Function
+    source?: MediaSource;
+    cliMgr?: ClientMgr;
+    streamPipe?: Function;
     dataPipe?: Function
 
-    start()
-    stop()
-    resume()
-    pause()
-    pushStream(chunk: Buffer)
-    sendStream(client: MediaClient | undefined, chunk: Buffer)
-    sendData(client: MediaClient | undefined, opts: object | undefined, chunk: Buffer)
-    sendEvent(client: MediaClient | undefined, event: string, ...args: any[])
+    start(): void;
+    stop(): void;
+    resume(): void;
+    pause(): void;
+    pushStream(chunk: Buffer): void;
+    sendStream(chunk: Buffer): void;
+    sendStream(client: MediaClient | undefined, chunk: Buffer): void;
+    sendData(chunk: Buffer): void;
+    sendData(client: MediaClient | undefined, chunk: Buffer): void;
+    sendData(client: MediaClient | undefined, opts: object | undefined, chunk: Buffer): void;
+    sendEvent(event: string, ...args: any[]): void;
+    sendEvent(client: MediaClient | undefined, event: string, ...args: any[]): void;
 
-    on(event: "start", callback: (server: MediaServer) => void)
-    on(event: "stop", callback: (server: MediaServer) => void)
-    on(event: "open", callback: (server: MediaServer, client: MediaClient) => void)
-    on(event: "close", callback: (server: MediaServer, client: MediaClient) => void)
-    on(event: "end", callback: (server: MediaServer) => void)
-    on(event: "pause", callback: (server: MediaServer) => void)
-    on(event: "resume", callback: (server: MediaServer) => void)
+    on(event: "start", callback: (server: MediaServer) => void): void;
+    on(event: "stop", callback: (server: MediaServer) => void): void;
+    on(event: "open", callback: (server: MediaServer, client: MediaClient) => void): void;
+    on(event: "close", callback: (server: MediaServer, client: MediaClient) => void): void;
+    on(event: "end", callback: (server: MediaServer) => void): void;
+    on(event: "pause", callback: (server: MediaServer) => void): void;
+    on(event: "resume", callback: (server: MediaServer) => void): void;
 
   }
   export interface MediaClient {
 
-    isRunning(): boolean
-    isPending(): boolean
-    isOpen(): boolean
-    close()
-    resume()
-    pause()
-    sendStream(chunk: Buffer, force?: boolean)
-    sendData(chunk: object | string | Array<any>)
+    isRunning(): boolean;
+    isPending(): boolean;
+    isOpen(): boolean;
+    close();
+    resume();
+    pause();
+    sendStream(chunk: Buffer, force?: boolean);
+    sendData(chunk: object | string | Array<any>);
     sendData(opts: object, chunk: object | string | Array<any>)
     send(opts: object | undefined, data: object | string | Array<any>, cb?: (client: MediaClient, opts: object | undefined, data: string | Array<any> | object) => void)
 
@@ -84,10 +89,10 @@ declare module "webmedia" {
 
   }
   export interface ClientMgr {
-    count: number
-    lookup(id: string | MediaClient): MediaClient | undefined
-    iter(cb: Function)
-    iter(filter: (client: MediaClient) => boolean, cb: Function)
+    count: number;
+    lookup(id: string | MediaClient): MediaClient | undefined;
+    iter(cb: Function);
+    iter(filter: (client: MediaClient) => boolean, cb: Function);
 
   }
 
@@ -112,16 +117,16 @@ declare module "webmedia" {
      * Media server mode. 1 - STREAM mode; 2 - COMPOUND mode. Refer to
      */
     mode?: number;
-    getCliMgr(): ClientMgr
-    sendStream(chunk: Buffer)
-    sendData(opts: object, chunk: string | object | Array<any>)
+    getCliMgr(): ClientMgr;
+    sendStream(chunk: Buffer);
+    sendData(opts: object, chunk: string | object | Array<any>);
 
-    sendStreamHeader(chunk: Buffer)
-    sendDataHeader(opts: object, chunk: string | object | Array<any>)
-    end()
-    start()
-    stop()
-    pushStream(chunk: Buffer)
+    sendStreamHeader(chunk: Buffer);
+    sendDataHeader(opts: object, chunk: string | object | Array<any>);
+    end();
+    start();
+    stop();
+    pushStream(chunk: Buffer);
 
     on(event: "start" | "stop", callback: () => void)
     on(event: eventType, client: MediaClient, opts: WebMediaServerOption, data: MediaDataChannelProtocol)
