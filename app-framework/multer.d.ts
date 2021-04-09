@@ -1,5 +1,6 @@
 declare module 'edgeros:multer' {
-  export * from 'multer';
+  import Multer = require("multer");
+  export = Multer;
 }
 
 declare module "multer" {
@@ -24,9 +25,9 @@ declare module "multer" {
 
 
   class Multer {
-    multer(opts: MulterOpts)
-    diskStorage(opts: { destination: string, filename: Function })
-    memoryStorage()
+    static multer(opts: MulterOpts): Upload;
+    static diskStorage(opts: { destination: string, filename: Function })
+    static memoryStorage()
   }
 
   class Upload {
@@ -39,14 +40,16 @@ declare module "multer" {
   }
 
   interface File {
-    fieldname?: string; //	Field name specified in the form	
-    originalname?: string; //	Name of the file on the user's computer	
-    encoding?: string; //	Encoding type of the file	
-    mimetype?: string; //	Mime type of the file	
-    size?: string; //	Size of the file in bytes	
+    fieldname?: string; //	Field name specified in the form
+    originalname?: string; //	Name of the file on the user's computer
+    encoding?: string; //	Encoding type of the file
+    mimetype?: string; //	Mime type of the file
+    size?: string; //	Size of the file in bytes
     destination?: string; //	The folder to which the file has been saved	DiskStorage
     filename?: string; //	The name of the file within the destination	DiskStorage
     path?: string; //	The full path to the uploaded file	DiskStorage
-    buffer?: string; //	A Buffer of the entire file	
+    buffer?: string; //	A Buffer of the entire file
   }
+
+  export = Multer;
 }

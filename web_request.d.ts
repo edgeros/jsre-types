@@ -1,5 +1,5 @@
 declare module "app" {
-  import { WebApp } from "webapp"
+  import WebApp = require("webapp");
 
   export interface WebRequest {
     app: WebApp;

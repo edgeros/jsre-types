@@ -4,7 +4,7 @@ declare module 'edgeros:middleware' {
 }
 
 declare module "middleware" {
-  import {WebProxy} from 'web_proxy';
+  import Multer = require("multer");
   namespace middleware {
     interface JSONParserOptions {
       limit: Number | String; // {Number | String} Controls the maximum request body size. If this is a number, then the value specifies the number of bytes; if it is a string, the value is passed to the bytes library for parsing. default: '100kb'.
@@ -32,28 +32,104 @@ declare module "middleware" {
       function raw(options?: RawParserOptions)
       function text(options?: TextParserOptions)
       function urlencoded(options?: UrlencodedParserOptions)
-
     }
 
     interface ServeStaticOptions {
-      acceptRanges?: string; //	Boolean	true	Accept-Ranges
-      cacheControl?: string; //	Boolean	true	Cache-Control
+      acceptRanges?: boolean; //	Boolean	true	Accept-Ranges
+      cacheControl?: boolean; //	Boolean	true	Cache-Control
       dotfiles?: string; //	String	-	-
-      etag?: string; //	Boolean	true	ETag
-      extensions?: string; //	Boolean / Array	false	-
-      fallthrough?: string; //	Boolean	true	-
-      immutable?: string; //	Boolean	false	Cache-Control
-      index?: string; //	Array	['index.html']	-
-      lastModified?: string; //	Boolean	true	Last-Modified
-      maxAge?: string; //	Number / String	2592000000	Max-Age
-      redirect?: string; //	Boolean	true	-
-      setHeaders?: string; //	Function	-	-
-      highWaterMark?: string; //	Integer	-	-
+      etag?: boolean; //	Boolean	true	ETag
+      extensions?: boolean; //	Boolean / Array	false	-
+      fallthrough?: boolean; //	Boolean	true	-
+      immutable?: boolean; //	Boolean	false	Cache-Control
+      index?: Array<string>; //	Array	['index.html']	-
+      lastModified?: boolean; //	Boolean	true	Last-Modified
+      maxAge?: string | number; //	Number / String	2592000000	Max-Age
+      redirect?: boolean; //	Boolean	true	-
+      setHeaders?: Function; //	Function	-	-
+      highWaterMark?: number; //	Integer	-	-
     }
 
-    function serveStatic(root: string, options?: ServeStaticOptions)
+    function serveStatic(root: string, options?: ServeStaticOptions): void;
 
-    var WebProxy: WebProxy;
+    namespace session {
+      function session(options: object): session.Session
+      namespace session {
+        export class Session {
+          id: string
+          cookie: object
+          static session(options: object): session.Session
+          constructor(options: object)
+          regenerate(callback: Function)
+          destroy(callback: Function)
+          reload(callback: Function)
+          save(callback: Function)
+          touch(callback: Function)
+        }
+
+        class Cookie {
+          constructor()
+          maxAge: number
+          originalMaxAge: number
+        }
+
+        interface Store {
+          all(callback: (error: Error, sessions: Array<any>) => void)
+          destroy(sid: string, callback: (error: Error) => void)
+          clear(callback: (error: Error) => void)
+          length(callback: (error: Error) => void)
+          get(sid: string, callback: (error: Error, session: Session) => void)
+          set(sid: string, session: Session, callback: (error: Error) => void)
+          touch(sid: string, session: Session, callback: (error: Error) => void)
+
+        }
+      }
+    }
+
+    namespace morgan {
+
+      function morgan(format?: string | Function, options?: MorganOptions)
+      namespace morgan {
+        function token(name: string, fn: (req: object, res: object) => void)
+      }
+
+      interface MorganOptions {
+        immediate?: object; // {Boolean} Write log line on request instead of response. default: false
+        skip?: object; // {Function} Function to determine if logging is skipped,
+        stream?: object; // {Object} Output stream for writing log lines, default: stdout stream.
+      }
+    }
+
+    namespace Busboy {
+      interface BusboyConfig {
+        headers?: Object;
+        highWaterMark?: number;
+        fileHwm?: number;
+        defCharset?: string;
+        preservePath?: boolean;
+        limits?: {
+          fieldNameSize?: number;
+          fieldSize?: number;
+          fields?: number;
+          fileSize?: number;
+          files?: number;
+          parts?: number;
+          headerPairs?: number;
+        }
+      }
+      export class Busboy {
+        constructor(config: BusboyConfig);
+
+        on(event: "file", listener: (fieldname: string, stream: ReadableStream, filename: string, transferEncoding: string, mimeType: string) => void): void;
+        on(event: "field", listener: (...args: any) => void): void;
+        on(event: "finish", listener: (...args: any) => void): void;
+        on(event: "partsLimit", listener: (...args: any) => void): void;
+        on(event: "filesLimit", listener: (...args: any) => void): void;
+        on(event: "fieldsLimit", listener: (...args: any) => void): void;
+      }
+    }
+
+    let multer: Multer;
   }
   export = middleware;
 }

@@ -61,7 +61,6 @@
 /// <reference path="./network/http_proxy.d.ts" />
 /// <reference path="./network/http_util.d.ts" />
 /// <reference path="./network/websocket.d.ts" />
-// TODO:
 /// <reference path="./network/web_proxy.d.ts" />
 /// <reference path="./network/webget.d.ts" />
 /// <reference path="./network/mobile.d.ts" />
@@ -129,15 +128,8 @@
  *----------------------------------------------*/
 /// <reference path="./app-framework/webapp.d.ts" />
 /// <reference path="./app-framework/router.d.ts" />
-// TODO: middleware
-/// <reference path="./app-framework/session.d.ts" />
-// TODO: middleware
 /// <reference path="./app-framework/middleware.d.ts" />
-// TODO: middleware
 /// <reference path="./app-framework/multer.d.ts" />
-// TODO: middleware
-/// <reference path="./app-framework/morgan.d.ts" />
-// TODO: BusBoy
 /// <reference path="./app-framework/socketio.d.ts" />
 /// <reference path="./app-framework/websynctable.d.ts" />
 
