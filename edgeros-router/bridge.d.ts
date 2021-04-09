@@ -4,7 +4,7 @@ declare module 'edgeros:router/bridge' {
 }
 declare module "router/bridge" {
   class Bridge {
-    constructor(brname: string)
+    constructor(brname: string);
     static add(brname: string): Bridge;
     index: number;
     subif: Array<string>;

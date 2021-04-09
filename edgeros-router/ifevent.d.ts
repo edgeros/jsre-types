@@ -51,7 +51,7 @@ declare module 'router/ifevent' {
     clear(): void;
     on(event: 'all', fn: (ifname: string, event: number) => void): void;
     on(event: 'error', fn: (error: Error) => void): void;
-    on(event: IfEvent | string, fn: (ifname: string) => void): void;
+    on(event: IfEvent | string, fn: (ifname: string | number) => void): void;
 
   }
   export = Ifevent;

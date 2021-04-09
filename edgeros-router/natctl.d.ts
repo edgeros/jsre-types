@@ -19,19 +19,19 @@ declare module "router/natctl" {
     const TCP: number;
     const UDP: number;
 
-    function start()
-    function stop()
-    function ifAdd(ifname: string, isLAN: boolean): boolean
-    function ifDelete(ifname: string)
-    function ifCount(): { lan: number, wan: number }
-    function mapAdd(ipLocal: string, portLocal: number, portWan: number, proto: number, ipCnt?: number): number
-    function mapGet(): Array<NatctlRule>
-    function mapGet(index: number): NatctlRule
-    function mapDelete(): boolean
-    function mapDelete(index: number): boolean
-    function fragment(): { tcp: boolean, udp: boolean, icmp: boolean }
-    function fragment(opt: object): boolean
-    function sessions(): Array<{ ipaddr: string, sessions: number }>
+    function start(): void;
+    function stop(): void;
+    function ifAdd(ifname: string, isLAN: boolean): boolean;
+    function ifDelete(ifname?: string): void;
+    function ifCount(): { lan: number, wan: number };
+    function mapAdd(ipLocal: string, portLocal: number, portWan: number, proto: number, ipCnt?: number): number;
+    function mapGet(): Array<NatctlRule>;
+    function mapGet(index: number): NatctlRule;
+    function mapDelete(): boolean;
+    function mapDelete(index: number): boolean;
+    function fragment(): { tcp: boolean, udp: boolean, icmp: boolean };
+    function fragment(opt: object): boolean;
+    function sessions(): Array<{ ipaddr: string, sessions: number }>;
   }
   export = natctl
 }

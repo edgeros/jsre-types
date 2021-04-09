@@ -146,17 +146,17 @@
  *                edgeros router                *
  *                                              *
  *----------------------------------------------*/
-/// <reference path="./edgeros-router/arp.d.ts" />
-/// <reference path="./edgeros-router/bridge.d.ts" />
-/// <reference path="./edgeros-router/flowctl.d.ts" />
 /// <reference path="./edgeros-router/ifevent.d.ts" />
-/// <reference path="./edgeros-router/natctl.d.ts" />
-/// <reference path="./edgeros-router/npfctl.d.ts" />
 /// <reference path="./edgeros-router/ppp.d.ts" />
 /// <reference path="./edgeros-router/qos.d.ts" />
+/// <reference path="./edgeros-router/bridge.d.ts" />
+/// <reference path="./edgeros-router/flowctl.d.ts" />
+/// <reference path="./edgeros-router/natctl.d.ts" />
+/// <reference path="./edgeros-router/npfctl.d.ts" />
 /// <reference path="./edgeros-router/rttable.d.ts" />
 /// <reference path="./edgeros-router/rtutil.d.ts" />
 /// <reference path="./edgeros-router/vlan.d.ts" />
+/// <reference path="./edgeros-router/arp.d.ts" />
 
 /*----------------------------------------------*
  *                                              *

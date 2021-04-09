@@ -17,7 +17,7 @@ declare module "router/arp" {
 	class ARP {
 
 		static add(ifname: string, ipaddr: string, mac: string,): boolean
-		static add(ifname: string, ipaddr: string, mac: string, static?: boolean, strict?: boolean): boolean
+		static add(ifname: string, ipaddr: string, mac: string, isStatic?: boolean, strict?: boolean): boolean
 		static delete(ipaddr: string): boolean
 		static delete(ipaddr: string, ifname: string, force?: boolean): boolean
 		static get(ifname?: string): Array<ARPObject>

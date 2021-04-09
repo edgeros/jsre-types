@@ -4,16 +4,23 @@ declare module 'edgeros:router/ppp' {
 }
 
 declare module "router/ppp" {
+
+  interface TtyHwOpt {
+    baud: number;
+    data: number;
+    stop: number;
+    parity: "odd" | "even" | "none";
+  }
   class ppp {
-    static create(type: number, ttyName: string, ttyHwOpt?: object)
-    static create(type: number, ethIfname: string)
-    static tunnel(server: string)
-    static tunnel(server: string, port: number, seckey?: string)
-    static delete(ifname: string): boolean
-    static connect(ifname: string): boolean
-    static connect(ifname: string, user: string, passwd?: string): boolean
-    static disconnect(ifname: string, force?: boolean): boolean
-    static phase(ifname: string): number
+    static create(type: number, ttyName: string, ttyHwOpt?: TtyHwOpt): string;
+    static create(type: number, ethIfname: string): string;
+    static tunnel(server: string): void;
+    static tunnel(server: string, port: number, seckey?: string): void;
+    static delete(ifname: string): boolean;
+    static connect(ifname: string): boolean;
+    static connect(ifname: string, user?: string, passwd?: string): boolean;
+    static disconnect(ifname: string, force?: boolean): boolean;
+    static phase(ifname: string): number;
 
     static PPPoS: 1
     static PPPoE: 2

@@ -8,6 +8,7 @@ declare module "router/rttable" {
     dest?: string; // {String} Destination address.
     genmask?: string; // {String} Netmask.
     gateway?: string; // {String} Gateway address.
+    lock?: boolean;
     flags?: string; // {Integer} Route entry flags.
     metric?: string; // {Integer} Route metric.
     refcnt?: string; // {Integer} Route reference count.
