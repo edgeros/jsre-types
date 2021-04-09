@@ -127,16 +127,19 @@
  *           application framework              *
  *                                              *
  *----------------------------------------------*/
-// TODO: middleware
-/// <reference path="./app-framework/middleware.d.ts" />
-/// <reference path="./app-framework/morgan.d.ts" />
-/// <reference path="./app-framework/multer.d.ts" />
+/// <reference path="./app-framework/webapp.d.ts" />
 /// <reference path="./app-framework/router.d.ts" />
 // TODO: middleware
 /// <reference path="./app-framework/session.d.ts" />
+// TODO: middleware
+/// <reference path="./app-framework/middleware.d.ts" />
+// TODO: middleware
+/// <reference path="./app-framework/multer.d.ts" />
+// TODO: middleware
+/// <reference path="./app-framework/morgan.d.ts" />
+// TODO: BusBoy
 /// <reference path="./app-framework/socketio.d.ts" />
-// TODO: redo
-/// <reference path="./app-framework/webapp.d.ts" />
+/// <reference path="./app-framework/websynctable.d.ts" />
 
 /*----------------------------------------------*
  *                                              *
