@@ -4,6 +4,7 @@ declare module 'edgeros:imagecodec' {
 }
 
 declare module "imagecodec" {
+  import { Buffer } from "edgeros:buffer";
   namespace imagecodec {
 
     const COMPONENTS_DEFAULT = 0;  // Use the default value of the image
@@ -28,13 +29,13 @@ declare module "imagecodec" {
       quality?: number; // {Integer} If the target is JPEG format, quality can be specified here, optional range: 1 ~ 100. default: 70.
     }
 
-    function decode(path: string, opt?: ImageOptions): ImageObject
+    function decode(path: string, opt?: ImageOptions): ImageObject;
+    function decode(buff: Buffer, opt?: ImageOptions): ImageObject;
 
 
-    function encode(image: ImageObject, opt?: ImageObject): boolean
     function encode(image: ImageObject, format: FormatString, opt?: ImageOptions): boolean
     /**
-     * 
+     *
      * @param image ImageObject
      * @param path The path parameter determines the image encoding format, it must contain the file extensions supported by the current module, they include: '*.jpg', '*.png', '*.bmp', '*.tga', '*.hdr'.
      * @param opt ImageOptions

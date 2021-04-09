@@ -174,8 +174,8 @@
  *          EDGEROS EXTENSION image             *
  *                                              *
  *----------------------------------------------*/
-/// <reference path="./edgeros-image/bardecoder.d.ts" />
 /// <reference path="./edgeros-image/barencoder.d.ts" />
+/// <reference path="./edgeros-image/bardecoder.d.ts" />
 /// <reference path="./edgeros-image/imagecodec.d.ts" />
 
 /*----------------------------------------------*
