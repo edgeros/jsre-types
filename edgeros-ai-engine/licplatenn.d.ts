@@ -24,6 +24,7 @@ declare module 'licplatenn' {
     const PIX_FMT_BGR2RGB24: number;
     const PIX_FMT_GRAY2RGB24: number;
     const PIX_FMT_RGBA2RGB24: number;
+
     function detect(videoBuf: Buffer, attribute: Attribute): Array<LicPlateInfo>;
     function identify(videoBuf: Buffer, attribute: Attribute, licPlateInfo: LicPlateInfo): string;
   }

@@ -3,6 +3,7 @@ declare module 'edgeros:facenn' {
 }
 
 declare module "facenn" {
+  import { Buffer } from "edgeros:buffer";
 
   interface IFacennAttribute {
     width: number; // {Integer} Video width.
@@ -35,7 +36,7 @@ declare module "facenn" {
   }
 
 
-  function detect(videoBuf: Buffer, attribute: IFacennAttribute, quick?: boolean): Array<FaceInfo>
-  function feature(videoBuf: Buffer, attribute: IFacennAttribute, faceInfo: FaceInfo, extra?: boolean): FaceKey
-  function compare(faceKey1: FaceKey, faceKey2: FaceKey): number
+  function detect(videoBuf: Buffer, attribute: IFacennAttribute, quick?: boolean): Array<FaceInfo>;
+  function feature(videoBuf: Buffer, attribute: IFacennAttribute, faceInfo: FaceInfo, extra?: boolean): FaceKey;
+  function compare(faceKey1: FaceKey, faceKey2: FaceKey): number;
 }

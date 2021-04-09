@@ -193,8 +193,8 @@
  *                                              *
  *----------------------------------------------*/
 /// <reference path="./edgeros-ai-engine/facenn.d.ts" />
-/// <reference path="./edgeros-ai-engine/licplatenn.d.ts" />
 /// <reference path="./edgeros-ai-engine/thingnn.d.ts" />
+/// <reference path="./edgeros-ai-engine/licplatenn.d.ts" />
 
 /*----------------------------------------------*
  *                                              *

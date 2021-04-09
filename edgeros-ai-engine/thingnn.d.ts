@@ -4,6 +4,7 @@ declare module 'edgeros:thingnn' {
 }
 
 declare module "thingnn" {
+  import { Buffer } from "edgeros:buffer";
   interface IThingnnAttribute {
     width: number; // {Integer} Video width.
     height: number; // {Integer} Video height.
