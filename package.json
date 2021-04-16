@@ -2,9 +2,10 @@
   "name": "@edgeros/jsre-types",
   "version": "0.1.0",
   "description": "edgeros types",
-  "types": "index.d.ts",
+  "types": "./types/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "dtslint types",
+    "lint": "dtslint types"
   },
   "repository": {
     "type": "git",
@@ -12,5 +13,8 @@
   },
   "keywords": [],
   "author": "",
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "dtslint": "^4.0.9"
+  }
 }
