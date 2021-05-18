@@ -1,6 +1,6 @@
 {
   "name": "@edgeros/jsre-types",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "edgeros types",
   "types": "./types/index.d.ts",
   "scripts": {
@@ -12,7 +12,7 @@
     "url": "https://github.com/edgeros/jsre-types.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "xieyuanbin@acoinfo.com",
   "license": "Apache-2.0",
   "devDependencies": {
     "dtslint": "^4.0.9"
