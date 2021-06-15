@@ -11,7 +11,7 @@ declare module 'licplatenn' {
   }
 
   interface LicPlateInfo {
-    prob: number;
+    prob: number; // Probability `0.0 ~ 1.0`.
     x0: number;
     y0: number;
     x1: number;

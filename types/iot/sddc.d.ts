@@ -20,8 +20,12 @@ declare module "sddc" {
       desc: string; // {string} Device description information, usually a URL.
       model: string; // {string} Device model.
       vendor: string; // {string} Device manufacturer.
+      version: number[]; // {Array} Device software version, **optional**.
     }; // {object} Information reported by discovered devices.
-    server: string; // {object} Server summary provided by new device.
+    server: Object; // {object} Server summary provided by new device.
+    security: {
+      req: boolean; // The device requests encrypted communication, but the current SDDC control terminal does not have a corresponding token.
+    }
   }
 
   class Sddc {

@@ -34,14 +34,14 @@ declare module "webapp" {
      *
      * Returns: {WebApp} WebApp object
      *
-     * @param group Server group name(master server module). Usually the module name is used as the group name.
-     *               If the server work on mult-task mode(subs > 0) and subMode is missing, the group must be supported as app module name.
-     * @param subs the new task counts, if subs > 0, app run in multi-task.
-     * @param subMode sub mode
-     * @param saddr Server socket address.
+     * @param group Server group name(master server module). Usually the module name is used as the group name. 
+     *              If the server work on mult-task mode(subs > 0) and taskFile is missing, the group must be supported as app module name.
+     * @param subs Sub task counts, if subs > 0, app run in multi-task mode.
+     * @param taskFile Sub task module name. default: use group as module name.
+     * @param saddr Server socket address. If the port of saddr is set to 0, the server port will be assigned automatically, and that can be get by app.port().
      * @param tlsOpt TLS securely connections options. default: undefined, means use TCP connection.
      */
-    static create(group: string, subs?: number, subMode?: number, saddr?: SockAddr, tlsOpt?: object): WebApp;
+    static create(group: string, subs?: number, taskFile?: string, saddr?: SockAddr, tlsOpt?: object): WebApp;
 
     static createApp(subs?: number): WebApp;
 

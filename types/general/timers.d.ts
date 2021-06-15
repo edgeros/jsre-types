@@ -61,7 +61,7 @@ declare module "timers" {
     /**
      * Resume a previously paused timer.
      */
-    resume(): number;
+    resume(timeout?: number): boolean;
   }
 
   function setTimeout(callback: (...args: any[]) => void, ms: number, ...args: any[]): EdgerOS.Timeout;

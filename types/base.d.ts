@@ -72,6 +72,7 @@
 /// <reference path="./iot/mqtt.d.ts" />
 /// <reference path="./iot/sddc.d.ts" />
 /// <reference path="./iot/coap.d.ts" />
+/// <reference path="./iot/device.d.ts" />
 
 /*----------------------------------------------*
  *                                              *
@@ -185,6 +186,7 @@
 /// <reference path="./edgeros-ai-engine/facenn.d.ts" />
 /// <reference path="./edgeros-ai-engine/thingnn.d.ts" />
 /// <reference path="./edgeros-ai-engine/licplatenn.d.ts" />
+/// <reference path="./edgeros-ai-engine/handnn.d.ts" />
 
 /*----------------------------------------------*
  *                                              *

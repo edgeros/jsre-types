@@ -111,7 +111,7 @@ declare module "sqlite3" {
     /**
      * Run an SQL statement.
      *
-     * Returns: {Integer} Sqlite3 error code, Sqlite3.OK or Sqlite3.DONE is success.
+     * Returns: {Integer} Sqlite3 error code, Sqlite3.OK or Sqlite3.OK is success.
      *
      * @param sql SQL statement.
      * bind {Any} Variables bound according to '?' in the SQL statement. default: no variable binding.

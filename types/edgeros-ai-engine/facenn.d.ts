@@ -32,9 +32,10 @@ declare module "facenn" {
     male: boolean; // {Boolean} Gender, extra only.
     age: number; // {Integer} Age, extra only.
     emotion: 'angry' | 'disgust' | 'fear' | 'happy' | 'sad' | 'surprise' | 'neutral'; // {string} Emotion, extra only.
+    live?: boolean; // Living probability, when extra.live is true.
   }
 
   function detect(videoBuf: Buffer, attribute: FacennAttribute, quick?: boolean): FaceInfo[];
-  function feature(videoBuf: Buffer, attribute: FacennAttribute, faceInfo: FaceInfo, extra?: boolean): FaceKey;
+  function feature(videoBuf: Buffer, attribute: FacennAttribute, faceInfo: FaceInfo, extra?: Object): FaceKey;
   function compare(faceKey1: FaceKey, faceKey2: FaceKey): number;
 }

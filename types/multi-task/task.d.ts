@@ -6,6 +6,10 @@ declare module 'edgeros:task' {
 declare module "task" {
   import { Buffer } from 'buffer';
 
+  interface TaskOption {
+    directory: string; // New task file prefix directory.
+  }
+
   class Task {
     /**
      * Create a new task, new task can get argument by ARGUMENT variable. Once a task is created, it will be executed immediately.
@@ -14,8 +18,9 @@ declare module "task" {
      *
      * @param jsFile Database file name.
      * @param arg New task argument. default: ''.
+     * @param opt Create new task option
      */
-    constructor(jsFile: string, arg?: string | object);
+    constructor(jsFile: string, arg?: string | object, opt?: TaskOption);
 
     /**
      * Create a new task, new task can get argument by ARGUMENT variable. Once a task is created, it will be executed immediately.
@@ -24,8 +29,9 @@ declare module "task" {
      *
      * @param jsFile Database file name.
      * @param arg New task argument. default: ''.
+     * @param opt Create new task option
      */
-    static create(jsFile: string, arg?: string | object): Task;
+    static create(jsFile: string, arg?: string | object, opt?: TaskOption): Task;
 
     /**
      * Get current task ID.

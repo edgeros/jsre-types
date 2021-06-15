@@ -233,7 +233,7 @@ declare module "sys" {
       engineName(): string;
 
       /**
-       * Get memory page size.
+       * Get memory page size. Typical page sizes include 4KB, 16KB, 64KB...
        *
        * Returns: {Integer} Memory page size.
        */
@@ -242,7 +242,7 @@ declare module "sys" {
       /**
        * Get data cache line size.
        *
-       * Returns: {Integer} Data cache line size.
+       * Returns: {Integer} Data cache line size. Typical cache line size 16, 32, 64...
        */
       cacheLine(): number;
 

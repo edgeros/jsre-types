@@ -16,7 +16,7 @@ declare module "thingnn" {
 
   interface ThingnnInfo {
     className: string; // {string} Thing class name.
-    prob: number; // {Number} Prob.
+    prob: number; // {Number} Probability `0.0 ~ 1.0`.
     x0: number; // {Integer} x position of upper left corner.
     y0: number; // {Integer} y position of upper left corner.
     x1: number; // {Integer} x position of lower right corner.
