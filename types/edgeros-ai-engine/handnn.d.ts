@@ -1,6 +1,5 @@
 declare module 'edgeros:handnn' {
-  import Handnn = require('handnn');
-  export = Handnn;
+  export * from 'handnn';
 }
 
 declare module "handnn" {
@@ -36,14 +35,11 @@ declare module "handnn" {
     y: number;
   }
 
-  interface Handnn {
-    PIX_FMT_BGR24: number;
-    PIX_FMT_RGB2BGR24: number;
-    PIX_FMT_GRAY2BGR24: number;
-    PIX_FMT_RGBA2BGR24: number;
+  const PIX_FMT_BGR24: number;
+  const PIX_FMT_RGB2BGR24: number;
+  const PIX_FMT_GRAY2BGR24: number;
+  const PIX_FMT_RGBA2BGR24: number;
 
-    detect(videoBuf: Buffer, attribute: HandnnAttribute): HandnnInfo[];
-    identify(videoBuf: Buffer, attribute: HandnnAttribute, thingInfo: HandnnInfo): Identified;
-  }
-  export = Handnn;
+  function detect(videoBuf: Buffer, attribute: HandnnAttribute): HandnnInfo[];
+  function identify(videoBuf: Buffer, attribute: HandnnAttribute, thingInfo: HandnnInfo): Identified;
 }

@@ -1,5 +1,6 @@
 declare module 'edgeros:timers' {
-  export * from 'timers';
+  import Timers = require('timers');
+  export = Timers;
 }
 
 declare module "timers" {
@@ -78,4 +79,6 @@ declare module "timers" {
     function __promisify__<T>(value: T): Promise<T>;
   }
   function clearImmediate(immediateId: EdgerOS.Immediate): void;
+
+  export = Timer;
 }

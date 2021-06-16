@@ -205,5 +205,6 @@ declare module 'device' {
     on(event: 'error', callback: (error: Error) => void): void;
     on(event: 'data', callback: (chunk: string|Buffer) => void): void;
   }
+  export = Device;
 
 }
