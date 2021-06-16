@@ -121,12 +121,12 @@ declare module 'device' {
      * Create a Device.Connector object for batch data transfer with the device. 
      * If cipher is true, the data transmission will use a random key for encrypted transmission.
      *
+     * @param {Object} [device] Device object.
      * @param {boolean} [cipher] Whether to use encrypted transmission. default: false.
-     * @param {string} [mode] Must be 'tr' now. default: 'tr'.
-     * @param {number} [timeout] Maximum quiet time, no data transmission after checking this time, the current connection will be closed. default: 5000ms.
+     * @param {number} [timeout] Maximum quiet time, no data transmission after checking this time, the current connection will be closed. default: 6000ms.
      * @returns {DeviceConnector}
      */
-    static Connector(cipher?: boolean, mode?: string, timeout?: number): DeviceConnector;
+    static Connector(device: Object, cipher?: boolean, timeout?: number): DeviceConnector;
 
     /**
      * Request control of specified device. 
@@ -180,18 +180,19 @@ declare module 'device' {
      *
      * @param {(string|Buffer)} data Data to write.
      * @param {string} [encoding] Only used when data is string. default: utf8.
+     * @param {Function} [callback] callback
      * @returns {boolean} Whether this operation was successful.
      */
-    write(data: string|Buffer, encoding?: string, callback?: () => void): boolean;
+    write(data: string|Buffer, encoding?: string, callback?: (error: Error) => void): boolean;
 
     /**
      * To end data transmission, the Device.Connector object must call this function to end data transmission after sending data to the device.
      *
      * @param {(string|Buffer)} [data] Data to write. default: no data to send.
      * @param {string} [encoding] Only used when data is string. default: 'utf8'.
-     * @param {() => void} [callback]
+     * @param {(error) => void} [callback]
      */
-    end(data?: string|Buffer, encoding?: string, callback?: () => void): void;
+    end(data?: string|Buffer, encoding?: string, callback?: (error: Error) => void): void;
 
     /**
      * This function can cooperate with the device.send() operation to inform the device of connector related transmission parameters, 
