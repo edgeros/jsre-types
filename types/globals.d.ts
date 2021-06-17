@@ -21,16 +21,56 @@ interface module {
 }
 
 // Buffer class
-type BufferEncoding = "ascii" | "utf8" | "utf-8" | "utf16le" | "ucs2" | "ucs-2" | "base64" | "latin1" | "binary" | "hex";
+type BufferEncoding = "ascii" | "utf-8" | "base64" | "hex";
 
 type WithImplicitCoercion<T> = T | { valueOf(): T };
 
 declare class Buffer {
-  static MAX_LENGTH: number;
-  static MAX_STRING_LENGTH: number;
+  /* 
+  * Creates a new buffer of size bytes and initialize its data with random.
+  * size Size of the new buffer.
+  */
+  constructor(size: number);
+  /**
+  * Creates a copy of an existing buffer. The buffer data is not shared between the two buffers.
+  * @param buffer Source buffer.
+  * @param offset Offset of array. default: 0.
+  * @param length Number of elements copied. default: buffer.length.
+  */
+  constructor(buffer: Buffer, offset: number, length: number);
+  /**
+   * Creates a new buffer which contains the string argument. 
+   * 'utf-8', 'hex', 'base64', 'ascii' is optional, 
+   * 'utf-8' is default.
+   * @param {string} str Source string.
+   * @param {BufferEncoding} [encoding] Encoding format. default: 'utf-8'.
+   */
   constructor(str: string, encoding?: BufferEncoding);
-  constructor(array: Uint8Array | number | ArrayBuffer | SharedArrayBuffer | ReadonlyArray<any> | Buffer);
-  constructor(arrayBuffer: ArrayBuffer, ...args: number[]);
+  /**
+   * Creates a new Buffer from an array of numbers. 
+   * The numbers are converted to integers first and their modulo 256 remainder is used for constructing the buffer.
+   * @param {(Uint8Array | number | ArrayBuffer | SharedArrayBuffer | ReadonlyArray<any> | Buffer)} array
+   * @param {number} offset Offset of array. default: 0.
+   * @param {number} length Number if elements copied. default: array.length.
+   */
+  constructor(array: Uint8Array | number | ArrayBuffer | SharedArrayBuffer | ReadonlyArray<any> | Buffer, offset?: number, length?: number);
+  /**
+   * Creates a new Buffer use a range of memory specified by an ArrayBuffer. 
+   * Multiple Buffers can use this method to share memory.
+   * @param {ArrayBuffer} arrayBuffer Given ArrayBuffer.
+   * @param {number} [offset] Offset of ArrayBuffer. default: 0.
+   * @param {number} [length] Number of bytes copied. default: arrayBuffer.byteLength.
+   */
+  constructor(arrayBuffer: ArrayBuffer, offset?: number, length?: number);
+
+  /*
+  * Maximum number of bytes for a buffer object. Due to the tight resources of the embedded environment,
+  * the default is 64MB, and the limit can be raised through the quota file. If the limit is exceeded,
+  * you can use loops and other methods in the program to avoid memory waste.
+  */
+  static MAX_LENGTH: number;
+  /* Current value is half of Buffer.MAX_LENGTH. */
+  static MAX_STRING_LENGTH: number;
 
   /**
    * When passed a reference to the .buffer property of a TypedArray instance,
@@ -69,20 +109,20 @@ declare class Buffer {
 
   /**
    * Returns the byte length of a buffer representing the value of the string argument encoded with encoding.
-   * @param string Source string
+   * @param str Source string
    * @param encoding string encoding. default: 'utf-8'.
    */
   static byteLength(
-    string: string | EdgerOS.ArrayBufferView | ArrayBuffer | SharedArrayBuffer,
+    str: string,
     encoding?: BufferEncoding
   ): number;
 
   /**
    * Returns the concatenation of the Buffer objects provided in the list array.
    * @param list An array of Buffer objects.
-   * @param totalLength Max number of elements. default: array.length.
+   * @param length Max number of elements. default: array.length.
    */
-  static concat(list: ReadonlyArray<Uint8Array>, totalLength?: number): Buffer;
+  static concat(list: Buffer[], length?: number): Buffer;
 
   /**
    * Compare two Buffer objects, It returns with 0 if the two buffers are the same.
@@ -129,17 +169,42 @@ declare class Buffer {
    */
   byteLength: number;
 
-  write(string: string, encoding?: BufferEncoding): number;
-  write(string: string, offset: number, encoding?: BufferEncoding): number;
-  write(string: string, offset: number, length: number, encoding?: BufferEncoding): number;
+  /**
+   * Writes string into the buf buffer. 
+   * The start position of the writing can be specified by offset 
+   * and the maximum number of updated bytes can be limited by length. 
+   * Returns total number of bytes written to the buffer.
+   *
+   * @param {string} string Data to be written into buffer.
+   * @param {number} [offset] Start position if writing. default: 0.
+   * @param {number} [length] How many bytes to write. default: buffer.length - offset.
+   * @param {BufferEncoding} [encoding] Encoding. default: 'utf8'
+   * @returns {number} Total number of bytes written.
+   */
+  write(string: string, offset?: number, length?: number, encoding?: BufferEncoding): number;
+  /**
+   * Decode buf into a string according to the character encoding specified by encoding. 
+   * Pass in start and end to decode only a subset of buf.
+   *
+   * @param {BufferEncoding} [encoding] Encoding type. default: 'utf8'.
+   * @param {number} [start] Start position. default: 0.
+   * @param {number} [end] End position (not includes). default: buffer.length.
+   * @returns {string}
+   */
   toString(encoding?: BufferEncoding, start?: number, end?: number): string;
-  toJSON(): { type: 'Buffer'; data: number[] };
+  
+  /**
+   * JSON.stringify() will call this function to generate a buffre string.
+   *
+   * @returns {{ type: 'Buffer'; data: any[] }}
+   */
+  toJSON(): { type: 'Buffer'; data: any[] };
 
   /**
    * Compares whether two Buffers are identical, if the same returns true, otherwise returns false.
-   * @param otherBuffer Buffer object.
+   * @param buffer Buffer object.
    */
-  equals(otherBuffer: Uint8Array): boolean;
+  equals(buffer: Buffer): boolean;
 
   /**
    * This function performs a lexicographic comparison between two buffers.
@@ -148,14 +213,14 @@ declare class Buffer {
    * If the length of the two buffers are different, the comparison is performed until the lower length is reached.
    * If all bytes are the same the function returns with -1 if buf.length is less than target.length and 1 otherwise.
    *
-   * @param otherBuffer The right-hand side of the comparison.
+   * @param target The right-hand side of the comparison.
    * @param [targetStart] target buffer start offset. default: 0.
    * @param [targetEnd] target buffer end offset (not include). default: target.length.
    * @param [sourceStart] source buffer start offset. default: 0.
    * @param [sourceEnd] source buffer end offset (not include). default: source.length.
    */
   compare(
-    otherBuffer: Uint8Array,
+    target: Uint8Array,
     targetStart?: number,
     targetEnd?: number,
     sourceStart?: number,
@@ -163,24 +228,24 @@ declare class Buffer {
   ): number;
 
   /**
-   * Copy a sequence of bytes from buf buffer to targetBuffer buffer.
+   * Copy a sequence of bytes from buf buffer to target buffer.
    * The source byte range is specified by sourceStart and sourceEnd and the destination byte offset is specified by targetStart.
-   * Only the targetBuffer is modified.
+   * Only the target is modified.
    *
-   * @param targetBuffer The right-hand side of the comparison.
+   * @param target The right-hand side of the comparison.
    * @param [targetStart] target buffer start offset. default: 0.
    * @param [sourceStart] source buffer start offset. default: 0.
    * @param [sourceEnd] source buffer end offset (not include). default: source.length.
    */
-  copy(targetBuffer: Uint8Array, targetStart?: number, sourceStart?: number, sourceEnd?: number): number;
+  copy(target: Uint8Array, targetStart?: number, sourceStart?: number, sourceEnd?: number): number;
 
   /**
    * This function returns with a newly created buffer which contains the bytes of the buf buffer between start and end.
    * The slice() method returns a shallow copy of a portion of a TypedArray into a new TypedArray object.
-   * @param begin Where the new `Buffer` will start. Default: `0`.
-   * @param end Where the new `Buffer` will end (not inclusive). Default: `buf.length`.
+   * @param start Start position. default: 0.
+   * @param end End position (not includes). default: buf.length.
    */
-  slice(begin?: number, end?: number): Buffer;
+  slice(start?: number, end?: number): Buffer;
 
   // Buffer Read / Write
   readUInt8(offset?: number): number;
@@ -216,11 +281,11 @@ declare class Buffer {
    * Set all bytes of the buffer to value.
    * The value is converted to integer first and its modulo 256 remainder is used for updating the buffer.
    * Returns with buf
-   * @param value value
-   * @param [offset] Start position. default: 0.
+   * @param value All bytes are set to this value.
+   * @param [start] Start position. default: 0.
    * @param [end] End position (not includes). default: buf.length.
    */
-  fill(value: string | Uint8Array | number, offset?: number, end?: number): this;
+  fill(value: number, start?: number, end?: number): this;
 
   /**
    * Copy a string to the specified location of the target buffer.
