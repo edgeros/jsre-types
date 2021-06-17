@@ -16,6 +16,7 @@ declare module "facenn" {
   const PIX_FMT_GRAY2RGB24: number; // Grayscale to RGB24 pixel format.
   const PIX_FMT_RGBA2RGB24: number; // RGBA to RGB24 pixel format.
 
+  // Each object item of the returned array contains the following members:
   interface FaceInfo {
     score: number; // {Number} Score.
     x0: number; // {Integer} x position of upper left corner.
