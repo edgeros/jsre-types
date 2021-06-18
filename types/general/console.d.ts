@@ -9,17 +9,17 @@ declare module 'console' {
     interface Console {
       /**
        * Each function of console output supports recursion,
-       * and the recursion depth can be set through console.depth.
-       * The default output recursion depth is 3.
+       * and the recursion depth can be set through `console.depth`.
+       * The default output recursion depth is `3`.
        */
       depth: number;
       /**
-       * console output object, whether to print the attributes of the object recursively. Default: false.
+       * console output object, whether to print the attributes of the object recursively. Default: `false`.
        */
       inspectEnable: boolean;
       /**
-       * Setting this property to true will print console.tag() information.
-       * The default is false.
+       * Setting this property to true will print `console.tag()` information.
+       * The default is `false`.
        */
       tagEnable: boolean;
 
@@ -30,19 +30,19 @@ declare module 'console' {
       log(...args: any): void;
 
       /**
-       * This function can print any type of parameter information with 'Info:' prefix.
+       * This function can print any type of parameter information with `Info:` prefix.
        * @param args Any number of any type of parameters that need to print.
        */
       info(...args: any): void;
 
       /**
-       * This function can print any type of parameter information with 'Warning:' prefix.
+       * This function can print any type of parameter information with `Warning:` prefix.
        * @param args Any number of any type of parameters that need to print.
        */
       warn(...args: any): void;
 
       /**
-       * This function can print any type of parameter information with 'Error:' prefix.
+       * This function can print any type of parameter information with `Error:` prefix.
        * @param args Any number of any type of parameters that need to print.
        */
       error(...args: any): void;
@@ -67,9 +67,9 @@ declare module 'console' {
       clear(): void;
 
       /**
-       * This method determines whether the cond condition is true.
-       * If it is true, continue execute.
-       * If cond is false, this method prints an error message and throws an exception.
+       * This method determines whether the `cond` condition is `true`.
+       * If it is `true`, continue execute.
+       * If `cond` is `false`, this method prints an error message and throws an exception.
        * @param cond Assertion condition.
        * @param message When the condition is not met, the error that needs to print and the exception information thrown.
        */
@@ -80,6 +80,12 @@ declare module 'console' {
        */
       trace(): void;
 
+      /**
+       * Get the current call stack.
+       *
+       * @returns {any[]}
+       * @memberof Console
+       */
       backtrace(): any[];
 
       /**
@@ -89,14 +95,14 @@ declare module 'console' {
       drain(): void;
 
       /**
-       * Maintains an internal counter specific to label and outputs the number of times
-       * console.count() has been called with the given label.
+       * Maintains an internal counter specific to `label` and outputs the number of times
+       * `console.count()` has been called with the given `label`.
        * @param label The display label for the counter. default: 'default'.
        */
       count(label?: string): string;
 
       /**
-       * Resets the internal counter specific to label.
+       * Resets the internal counter specific to `label`.
        * @param label The display label for the counter. default: 'default'.
        */
       countReset(label?: string): void;

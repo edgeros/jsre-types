@@ -10,12 +10,12 @@ declare module 'dgram' {
   }
 
   interface SockOptions {
-    type: string;
-    fd: number;
-    ipv6Only: boolean;
-    recvBufferSize: number;
-    sendBufferSize: number;
-    lookup?: (host: string, domain?: string, callback?: (...args: any) => void) => void;
+    type: string; // The family of socket. Must be either `upd4` or `upd6`. Required.
+    fd: number; // Use this file descriptor to create.
+    ipv6Only: boolean; // Setting `ipv6Only` to `true` will disable dual-stack support, i.e., binding to address `::` won't make `0.0.0.0` be bound. default: false.
+    recvBufferSize: number; // Sets the `SO_RCVBUF` socket value.
+    sendBufferSize: number; // Sets the `SO_SNDBUF` socket value.
+    lookup?: (host: string, domain?: string, callback?: (...args: any) => void) => void; // Custom lookup function. default: dns.lookup(hostname[, domain], callback).
   }
 
   interface BindOptions {
@@ -31,6 +31,16 @@ declare module 'dgram' {
   }
 
   // options or type
+  /**
+   * Creates a `dgram.Socket` object. Once the socket is created, calling `socket.bind()` will instruct the socket to begin listening for datagram messages.
+   * When `address` and `port` are not passed to `socket.bind()` the method will bind the socket to the "all interfaces"
+   * address on a random port (it does the right thing for both `udp4` and `upd6` sockets).
+   * The bound address and port can be retrieved using.
+   *
+   * @param {(SockOptions | "udp4" | "udp6")} options Options
+   * @param {() => void} [callback] Attached as a listener for `'message'` events. Optinal.
+   * @returns {Dgram} `dgram.Socket` object.
+   */
   function createSocket(options: SockOptions | "udp4" | "udp6", callback?: () => void): Dgram;
 
   class Dgram {

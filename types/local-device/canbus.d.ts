@@ -4,8 +4,26 @@ declare module 'edgeros:canbus' {
 }
 
 declare module "canbus" {
+
+  // canFrame
+  interface CanFrame {
+    id: number; // CAN  packet ID.
+    channel: number; // CAN controller channel.
+    isExt: boolean; // Is this a extension packet.
+    isRemote: boolean; // Is this a remote packet.
+    flags?: number; // CAN FD packet flags, this is a 'Bit' or integer, include: Canbus.CAN_FD_FLAG_EDL, Canbus.CAN_FD_FLAG_BRS, Canbus.CAN_FD_FLAG_ESI bit. Only FD have.
+    length: number; // Data butes in this packet.
+    buffer: Buffer; // Data buffer in this packet, length is 8 defined by constant: Canbus.CAN_MAX_DATA.
+  }
   class Canbus {
     /**
+     *
+     * @param devNo CAN-Bus device number in system.
+     */
+    constructor(devNo: number);
+
+    /**
+     * Open a CAN-Bus device with the specified device number.
      * Returns: *{object}* CAN-Bus device object.
      *
      * @param devNo CAN-Bus device number in system.
@@ -18,7 +36,7 @@ declare module "canbus" {
      *
      * @param num CAN packet frame number. default: 1.
      */
-    static canFrame(num?: number): object;
+    static canFrame(num?: number): CanFrame;
 
     /**
      * Returns: {object} | {Array} If num is 1 this function return a CAN FD packet frame object,
@@ -26,7 +44,7 @@ declare module "canbus" {
      *
      * @param num CAN FD packet frame number. default: 1.
      */
-    static canFdFrame(num?: number): object;
+    static canFdFrame(num?: number): CanFrame;
 
     /**
      * The current state of CAN-Bus. If the bus state is normal,
@@ -34,14 +52,9 @@ declare module "canbus" {
      */
     state: number;
 
-    /**
-     * Returns: *{object}* CAN-Bus device object.
-     *
-     * @param devNo CAN-Bus device number in system.
-     */
-    constructor(devNo: number);
 
     /**
+     * Get current canbus object event file descriptor. Only for iosched readable and writable event detection in current tasks.
      * Returns: {Integer} Canbus object file descriptor.
      */
     fd(): number;
@@ -62,7 +75,7 @@ declare module "canbus" {
     start(): boolean;
 
     /**
-     * Receive multiple packets from CAN-Bus and stored in the frameArray frame object.
+     * Read one CAN or receive multiple packets from CAN-Bus and stored in the frame object or frameArray.
      * If CAN-Bus is CAN FD mode, frameArray must be created using Canbus.canFdFrame(num),
      * if in standard CAN mode, frameArray is created using Canbus.canFrame(num).
      *
@@ -75,17 +88,26 @@ declare module "canbus" {
     read(frame: object | object[], timeout?: number): number;
 
     /**
-     * Send multiple CAN packet to CAN-Bus.
-     * If CAN-Bus is CAN FD mode, frameArray must be created using Canbus.canFdFrame(num),
-     * if in standard CAN mode, frameArray is created using Canbus.canFrame(num).
+     * Send one CAN packet to CAN-Bus. If CAN-Bus is CAN FD mode. frame must be created using Canbus.canFdFrame(),
+     * if in statndard CAN mode, frame is created using Canbus.canFrame().
      *
-     * Returns: Number of read packet frames. When the return value is 0, it means timeout.
+     * Returns: Number of read packet frames. When the return value is 0, it means timeout. 
      * If it is negative, CAN-Bus has an error. You can use canbus.state to get the bus error condition.
      *
      * @param frame The packet array to be send.
      * @param timeout Write timeout in milliseconds. default: undefined means wait forever.
      */
     write(frame: object, timeout?: number): number;
+    /**
+     * Send multiple CAN packet to CAN-Bus. If CAN-Bus is CAN FD mode, frameArray must be created using Canbus.canFdFrame(num),
+     * if in standard CAN mode, frameArray is created using Canbus.canFrame(num).
+     *
+     * @param {object[]} frameArray The packet array to be send.
+     * @param {number} [count] The maximum number of packets we want to be send. default: frameArray.length.
+     * @param {number} [timeout] Write timeout in milliseconds. default: undefined means wait forever.
+     * @returns {number} Number of read packet frames. When the return value is 0, it means timeout. 
+     *                   If it is negative, CAN-Bus has an error. You can use canbus.state to get the bus error condition.
+     */
     write(frameArray: object[], count?: number, timeout?: number): number;
 
     /**
