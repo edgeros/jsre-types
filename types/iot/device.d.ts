@@ -5,8 +5,8 @@ declare module 'edgeros:device' {
 
 declare module 'device' {
   interface DeviceSimpleInfo {
-    devid: string,
-    alias: string
+    devid: string;
+    alias: string;
   }
 
   interface CoAPInfo {
@@ -43,11 +43,10 @@ declare module 'device' {
      * List all device count currently discovered by the system.
      * When `join` is `true`, only get device count that have been discovered and joined.
      *
-     * @param {boolean} join Whether to list only devices that have joined the network.
-     * @param {(error: Error, count: number) => void} callback
+     * @param join Whether to list only devices that have joined the network.
+     * @param callback Callback function.
      *    error {Error} Indicate an error information when an error occurs.
      *    count {Integer} Device count.
-     * @memberof Device
      */
     static count(join: boolean, callback: (error: Error, count: number) => void): void;
 
@@ -55,62 +54,62 @@ declare module 'device' {
      * List all devices currently discovered by the system.
      * When join is true, only list devices that have been discovered and joined.
      *
-     * @param {boolean} join Whether to list only devices that have joined the network.
-     * @param {(error: Error, list: DeviceSimpleInfo[]) => void} callback
-     *    error {Error} Indicate an error information when an error occurs.
-     *    list {Array} devid and alias object list.
+     * @param join Whether to list only devices that have joined the network.
+     * @param callback Callback function.
+     *                 error {Error} Indicate an error information when an error occurs.
+     *                 list {Array} devid and alias object list.
      */
     static list(join: boolean, callback: (error: Error, list: DeviceSimpleInfo[]) => void): void;
 
     /**
      * Get detailed information for the specified device.
-     * The device information includes two parts, 
-     * report: basic information reported by the device, 
-     * and server: device server information. 
-     * If this device contains server information, such as a CoAP server, 
+     * The device information includes two parts,
+     * report: basic information reported by the device,
+     * and server: device server information.
+     * If this device contains server information, such as a CoAP server,
      * it can only be obtained after device.request() succeeds, otherwise only the basic device information can be obtained.
      *
-     * @param {string} devid Device ID.
-     * @param {(error: Error, info: DeviceInfo) => void} callback
-     *    error {Error} Indicate an error information when an error occurs.
-     *    info {Object} Device information.
+     * @param devid Device ID.
+     * @param callback Callback function.
+     *                 error {Error} Indicate an error information when an error occurs.
+     *                 info {Object} Device information.
      */
     static info(devid: string, callback: (error: Error, info: DeviceInfo) => void): void;
 
     /**
-     * The system device management App can use this method to alias the device, 
+     * The system device management App can use this method to alias the device,
      * allowing the EdgerOS device to invite this device to join the network.
      *
-     * @param {string} devid Device ID.
-     * @param {string} alias Alias name.
-     * @param {(error: Error) => void} [callback]
-     * @param {string} [token] If it is an encrypted communication device, an encrypted token can be set.
+     * @param devid Device ID.
+     * @param alias Alias name.
+     * @param [callback] Callback function.
+     * @param [token] If it is an encrypted communication device, an encrypted token can be set.
      */
     static alias(devid: string, alias: string, callback?: (error: Error) => void, token?: string): void;
 
     /**
      * Get a list of all devices in the system that have been aliased, regardless of whether the device is online.
      *
-     * @param {(error: Error, list: DeviceSimpleInfo[]) => void} callback
+     * @param callback Callback function.
      */
     static named(callback: (error: Error, list: DeviceSimpleInfo[]) => void): void;
 
     /**
      * The system device management App can use this method to search for peripheral devices now, or search for specified remote devices.
      *
-     * @param {string} [addr] Specify the search destination IP address. default: broadcast search.
-     * @param {boolean} [smartcfg] Whether to use Smart Configure technology to provide WiFi SSID and password for IoT devices. default: false.
-     * @param {(error: Error) => void} [callback]
+     * @param [addr] Specify the search destination IP address. default: broadcast search.
+     * @param [smartcfg] Whether to use Smart Configure technology to provide WiFi SSID and password for IoT devices. default: false.
+     * @param [callback] Callback function.
      */
     static discover(addr?: string, smartcfg?: boolean, callback?: (error: Error) => void): void;
 
     /**
-     * Exclusive devices only allow one App to access at the same time, 
-     * shared devices allow multiple apps to access at the same time, 
+     * Exclusive devices only allow one App to access at the same time,
+     * shared devices allow multiple apps to access at the same time,
      * this function can get the list of apps that currently operate the specified device.
      *
-     * @param {string} devid Device ID.
-     * @param {(error: Error, list: any[]) => void} callback
+     * @param devid Device ID.
+     * @param callback Callback function.
      */
     static occupation(devid: string, callback: (error: Error, list: any[]) => void): void;
 
@@ -118,53 +117,53 @@ declare module 'device' {
     static on(event: 'lost'|'refuse', callback: (devid: string) => void): void;
 
     /**
-     * Create a Device.Connector object for batch data transfer with the device. 
+     * Create a Device.Connector object for batch data transfer with the device.
      * If cipher is true, the data transmission will use a random key for encrypted transmission.
      *
-     * @param {Object} [device] Device object.
-     * @param {boolean} [cipher] Whether to use encrypted transmission. default: false.
-     * @param {number} [timeout] Maximum quiet time, no data transmission after checking this time, the current connection will be closed. default: 6000ms.
-     * @returns {DeviceConnector}
+     * @param [device] Device object.
+     * @param [cipher] Whether to use encrypted transmission. default: false.
+     * @param [timeout] Maximum quiet time, no data transmission after checking this time, the current connection will be closed. default: 6000ms.
+     * @returns DeviceConnector.
      */
-    static Connector(device: Object, cipher?: boolean, timeout?: number): DeviceConnector;
+    static Connector(device: object, cipher?: boolean, timeout?: number): DeviceConnector;
 
     /**
-     * Request control of specified device. 
+     * Request control of specified device.
      * First you need to use permission.device() to check if you have permission to access this device.
      * When this device is an exclusive device and is being used by other app, you cannot get the operation right.
      *
-     * @param {string} devid Device ID.
-     * @param {(error: Error) => void} callback Indicate an error information when an error occurs.
+     * @param devid Device ID.
+     * @param callback Indicate an error information when an error occurs.
      */
     request(devid: string, callback: (error: Error) => void): void;
 
     /**
-     * Release the previously requested device. 
+     * Release the previously requested device.
      * When the operation of the device is completed, the device should be released immediately.
      *
-     * @param {(error: Error) => void} [callback]
+     * @param [callback] Callback function.
      */
     release(callback?: (error: Error) => void): void;
 
     /**
-     * Sometimes we need to use some special protocols to access the device, such as CoAP, etc. 
+     * Sometimes we need to use some special protocols to access the device, such as CoAP, etc.
      * We can use this function to get the network address of the requested device.
      *
-     * @param {(error: Error, addr: string) => void} callback
+     * @param callback Callback function.
      */
     address(callback: (error: Error, addr: string) => void): void;
 
     /**
-     * Send a message to the specified device. 
-     * When retries is 0, it means non-reliable sending. 
+     * Send a message to the specified device.
+     * When retries is 0, it means non-reliable sending.
      * When retries > 0, the device will delay retrying when device not confirm (depends on the implementation of the relevant link protocol).
      *
-     * @param {Object} msg Message to send.
-     * @param {(error: Error) => void} [callback]
-     * @param {number} [retries] Number of automatic retries. default: 2.
-     * @param {boolean} [urgent] Whether it is an urgent message. default: false.
+     * @param msg Message to send.
+     * @param [callback] Callback function.
+     * @param [retries] Number of automatic retries. default: 2.
+     * @param [urgent] Whether it is an urgent message. default: false.
      */
-    send(msg: Object, callback?: (error: Error) => void, retries?: number, urgent?: boolean): void;
+    send(msg: object, callback?: (error: Error) => void, retries?: number, urgent?: boolean): void;
 
     on(event: 'message', callback: (msg: any) => void): void;
     on(event: 'lost', callback: () => void): void;
@@ -176,29 +175,29 @@ declare module 'device' {
     close(): void;
 
     /**
-     *Send data to the device. Before sending data, you must ensure that the Device.Connector object has been linked with the device.
+     * Send data to the device. Before sending data, you must ensure that the Device.Connector object has been linked with the device.
      *
-     * @param {(string|Buffer)} data Data to write.
-     * @param {string} [encoding] Only used when data is string. default: utf8.
-     * @param {Function} [callback] callback
-     * @returns {boolean} Whether this operation was successful.
+     * @param data Data to write.
+     * @param [encoding] Only used when data is string. default: utf8.
+     * @param [callback] callback
+     * @returns Whether this operation was successful.
      */
     write(data: string|Buffer, encoding?: string, callback?: (error: Error) => void): boolean;
 
     /**
      * To end data transmission, the Device.Connector object must call this function to end data transmission after sending data to the device.
      *
-     * @param {(string|Buffer)} [data] Data to write. default: no data to send.
-     * @param {string} [encoding] Only used when data is string. default: 'utf8'.
-     * @param {(error) => void} [callback]
+     * @param [data] Data to write. default: no data to send.
+     * @param [encoding] Only used when data is string. default: 'utf8'.
+     * @param [callback] Callback function.
      */
     end(data?: string|Buffer, encoding?: string, callback?: (error: Error) => void): void;
 
     /**
-     * This function can cooperate with the device.send() operation to inform the device of connector related transmission parameters, 
+     * This function can cooperate with the device.send() operation to inform the device of connector related transmission parameters,
      * and the device actively connects to the current connector for data communication according to this parameter.
      *
-     * @returns {string}
+     * @returns Returns string.
      */
     toJSON(): string;
 
@@ -207,5 +206,4 @@ declare module 'device' {
     on(event: 'data', callback: (chunk: string|Buffer) => void): void;
   }
   export = Device;
-
 }

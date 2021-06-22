@@ -39,30 +39,30 @@ declare module "facenn" {
   /**
    * Detect face infos in given video buffer.
    *
-   * @param {Buffer} videoBuf Video buffer.
-   * @param {FacennAttribute} attribute Video attribute.
-   * @param {boolean} [quick] Does quick mode?
-   * @returns {FaceInfo[]} Face info objects array which detected.
+   * @param videoBuf Video buffer.
+   * @param attribute Video attribute.
+   * @param [quick] Does quick mode?
+   * @returns Face info objects array which detected.
    */
   function detect(videoBuf: Buffer, attribute: FacennAttribute, quick?: boolean): FaceInfo[];
 
   /**
    * Get the feature of given face info.
    *
-   * @param {Buffer} videoBuf Video buffer.
-   * @param {FacennAttribute} attribute Video attribute.
-   * @param {FaceInfo} faceInfo Face info.
-   * @param {Object} [extra] Does need extra face key? default: undefined.
-   * @returns {FaceKey}
+   * @param videoBuf Video buffer.
+   * @param attribute Video attribute.
+   * @param faceInfo Face info.
+   * @param [extra] Does need extra face key? default: undefined.
+   * @returns FaceKey.
    */
-  function feature(videoBuf: Buffer, attribute: FacennAttribute, faceInfo: FaceInfo, extra?: Object): FaceKey;
+  function feature(videoBuf: Buffer, attribute: FacennAttribute, faceInfo: FaceInfo, extra?: object): FaceKey;
 
   /**
    *  Compare the similarity between two face, return value range `0.0 ~ 1.0`.
    *
-   * @param {FaceKey} faceKey1 Face keys 1.
-   * @param {FaceKey} faceKey2 Face keys 2.
-   * @returns {number} The similarity between two face.
+   * @param faceKey1 Face keys 1.
+   * @param faceKey2 Face keys 2.
+   * @returns The similarity between two face.
    */
   function compare(faceKey1: FaceKey, faceKey2: FaceKey): number;
 }

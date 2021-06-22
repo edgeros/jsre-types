@@ -22,10 +22,10 @@ declare module "sddc" {
       vendor: string; // {string} Device manufacturer.
       version: number[]; // {Array} Device software version, **optional**.
     }; // {object} Information reported by discovered devices.
-    server: Object; // {object} Server summary provided by new device.
+    server: object; // {object} Server summary provided by new device.
     security: {
       req: boolean; // The device requests encrypted communication, but the current SDDC control terminal does not have a corresponding token.
-    }
+    };
   }
 
   class Sddc {

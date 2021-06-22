@@ -7,21 +7,22 @@ declare module "http" {
 
   interface HttpClientRequestOptions {
     /*
-     * { socket.AF_INET | socket.AF_INET6 } If the url is provided as a domain name, the domain name is resolved to an ipv4 or ipv6 address based on the domain. 
+     * { socket.AF_INET | socket.AF_INET6 } If the url is provided as a domain name,
+     * the domain name is resolved to an ipv4 or ipv6 address based on the domain.
      * default: socket.AF_INET.
      */
     domain?: string;
-    /* 
+    /*
      * Server socket address. default: Use url parameter resolution, if you request the same domain name multiple times,
      * it is recommended to set this parameter after manual domain name resolution to speed up the request.
      */
-    saddr: Object;
+    saddr: object;
     method?: string; // Http method, default: GET.
     path?: string; // The request uri path, default: url parsed path.
     timeout?: number; // The request timeout. If the request times out, `HttpClient` will close.
     headers?: object; // Http headers.
     host?: string; // The domain name or IP address of the server to which the request is sent. default: url host.
-    post?: string | Buffer | Object; // The request post data, default: undefined.
+    post?: string | Buffer | object; // The request post data, default: undefined.
     async?: boolean; // true - return `Promise` object; false - return `HttpClient` object, default: false.
   }
 
@@ -29,24 +30,24 @@ declare module "http" {
    * This `HttpClient` object (request object) is created internally and retured from `http.request()`.
    * The response object will passed to the callback function.
    *
-   * @param {string} url Http url.
-   * @param {(res: HttpClientResponse) => void} callback Request handler.
-   * @param {HttpClientRequestOptions} [options]
-   * @param {object} [tlsOpt] TLS securely connections options. default: undefined, means use TCP connection.
-   * @returns {HttpClient} true - return `Promise` object; false - return `HttpClient` object, default: false.
+   * @param url Http url.
+   * @param callback Request handler.
+   * @param [options] Options.
+   * @param [tlsOpt] TLS securely connections options. default: undefined, means use TCP connection.
+   * @returns true - return `Promise` object; false - return `HttpClient` object, default: false.
    */
   function request(url: string, callback: (res: HttpClientResponse) => void, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<any>;
-  
+
   /**
    * Accepts the same options as `http.request()`, with the method always set to `GET`.
    * Since most requests are `GET` requests without bodies, http provides this convenience method.
    * The only difference between this method and `http.request()` is that it sets the method to `GET` and calls `request.end()` automatically.
    *
-   * @param {string} url Http url.
-   * @param {(res: HttpClientResponse) => void} callback
-   * @param {HttpClientRequestOptions} [options]
-   * @param {object} [tlsOpt] TLS securely connections options. default: undefined, means use TCP.
-   * @returns {*} The http client request object or promise object. depend on `async` option.
+   * @param url Http url.
+   * @param callback Callback function.
+   * @param [options] Options.
+   * @param [tlsOpt] TLS securely connections options. default: undefined, means use TCP.
+   * @returns The http client request object or promise object. depend on `async` option.
    */
   function get(url: string, callback: (res: HttpClientResponse) => void, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<any>;
 
@@ -56,12 +57,12 @@ declare module "http" {
     /**
      * open
      *
-     * @param {number} timeout Request timeout, If the request times out, `HttpClient` will close. default: wait connect forever.
-     * @param {boolean} async true - return `Promise` object; false - return client object, default: false.
-     * @returns {HttpClient} The http client request object or promise object. depend on `async` param.
+     * @param timeout Request timeout, If the request times out, `HttpClient` will close. default: wait connect forever.
+     * @param async true - return `Promise` object; false - return client object, default: false.
+     * @returns The http client request object or promise object. depend on `async` param.
      */
-    open(timeout?: number, async?: boolean): HttpClient | Promise<any>; 
-    
+    open(timeout?: number, async?: boolean): HttpClient | Promise<any>;
+
     /**
      * Close http connection.
      */
@@ -71,8 +72,8 @@ declare module "http" {
      * Send a request to the http server, this request method can be `GET`, `PUT`, `POST`... This function will not be blocked,
      * when the server responds, the `callback` function will be called.
      *
-     * @param {HttpClientRequestOptions} options Request property.
-     * @param {(string | Buffer)} chunk The request post data, default: undefined.
+     * @param options Request property.
+     * @param chunk The request post data, default: undefined.
      */
     request(options: HttpClientRequestOptions, chunk: string | Buffer): void;
 
@@ -80,15 +81,15 @@ declare module "http" {
      * Send data to sever. If `Content-Length` not set, `client.write()` set 'Transfer-Encoding' to 'chunked',
      * and this method can call multiple times. After write all data, user should call `client.end()` to end request.
      *
-     * @param {(string | number | boolean | object | Buffer)} chunk Http body data.
+     * @param chunk Http body data.
      */
     write(chunk: string | number | boolean | object | Buffer): void;
 
     /**
-     * If `chunk` is not empty, the `chunk` is sent to the server and the request is ended. 
+     * If `chunk` is not empty, the `chunk` is sent to the server and the request is ended.
      * After the request is finished, continuing to send data is invalid.
      *
-     * @param {(string | number | boolean | object | Buffer)} [chunk] Http post data. default: undefined.
+     * @param [chunk] Http post data. default: undefined.
      */
     end(chunk: string | number | boolean | object | Buffer): void;
 
@@ -114,32 +115,32 @@ declare module "http" {
      * This method creates a master-server. When the master-server starts, it can create a specified number(subs)
      * of sub-servers (subs), refer to `HttpServer mult-task`.
      *
-     * @param {string} group Server group name(master server module). Usually the module name is used as the group name.
+     * @param group Server group name(master server module). Usually the module name is used as the group name.
      *                       If the server work on mult-task mode(subs > 0) and `subMode` is missing, the `group` must be support as app module name.
-     * @param {(...args: any) => void} handle Http request handle function.
-     * @param {number} subs The new task counts, if subs > 0, server run in mult-task.
-     * @param {string} [subMode] sub-server module. If the sub-server is the same module as the master-server, 
+     * @param handle Http request handle function.
+     * @param subs The new task counts, if subs > 0, server run in mult-task.
+     * @param [subMode] sub-server module. If the sub-server is the same module as the master-server,
      *                           `subMode` can be defualted and provided by `group`. Otherwise, `subMode` represents the sub-server module.
-     * @param {object} [saddr] Server socket address. If the port of `saddr` is set to 0, the setting port will be assigned automatically, 
+     * @param [saddr] Server socket address. If the port of `saddr` is set to 0, the setting port will be assigned automatically,
      *                         and the port can be found through `server.port()`.
-     * @param {object} [tlsOpt] TLS securely connections options. default: undefined, means use TCP connection.
-     * @returns {HttpServer}
+     * @param [tlsOpt] TLS securely connections options. default: undefined, means use TCP connection.
+     * @returns  returns httpServer.
      */
     static createServer(group: string, handle: (...args: any) => void, subs: number, subMode?: string, saddr?: object, tlsOpt?: object): HttpServer;
 
     /**
      * Use this method to create a sub-server when the sub-server is not the same module as the master-server.
      *
-     * @param {string} group Server group name, the same as master-server group name.
-     * @param {(...args: any) => void} handle Http request handle function.
-     * @returns {HttpServer}
+     * @param group Server group name, the same as master-server group name.
+     * @param handle Http request handle function.
+     * @returns Returns HttpServer.
      */
     static createSubServer(group: string, handle: (...args: any) => void): HttpServer;
 
     /**
      * Get whether the server object is the master server.
      *
-     * @returns {boolean} Whether it is the master server.
+     * @returns Whether it is the master server.
      */
     isMaster(): boolean;
 
@@ -153,34 +154,34 @@ declare module "http" {
      * It mainly solves the disadvantage that one server can only use one certificate (one domain name). With the support of the server for virtual hosts,
      * one server can provide services for multiple domain names, so SNI must be supported to meet the demand.
      *
-     * @param {{ name: string, ca: string, cert: string, key: string, passwd: string, }} opt
+     * @param opt options follow:
      *          name: Server domain name.
      *          ca: Optional trusted CA certificates. default: no CA certificates.
      *          cert: Server certificate.
      *          key: Private key of server certificate.
      *          passwd: Private key password. default: no password.
-     * @returns {boolean} Whether if was added successfully.
+     * @returns Whether if was added successfully.
      */
     addcert(opt: { name: string, ca: string, cert: string, key: string, passwd: string, }): boolean;
 
     /**
      * Start http server.
      *
-     * @returns {this}
+     * @returns this.
      */
     start(): this;
 
     /**
      * Stop http server.
      *
-     * @returns {this}
+     * @returns this.
      */
     stop(): this;
 
     /**
      * When the server starts with the `MASTER` module, `server.port()` gets the port of the server, otherwise it returns `undefined`.
      *
-     * @returns {(number | undefined)} Server socket port.
+     * @returns Server socket port.
      */
     port(): number | undefined;
 
@@ -204,8 +205,8 @@ declare module "http" {
     /**
      * Close the response session and close HTTP connection.
      *
-     * @param {Error} [error] Error which will be passed as payload in `error` event.
-     * @returns {this}
+     * @param [error] Error which will be passed as payload in `error` event.
+     * @returns this.
      */
     destroy(error?: Error): this;
 
@@ -214,23 +215,23 @@ declare module "http" {
 
   class HttpOutput {
     /**
-     * method {string} Contains a string corresponding to the HTTP method of the request.
+     * method Contains a string corresponding to the HTTP method of the request.
      * It is expressed in uppercase and is case sensitive.
      */
     method: string;
 
     /**
-     * path {string} HTTP request url query path.
+     * path HTTP request url query path.
      */
     path: string;
 
     /**
-     * statusCode {Integer} HTTP response status.
+     * statusCode HTTP response status.
      */
     statusCode: number;
 
     /**
-     * statusMessage {string} HTTP response status message.
+     * statusMessage HTTP response status message.
      */
     statusMessage: string;
 
@@ -245,7 +246,7 @@ declare module "http" {
     /**
      * Get an HTTP header. If not exist, return undefined.
      *
-     * Return {string|undefined} HTTP header value.
+     * Return HTTP header value.
      *
      * @param key HTTP header key.
      */
@@ -288,7 +289,7 @@ declare module "http" {
     /**
      * Set or get HTTP status. If `status` undefined, this method return output `statusCode`. Otherwise, set output `statusCode`.
      *
-     * @param {string} [status] HTTP status.
+     * @param [status] HTTP status.
      */
     status(status?: string): void;
 
@@ -316,29 +317,29 @@ declare module "http" {
 
   class HttpInput {
     /**
-     * {string} HTTP request url.
+     * HTTP request url.
      */
     url: string;
 
     /**
-     * {string} HTTP response status message. See input.statusCode.
+     * HTTP response status message. See input.statusCode.
      */
     statusMessage: string;
 
     /**
-     * {object} HTTP headers.
+     * HTTP headers.
      */
     headers: object;
 
     /**
-     * {Boolean} If HTTP header X-Requested-With exist.
+     * If HTTP header X-Requested-With exist.
      * A Boolean property that is true if the request’s X-Requested-With header field is XMLHttpRequest,
      * indicating that the request was issued by a client library such as jQuery.
      */
     xhr: boolean;
 
     /**
-     * {object | Buffer | string} Request body, default: {}.
+     * Request body, default: {}.
      * If enableCache() is set, input data will be stored in input.body in `Buffer' type. See input.enableCache().
      */
     body: object | Buffer | string;

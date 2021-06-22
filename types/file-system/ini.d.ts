@@ -3,19 +3,22 @@ declare module 'edgeros:ini' {
 }
 
 declare module "ini" {
+  type Replacer = (...args: any) => any;
   /**
-   * Parse ini file to object.
+   * Parse the specified INI string and return the result object.
    *
-   * @param data ini file data.
+   * @param iniString INI format string.
+   * @returns Convert to object.
    */
-  function parse(data: string): object;
+  function parse(iniString: string): object;
 
   /**
-   * Stringify object to ini file string.
+   * Convert specified object to INI format string. Similar to `JSON.stringify()`.
    *
-   * @param ini object
-   * @param replacer replacer
-   * @param space space
+   * @param obj object Object to be convert.
+   * @param replacer Unsupport now.
+   * @param space space Add indents, spaces, and line breaks to string. default: ''.
+   * @returns INI format string.
    */
-  function stringify(ini: any, replacer?: string, space?: string): string;
+  function stringify(obj: object, replacer?: Replacer | Replacer[], space?: string): string;
 }

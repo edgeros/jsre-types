@@ -14,7 +14,7 @@ declare module "mqtt" {
    * @param tlsOpt TLS securely connections options. default: undefined, means use TCP connection.
    * @param timeout Synchronous connection time to wait in milliseconds, default: undefined means timeout with default connect timeout setting.
    */
-  function open(saddr: object, tlsOpt: object, timeout?: number): Mqtt;
+  function open(saddr: object, tlsOpt?: object, timeout?: number): Mqtt;
 
   /**
    * Create an MQTT client and connect to the specified server.
@@ -38,14 +38,15 @@ declare module "mqtt" {
   function mode(): string;
 
   interface ClientOpt {
+    // The broker identifies each client by its client id.
     client: Buffer | string;
-    user: string;
-    passwd: string;
-    keepalive: number;
-    will: boolean;
-    qos: number;
-    topic: string;
-    message: string | Buffer;
+    user: string; // Optional. User name when connecting to a broker.
+    passwd: string; // Optional. User password authentication when connecting to a broker.
+    keepalive: number; // Keepalive time in seconds. If no data is sent on the connection in the given time window the broker disconnects the client.
+    will: boolean; // Optional. If this flag is set to true, a `message` and a `topic` must follow with a QoS value between `0` and `2`.
+    qos: number; // If `will` is set to true, the `message` will be sent with the given QoS.
+    topic: string; // Only processed when will is set to true. The topic of the message should be sent to.
+    message: string | Buffer; // Only processed when will is set to true. The message to be sent to the broker when connection broken.
   }
 
   interface MqttOption {
@@ -67,7 +68,7 @@ declare module "mqtt" {
      * @param callback Connected callback.
      *                      client {object} Client object.
      */
-    connect(clientOpt: ClientOpt, callback?: (...args: any) => void): void;
+    connect(clientOpt: ClientOpt, callback?: (client: object) => void): void;
 
     /**
      * Get current connection status.
@@ -103,7 +104,7 @@ declare module "mqtt" {
      * @param callback Subscribe callback function.
      *                  error {Error} Identifies the subscribe error information, if it is undefined, it means success.
      */
-    subscribe(topic: string, options?: MqttOption, callback?: (...args: any) => void): void;
+    subscribe(topic: string, options?: MqttOption, callback?: (error: Error) => void): void;
 
     /**
      * The client subscribes to a given topic.
@@ -113,7 +114,7 @@ declare module "mqtt" {
      * @param callback Unsubscribe callback function.
      *                  error {Error} Identifies the subscribe error information, if it is undefined, it means success.
      */
-    unsubscribe(topic: string, callback?: (...args: any) => void): void;
+    unsubscribe(topic: string, callback?: (error: Error) => void): void;
 
     on(event: "connect" | "disconnect" | "close" | "error", callback: (...args: any) => void): this;
     on(event: "message", callback: (topic?: string, message?: string, qos?: number, packetId?: number) => void): this;

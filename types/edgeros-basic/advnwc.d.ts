@@ -22,11 +22,11 @@ declare module "advnwc" {
 	}
 
  /**
-  * If the current device is a router, you can get the network interfaces included in the LAN and WAN through this method. 
+  * If the current device is a router, you can get the network interfaces included in the LAN and WAN through this method.
   * If this machine is not a router, the callback will receive an error information.
   *
-  * @param {boolean} lan LAN (true) or WAN (false) network interface.
-  * @param {(error: Error, list: string[]) => void} callback
+  * @param lan LAN (true) or WAN (false) network interface.
+  * @param callback Callback function.
   */
  function netifs(
     lan: boolean,
@@ -34,20 +34,20 @@ declare module "advnwc" {
   ): void;
 
  /**
-  * Add a QoS rule, and the EdgerOS network protocol stack will process the queued data packets 
-  * in different priorities according to the rule settings, 
+  * Add a QoS rule, and the EdgerOS network protocol stack will process the queued data packets
+  * in different priorities according to the rule settings,
   * ensuring that the network data that needs to be processed in real time is faster and more reliable.
   *
-  * @param {(string | "IP" | "TCP" | "UDP")} rule Rule name: 'IP', 'TCP' or 'UDP'.
-  * @param {string} ifname Which network interface.
-  * @param {string} policy Policy of this rule.
-  * @param {number} prio Priority of packets that meet this rule.
-  * @param {string} ipStart Starting IP address.
-  * @param {string} ipEnd End IP address.
-  * @param {number} portStart Starting TCP or UDP port.
-  * @param {number} portEnd End TCP or UDP port.
-  * @param {boolean} reliable Whether to enable reliable reception guarantee.
-  * @param {(error: Error, index: number) => void} callback
+  * @param rule Rule name: 'IP', 'TCP' or 'UDP'.
+  * @param ifname Which network interface.
+  * @param policy Policy of this rule.
+  * @param prio Priority of packets that meet this rule.
+  * @param ipStart Starting IP address.
+  * @param ipEnd End IP address.
+  * @param portStart Starting TCP or UDP port.
+  * @param portEnd End TCP or UDP port.
+  * @param reliable Whether to enable reliable reception guarantee.
+  * @param callback Callback function.
   */
  function qosAdd(
     rule: string | "IP" | "TCP" | "UDP",
@@ -63,13 +63,13 @@ declare module "advnwc" {
   ): void;
 
  /**
-  * Delete a previously added QoS rule. 
-  * If index is of type {Integer}, delete the rule of specified index. 
+  * Delete a previously added QoS rule.
+  * If index is of type {Integer}, delete the rule of specified index.
   * If index is not of type {Integer}, delete all rules of the network interface specified by ifname.
   *
-  * @param {string} ifname Which network interface.
-  * @param {number} index Rule index.
-  * @param {(error: Error) => void} [callback]
+  * @param ifname Which network interface.
+  * @param index Rule index.
+  * @param [callback] Callback function.
   */
  function qosDelete(
     ifname: string,
@@ -80,9 +80,9 @@ declare module "advnwc" {
  /**
   * get list by index
   *
-  * @param {string} ifname Which network interface.
-  * @param {number} index Rule index.
-  * @param {(error: Error, rules: Rule[]) => void} [callback]
+  * @param ifname Which network interface.
+  * @param index Rule index.
+  * @param [callback] Callback function.
   */
  function qosList(
     ifname: string,
@@ -91,20 +91,20 @@ declare module "advnwc" {
   ): void;
 
  /**
-  * Add a net packet filter, this method can isolate some specified devices in the network. 
-  * When allow is true, it means to join the whitelist, otherwise it will be added to the blacklist. 
+  * Add a net packet filter, this method can isolate some specified devices in the network.
+  * When allow is true, it means to join the whitelist, otherwise it will be added to the blacklist.
   * The whitelist priority is higher then blacklist.
   * Only need to set mac when rule is 'MAC', otherwise mac can be undefined.
   *
-  * @param {(string | "MAC" | "IP" | "TCP" | "UDP")} rule Rule name.
-  * @param {string} ifname Which network interface.
-  * @param {boolean} allow Whether to allow this packet.
-  * @param {string} mac Ethernet MAC address.
-  * @param {string} ipStart Starting IP address.
-  * @param {string} ipEnd End IP address.
-  * @param {number} portStart Starting TCP or UDP port.
-  * @param {number} portEnd End TCP or UDP port.
-  * @param {(error: Error, index: number) => void} callback
+  * @param rule Rule name.
+  * @param ifname Which network interface.
+  * @param allow Whether to allow this packet.
+  * @param mac Ethernet MAC address.
+  * @param ipStart Starting IP address.
+  * @param ipEnd End IP address.
+  * @param portStart Starting TCP or UDP port.
+  * @param portEnd End TCP or UDP port.
+  * @param callback Callback function.
   */
  function npfAdd(
     rule: string | "MAC" | "IP" | "TCP" | "UDP",
@@ -119,13 +119,13 @@ declare module "advnwc" {
   ): void;
 
  /**
-  * Delete a previously added net packet filter. 
-  * If index is of type {Integer}, delete the rule of specified index. 
+  * Delete a previously added net packet filter.
+  * If index is of type {Integer}, delete the rule of specified index.
   * If index is not of type {Integer}, delete all rules of the network interface specified by ifname.
   *
-  * @param {string} ifname Which network interface.
-  * @param {number} index Rule index.
-  * @param {(error: Error) => void} [callback]
+  * @param ifname Which network interface.
+  * @param index Rule index.
+  * @param [callback] Callback function.
   */
  function npfDelete(
     ifname: string,
@@ -136,9 +136,9 @@ declare module "advnwc" {
  /**
   * get list by index
   *
-  * @param {string} ifname Which network interface.
-  * @param {number} index Rule index.
-  * @param {(error: Error, rules: Rule[]) => void} [callback]
+  * @param ifname Which network interface.
+  * @param index Rule index.
+  * @param [callback] Callback function.
   */
  function npfList(
     ifname: string,
@@ -147,20 +147,20 @@ declare module "advnwc" {
   ): void;
 
  /**
-  * Add a flow control rule to control the uplink and downlink speeds of the internal network machines. 
-  * When the speed exceeds the speed limit, these packets will be buffered. 
+  * Add a flow control rule to control the uplink and downlink speeds of the internal network machines.
+  * When the speed exceeds the speed limit, these packets will be buffered.
   * The bufSize parameter determines the buffer size of the buffer.
   *
-  * @param {(string | "IP" | "TCP" | "UDP")} rule Rule name.
-  * @param {string} ifname Which network interface.
-  * @param {number} upLimit Uplink speed limit (>=10000Bps).
-  * @param {number} downLimit  Downlink speed limit (>=10000Bps).
-  * @param {string} ipStart Starting IP address.
-  * @param {string} ipEnd End IP address.
-  * @param {number} portStart Starting TCP or UDP port.
-  * @param {number} portEnd END TCP or UDP port.
-  * @param {number} bufSize Buffer size bytes (32KB ~ 256KB).
-  * @param {(error: Error, index: number) => void} callback
+  * @param rule Rule name.
+  * @param ifname Which network interface.
+  * @param upLimit Uplink speed limit (>=10000Bps).
+  * @param downLimit  Downlink speed limit (>=10000Bps).
+  * @param ipStart Starting IP address.
+  * @param ipEnd End IP address.
+  * @param portStart Starting TCP or UDP port.
+  * @param portEnd END TCP or UDP port.
+  * @parambufSize Buffer size bytes (32KB ~ 256KB).
+  * @param callback Callback function.
   */
  function flowAdd(
     rule: string | "IP" | "TCP" | "UDP",
@@ -176,13 +176,13 @@ declare module "advnwc" {
   ): void;
 
  /**
-  * Delete a previously added flow control rule. 
-  * If index is of type {Integer}, delete the rule of specified index. 
+  * Delete a previously added flow control rule.
+  * If index is of type {Integer}, delete the rule of specified index.
   * If index is not of type {Integer}, delete all rules of the network interface specified by ifname.
   *
-  * @param {string} ifname Which network interface.
-  * @param {number} index Rule index.
-  * @param {(error: Error) => void} [callback]
+  * @param ifname Which network interface.
+  * @param index Rule index.
+  * @param [callback] Callback function.
   */
  function flowDelete(
     ifname: string,
@@ -193,9 +193,9 @@ declare module "advnwc" {
  /**
   * get list by index
   *
-  * @param {string} ifname Which network interface.
-  * @param {number} index Rule index.
-  * @param {(error: Error, rules: Rule[]) => void} [callback]
+  * @param ifname Which network interface.
+  * @param index Rule index.
+  * @param [callback] Callback function.
   */
  function flowList(
     ifname: string,

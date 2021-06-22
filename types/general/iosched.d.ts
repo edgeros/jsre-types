@@ -11,11 +11,11 @@ declare module "iosched" {
    * @param method Event listening method.
    * @param fd File descriptor.
    * @param callback Callback function when event occurs.
-   *                    arg {Any} Argument.
-   *                    ioevent {object} This IoEvent object.
+   *                 arg {Any} Argument.
+   *                 ioevent {object} This IoEvent object.
    * @param errback Callback function when callback return false.
-   *                    arg {Any} Argument.
-   *                    ioevent {object} This IoEvent object.
+   *                arg {Any} Argument.
+   *                ioevent {object} This IoEvent object.
    * @param arg Argument, saved in this ioevent.arg property.
    */
   function event(
@@ -48,9 +48,6 @@ declare module "iosched" {
   /**
    * Add an IoEvent to the iosched detect events set. ioevent must be the return value of iosched.event().
    * When the event of interest reaches, the IoEvent object callback will be called.
-   * If the callback function returns false,
-   * the errback callback will be called. This IoEvent object will be removed from the iosched detect events set,
-   * no matter what the callback returns.
    *
    * @param ioevent IoEvent object.
    */
@@ -85,12 +82,13 @@ declare module "iosched" {
   function fds(fdsUser?: number[]): number[];
 
   /**
-   * Same as sys.select() but the multipath I/O event
-   * detection here contains the events that were previously added to iosched.
-   * Any detected event arrival function will return.
+   * This function is an I/O multiplex interface that can detect multiple file events at the same time.
+   * If any event occurs, the function return immediately and returns the file descriptor array that have the event.
+   * This function has the same functionality as the UNIX compatible system select() function.
    *
    * Returns: {Array} A two-dimensional array of file descriptors with valid events detected.
    *
+   * @param fdsUser User File descriptors array. default: undefined.
    * @param timeout Wait timeout in milliseconds. default: undefined means wait forever.
    */
   function select(timeout: number): number[];
@@ -106,12 +104,9 @@ declare module "iosched" {
   function poll(timeout?: number[]): number[];
 
   /**
-   * iosched.forever() is same as:
-   *      while (!check.quit) {
-   *          iosched.poll(timeout);
-   *      }
-   *
-   * @param timeout Wait timeout in milliseconds. default: undefined means wait forever.
+   * Same as `iosched.forever()`.
+   * @param check If `check.quit` true, this function will return in the next event detection cycle. default: false.
+   * @param timeout Each event detection wait timeout in milliseconds. default: undefined means wait forever.
    */
   function forever(timeout: number): number[];
   function forever(check: object, timeout: number): number[];

@@ -57,7 +57,7 @@ declare module "gpio" {
     /**
      * Wait interrupt using asynchronous mode. After enabling this mode, the `gpio.wait()` method will be deleted.
      *
-     * @param {boolean} [enable] Whether to enable asynchonous mode. default: true.
+     * @param [enable] Whether to enable asynchonous mode. default: true.
      */
     async(enable?: boolean): void;
 
@@ -71,7 +71,7 @@ declare module "gpio" {
     /**
      * Set current mode of GPIO.
      *
-     * @param {number} flags GPIO open flags.
+     * @param flags GPIO open flags.
      */
     setMode(flags: number): void;
   }

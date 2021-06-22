@@ -34,7 +34,7 @@ declare module "webapp" {
      *
      * Returns: {WebApp} WebApp object
      *
-     * @param group Server group name(master server module). Usually the module name is used as the group name. 
+     * @param group Server group name(master server module). Usually the module name is used as the group name.
      *              If the server work on mult-task mode(subs > 0) and taskFile is missing, the group must be supported as app module name.
      * @param subs Sub task counts, if subs > 0, app run in multi-task mode.
      * @param taskFile Sub task module name. default: use group as module name.

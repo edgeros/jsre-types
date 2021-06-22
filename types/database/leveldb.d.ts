@@ -21,6 +21,7 @@ declare module "leveldb" {
   let SEEK_PREV: number;
 
   /**
+   * Get a default database option, no special circumstances do not need to modify the default value.
    * Returns: {object} LevelDB opens or repairs options.
    *
    * @param flags Flags string.
@@ -50,6 +51,7 @@ declare module "leveldb" {
 
   /**
    * Delete a database, if the database can not be repaired, you can delete the database after backup.
+   * Since LevelDB is a directory, you can use the `zip` module for compressed and backups.
    *
    * Returns: {Boolean} Whether the database is destroyed.
    *
@@ -65,10 +67,6 @@ declare module "leveldb" {
   }
 
   class Db {
-    begin(): void;
-
-    commit(): void;
-
     /**
      * Close the database.
      */
@@ -113,6 +111,16 @@ declare module "leveldb" {
      * @param key Keyword.
      */
     delete(key: string): boolean;
+
+    /**
+     * Similar to the SQL `begin;` statement, turning on a batch write. After this `db.put()` operation will be written to a cache.
+     */
+    begin(): void;
+
+    /**
+     * Similar to the SQL `commit;` statement, do batch write commit work.
+     */
+    commit(): void;
 
     /**
      * Discard the uncommitted batch write and rollback to the last confirmed state.

@@ -37,9 +37,9 @@ declare module 'dgram' {
    * address on a random port (it does the right thing for both `udp4` and `upd6` sockets).
    * The bound address and port can be retrieved using.
    *
-   * @param {(SockOptions | "udp4" | "udp6")} options Options
-   * @param {() => void} [callback] Attached as a listener for `'message'` events. Optinal.
-   * @returns {Dgram} `dgram.Socket` object.
+   * @param options Options
+   * @param [callback] Attached as a listener for `'message'` events. Optinal.
+   * @returns `dgram.Socket` object.
    */
   function createSocket(options: SockOptions | "udp4" | "udp6", callback?: () => void): Dgram;
 

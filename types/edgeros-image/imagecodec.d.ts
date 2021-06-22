@@ -24,25 +24,42 @@ declare module "imagecodec" {
     }
 
     interface ImageOptions {
-      stride?: number; // {Integer} If the target is in PNG format, the number of stride bytes can be specified here, please refer to here for details.
-      quality?: number; // {Integer} If the target is JPEG format, quality can be specified here, optional range: 1 ~ 100. default: 70.
+      components: number; // Image components. Valid `components` can choose from `imagecodec`
     }
 
-    // path or buffer
+    /**
+     * Decode the specified image and return the image pixel data.
+     *
+     * @param path Image file path or data buffer.
+     * @param [opt] Decode options.
+     * @returns Image pixel object.
+     */
     function decode(path: string | Buffer, opt?: ImageOptions): ImageObject;
 
     /**
-     *
-     * @param image ImageObject
+     * Compress the original pixel data of the image and store it in the specified path.
+     * @param image Image pixel object.
      * @param path The path parameter determines the image encoding format or format string
      * it must contain the file extensions supported by the current module, they include: '*.jpg', '*.png', '*.bmp', '*.tga', '*.hdr'.
-     * @param opt ImageOptions
+     * @param opt Encode options.
      */
     function encode(image: ImageObject, path: string | FormatString, opt?: ImageOptions): boolean;
 
+    /**
+     * Image conversion.
+     *
+     * @param image Source image pixel object.
+     * @param dest The image size you want to convert to.
+     * @returns Image pixel object.
+     */
     function resize(image: ImageObject, dest: ImageObject): ImageObject;
 
-    // path or buffer
+    /**
+     * Get image size infomation.
+     *
+     * @param path Image file path or data buffer.
+     * @returns Image pixel object.
+     */
     function info(path: string | Buffer): ImageObject;
   }
   export = imagecodec;

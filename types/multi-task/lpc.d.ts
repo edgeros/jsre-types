@@ -24,6 +24,9 @@ declare module "lpc" {
   function Client(name: string, callback?: (...args: any) => void): LpcClient;
 
   class LpcServer {
+    /**
+     * Close this LPC server. this LPC server object is no longer allowed to be used after closed.
+     */
     close(): void;
 
     /**
@@ -32,7 +35,7 @@ declare module "lpc" {
      * Returns: {Boolean} Whether to reply message send successfully.
      *
      * @param msg Reply object.
-     * @param to Reply target. to object must includes: id {Integer} Client task id.
+     * @param to Reply target.
      * @param seq Client command sequence number, must be the same as the client request message sequence number.
      */
     reply(msg: object, to: object, seq: number): boolean;
@@ -44,7 +47,7 @@ declare module "lpc" {
      *
      * @param event Client event that you want to trigger.
      * @param msg Reply object.
-     * @param to Reply target. to object must includes: id {Integer} Client task id.
+     * @param to Reply target.
      * @param timeout Wait timeout in milliseconds. default: undefined means wait forever.
      */
     reverse(event: string, msg: object, to: object, timeout?: number): boolean;
@@ -83,6 +86,13 @@ declare module "lpc" {
      */
     callSync(event: string, msg: object, timeout?: number): object;
 
+    /**
+     * Send a call request to the server, this function is asynchronous requests and return a `Promise` object.
+     * @param event Server event that you want to trigger.
+     * @param msg Call command message.
+     * @param timeout Wait timeout in milliseconds. default: 60000.
+     * @returns Promise object.
+     */
     fetch(event: string, msg: object, timeout?: number): Promise<any>;
   }
 }

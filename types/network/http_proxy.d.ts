@@ -40,19 +40,19 @@ declare module "HttpProxy" {
     /**
      * Used for proxying regular HTTP(s) requests.
      *
-     * @param {HttpInput} req HttpInput object.
-     * @param {HttpOutput} res HttpOutput object.
-     * @param {Opts} [opts] Reference `HttpProxy.create opts` argument. This options will override the options of `HttpProxy.create`.
+     * @param req HttpInput object.
+     * @param res HttpOutput object.
+     * @param [opts] Reference `HttpProxy.create opts` argument. This options will override the options of `HttpProxy.create`.
      */
     web(req: HttpInput, res: HttpOutput, opts?: Opts): void;
 
     /**
      * Used for proxying WS(S) requests.
      *
-     * @param {HttpInput} req HttpInput object.
-     * @param {Socket} net Base socket object.
-     * @param {(...args: any) => void} cb Callback function.
-     * @param {Opts} [opts] Reference `HttpProxy.create opts` argument. This options will override the options of `HttpProxy.create`.
+     * @param req HttpInput object.
+     * @param net Base socket object.
+     * @param cb Callback function.
+     * @param [opts] Reference `HttpProxy.create opts` argument. This options will override the options of `HttpProxy.create`.
      */
     ws(req: HttpInput, net: Socket, cb: (...args: any) => void, opts?: Opts): void;
 

@@ -18,7 +18,7 @@ declare module "buzzer" {
     /**
      * Open buzzer object, return undefined if it fails to open.
      *
-     * @returns {Buzzer}
+     * @returns Buzzer.
      */
     static open(): Buzzer;
 
@@ -32,8 +32,8 @@ declare module "buzzer" {
     /**
      * Send a command to the buzzer.
      *
-     * @param {BuzzerParam} param
-     * @returns {boolean} Whether the operation was successful.
+     * @param param Buzzer param.
+     * @returns Whether the operation was successful.
      */
     beep(param: BuzzerParam): boolean;
     /**

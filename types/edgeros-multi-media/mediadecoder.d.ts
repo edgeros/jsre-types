@@ -55,7 +55,7 @@ declare module "mediadecoder" {
     width: number; // {Integer} Video width.
     height: number; // {Integer} Video height.
     pixelFormat: string; // {Integer} Video pixel format.
-    noDrop: boolean;
+    noDrop?: boolean;
     fps: number; // {Integer} Video frame rate.
   }
 
@@ -97,6 +97,7 @@ declare module "mediadecoder" {
   }
 
   class MediaDecoder {
+    constructor();
     static C_GREEN: number;
     static C_WHITE: number;
     static C_RED: number;
@@ -120,24 +121,82 @@ declare module "mediadecoder" {
     static PIX_FMT_BGR565: 'PIX_FMT_BGR565'; // = 'BGR565' pixel format.
     static PIX_FMT_RGB565: 'PIX_FMT_RGB565'; // = 'RGB565' pixel format.
 
-    open(url: string, opts: object, timeout?: number, callback?: (error: Error) => void): MediaDecoder;
+    /**
+     * Open the media decoder with given url, The MediaDecoder object can provide services for multitasking.
+     * You can use opt.name to specify the global name of this object, so that the subtask can receive the corresponding event as long as the MediaDecoder object with the same name is opened,
+     * for example, the subtask can be used for video processing, AI operations, etc.
+     * @param url The url of multimedia.
+     * @param opts Open options.
+     * @param timeout Open timeout, the unit is milliseconds, default is `5000` milliseconds.
+     * @param callback Asynchronous callback function. default: undefined.
+     */
+    open(url: string, opts?: object, timeout?: number, callback?: (error: Error) => void): MediaDecoder;
 
-    stop(): void;
+    /**
+     * Close the media decoder.
+     */
     close(): void;
+
+    /**
+     * Start the media decoder.
+     */
     start(): void;
 
+    /**
+     * Adds the `listener` callback function to the end of the listener's list of mediadecoder object for the given `event`.
+     * @param event The name of the event.
+     * @param listener The callback function.
+     */
     on(event: "header" | "remux" | "video" | "audio" | "eof", listener: (video?: VideoBuffer) => void): EventEmitter;
 
+    /**
+     * Stop the media decoder.
+     */
+    stop(): void;
+
+    /**
+     * Get the source video format of media decoder.
+     */
     srcVideoFormat(): VideoFormat;
+
+    /**
+     * Set the destination video format of media decoder.
+     * @param fmt Destination Video format.
+     */
     destVideoFormat(fmt: VideoFormat): boolean;
+
+    /**
+     * Get the source audio format of media decoder.
+     */
     srcAudioFormat(): AudioFormat;
+
+    /**
+     * Set the destination audio format of media decoder.
+     * @param fmt Destination audio format.
+     */
     destAudioFormat(fmt: AudioFormat): boolean;
 
+    /**
+     * Set the preview video format of media decoder.
+     * @param fmt Destination preview video format.
+     */
     previewFormat(fmt: PreviewVideoFormat): boolean;
 
+    /**
+     * Get the preview video buffer of media decoder.
+     */
     previewBuffer(): VideoBuffer;
+
+    /**
+     * Get preview video overlay object. For more information, please refer to: overlay.
+     * The output of `overlay` will be superimposed on the preview output.
+     */
     overlay(): VideoOverlay;
 
+    /**
+     * Set the remux format of media decoder. Remux data is mainly used for live streaming server and video recording.
+     * @param fmt Remux format.
+     */
     remuxFormat(fmt: RemuxFormat): boolean;
   }
   export = MediaDecoder;

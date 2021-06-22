@@ -199,11 +199,11 @@ declare module "util" {
   function logToString(string: string, ...args: any): string;
 
   /**
-   * Takes a function following the common error-first callback style, i.e. taking an `(err, value) => ...` callback as the last argument, 
+   * Takes a function following the common error-first callback style, i.e. taking an `(err, value) => ...` callback as the last argument,
    * and returns a version that returns promises.
    *
-   * @param {Function} original Original function.
-   * @returns {Function} A version that returns promises.
+   * @param original Original function.
+   * @returns A version that returns promises.
    */
-  function promisify(original: Function): Function;
+  function promisify(original: (...args: any) => any): (...args: any) => any;
 }

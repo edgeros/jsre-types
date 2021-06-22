@@ -5,18 +5,18 @@ declare module 'edgeros:monitor' {
 
 declare module "monitor" {
   interface Usage {
-    pid: number;
-    usage: number;
+    pid: number; // Process ID. Zero means the kernel.
+    usage: number; // CPU usage percentage.
   }
 
   interface UsageInfo {
     send: {
-      generic: number;
-      multimedia: number;
+      generic: number; // Number of general data transmission bytes.
+      multimedia: number; // Number of bytes sent by the multimedia library, such as a webcam.
     };
     recv: {
-      generic: number;
-      multimedia: number;
+      generic: number; // Number of general data receive bytes.
+      multimedia: number; // Number of bytes receive by the multimedia library, such as a webcam.
     };
   }
 
@@ -55,6 +55,9 @@ declare module "monitor" {
      */
     memUsage(pid?: number): Usage[] | number;
 
+    /**
+     * This method only gets the current process network traffic usage.
+     */
     networkUsage(): UsageInfo;
   }
   export = Monitor;

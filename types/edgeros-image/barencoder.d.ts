@@ -51,21 +51,10 @@ declare module "barencoder" {
   /**
    * Returns: {Boolean} true means success, false means failure.
    *
-   * @param text {string} Text which need encoded.
-   * @param format {string} Encoder format.
-   * @param path {string} Output image file path, suffix name can be *.png and *.jpg.
-   * @param opt {object} Bar code encode option object. default: barencoder.defaultOpt(100, 100, 10, 2).
+   * @param text Text which need encoded.
+   * @param format Encoder format.
+   * @param path Output image file path, suffix name can be *.png and *.jpg.
+   * @param opt Bar code encode option object. default: barencoder.defaultOpt(100, 100, 10, 2).
    */
-  function encode(text: string, format: string, path: string, opt?: object): boolean;
-
-  /**
-   * encode
-   *
-   * @param {string} text Text which need encoded.
-   * @param {string} format Encoder format.
-   * @param {ImageFormat} imageFormat Output image format object.
-   * @param {object} [opt] Bar code encode option object. default: barencoder.defaultOpt(100, 100, 10, 2).
-   * @returns {boolean} Image buffer.
-   */
-  function encode(text: string, format: string , imageFormat: ImageFormat, opt?: object): boolean;
+  function encode(text: string, format: string, path: string | ImageFormat, opt?: object): boolean;
 }

@@ -26,42 +26,34 @@ type BufferEncoding = "ascii" | "utf-8" | "base64" | "hex";
 type WithImplicitCoercion<T> = T | { valueOf(): T };
 
 declare class Buffer {
-  /* 
-  * Creates a new buffer of size bytes and initialize its data with random.
-  * size Size of the new buffer.
-  */
+  /*
+   * Creates a new buffer of size bytes and initialize its data with random.
+   * size Size of the new buffer.
+   */
   constructor(size: number);
   /**
-  * Creates a copy of an existing buffer. The buffer data is not shared between the two buffers.
-  * @param buffer Source buffer.
-  * @param offset Offset of array. default: 0.
-  * @param length Number of elements copied. default: buffer.length.
-  */
+   * Creates a copy of an existing buffer. The buffer data is not shared between the two buffers.
+   * @param buffer Source buffer.
+   * @param offset Offset of array. default: 0.
+   * @param length Number of elements copied. default: buffer.length.
+   */
   constructor(buffer: Buffer, offset: number, length: number);
   /**
-   * Creates a new buffer which contains the string argument. 
-   * 'utf-8', 'hex', 'base64', 'ascii' is optional, 
+   * Creates a new buffer which contains the string argument.
+   * 'utf-8', 'hex', 'base64', 'ascii' is optional,
    * 'utf-8' is default.
-   * @param {string} str Source string.
-   * @param {BufferEncoding} [encoding] Encoding format. default: 'utf-8'.
+   * @param str Source string.
+   * @param [encoding] Encoding format. default: 'utf-8'.
    */
   constructor(str: string, encoding?: BufferEncoding);
   /**
-   * Creates a new Buffer from an array of numbers. 
+   * Creates a new Buffer from an array of numbers.
    * The numbers are converted to integers first and their modulo 256 remainder is used for constructing the buffer.
-   * @param {(Uint8Array | number | ArrayBuffer | SharedArrayBuffer | ReadonlyArray<any> | Buffer)} array
-   * @param {number} offset Offset of array. default: 0.
-   * @param {number} length Number if elements copied. default: array.length.
+   * @param array Array.
+   * @param offset Offset of array. default: 0.
+   * @param length Number if elements copied. default: array.length.
    */
   constructor(array: Uint8Array | number | ArrayBuffer | SharedArrayBuffer | ReadonlyArray<any> | Buffer, offset?: number, length?: number);
-  /**
-   * Creates a new Buffer use a range of memory specified by an ArrayBuffer. 
-   * Multiple Buffers can use this method to share memory.
-   * @param {ArrayBuffer} arrayBuffer Given ArrayBuffer.
-   * @param {number} [offset] Offset of ArrayBuffer. default: 0.
-   * @param {number} [length] Number of bytes copied. default: arrayBuffer.byteLength.
-   */
-  constructor(arrayBuffer: ArrayBuffer, offset?: number, length?: number);
 
   /*
   * Maximum number of bytes for a buffer object. Due to the tight resources of the embedded environment,
@@ -170,33 +162,33 @@ declare class Buffer {
   byteLength: number;
 
   /**
-   * Writes string into the buf buffer. 
-   * The start position of the writing can be specified by offset 
-   * and the maximum number of updated bytes can be limited by length. 
+   * Writes string into the buf buffer.
+   * The start position of the writing can be specified by offset
+   * and the maximum number of updated bytes can be limited by length.
    * Returns total number of bytes written to the buffer.
    *
-   * @param {string} string Data to be written into buffer.
-   * @param {number} [offset] Start position if writing. default: 0.
-   * @param {number} [length] How many bytes to write. default: buffer.length - offset.
-   * @param {BufferEncoding} [encoding] Encoding. default: 'utf8'
-   * @returns {number} Total number of bytes written.
+   * @param string Data to be written into buffer.
+   * @param [offset] Start position if writing. default: 0.
+   * @param [length] How many bytes to write. default: buffer.length - offset.
+   * @param [encoding] Encoding. default: 'utf8'
+   * @returns Total number of bytes written.
    */
   write(string: string, offset?: number, length?: number, encoding?: BufferEncoding): number;
   /**
-   * Decode buf into a string according to the character encoding specified by encoding. 
+   * Decode buf into a string according to the character encoding specified by encoding.
    * Pass in start and end to decode only a subset of buf.
    *
-   * @param {BufferEncoding} [encoding] Encoding type. default: 'utf8'.
-   * @param {number} [start] Start position. default: 0.
-   * @param {number} [end] End position (not includes). default: buffer.length.
-   * @returns {string}
+   * @param [encoding] Encoding type. default: 'utf8'.
+   * @param [start] Start position. default: 0.
+   * @param [end] End position (not includes). default: buffer.length.
+   * @returns Returns string.
    */
   toString(encoding?: BufferEncoding, start?: number, end?: number): string;
-  
+
   /**
    * JSON.stringify() will call this function to generate a buffre string.
    *
-   * @returns {{ type: 'Buffer'; data: any[] }}
+   * @returns Returns object.
    */
   toJSON(): { type: 'Buffer'; data: any[] };
 

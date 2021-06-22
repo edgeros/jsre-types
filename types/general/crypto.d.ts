@@ -255,9 +255,9 @@ declare module "crypto" {
   /**
    * Create a hash algorithm with HMAC object. Current support hash algorithms include: 'md5', 'ripemd160', 'sha1', 'sha256', 'sha384', 'sha512'.
    *
-   * @param {string} hashtype Type of hash algorithm.
-   * @param {(string | Buffer)} [hmackey] Specify HMAC key if HMAC encoding is used.
-   * @returns {Hmac} Hash object.
+   * @param hashtype Type of hash algorithm.
+   * @param [hmackey] Specify HMAC key if HMAC encoding is used.
+   * @returns Hash object.
    */
   function createHmac(hashtype: string, hmackey?: string | Buffer): Hmac;
 
@@ -274,31 +274,31 @@ declare module "crypto" {
   /**
    * Creates and returns a Signature object.
    *
-   * @param {string} hashType Hash type of the signature: 'sha1', 'sha256', 'sha384' or 'sha512'.
-   * @param {(string | Buffer)} [hmackey] Specify HMAC key if HMAC encoding is used. default: undefined, do not use hmac.
-   * @returns {Sign} Signature object.
+   * @param hashType Hash type of the signature: 'sha1', 'sha256', 'sha384' or 'sha512'.
+   * @param [hmackey] Specify HMAC key if HMAC encoding is used. default: undefined, do not use hmac.
+   * @returns Signature object.
    */
   function createSign(hashType: string, hmackey?: string | Buffer): Sign;
 
   /**
    * Create and return a `Cipher` object using the given `algorithm`, `key` and initialization vector(iv).
    *
-   * @param {string} algorithm Cipher algorithm.
-   * @param {(Buffer | string)} key Cipher key.
-   * @param {(Buffer | string)} iv Cipher initialization vector.
-   * @param {*} [options] Other options. default: no options.
-   * @returns {Cipher} Cipher object.
+   * @param algorithm Cipher algorithm.
+   * @param key Cipher key.
+   * @param iv Cipher initialization vector.
+   * @param [options] Other options. default: no options.
+   * @returns Cipher object.
    */
   function createCipheriv(algorithm: AlgorithmType, key: Buffer | string, iv: Buffer | string, options?: any): Cipher;
 
   /**
    * Create and return a `Decipher` object using the given `algorithm`, `key` and initialization vector(iv).
    *
-   * @param {string} algorithm Decipher algorithm.
-   * @param {(Buffer | string)} key Decipher key.
-   * @param {(Buffer | string)} iv Decipher initialization vector.
-   * @param {*} [options] Other options. default: no options.
-   * @returns {Decipher} Decipher object.
+   * @param algorithm Decipher algorithm.
+   * @param key Decipher key.
+   * @param iv Decipher initialization vector.
+   * @param [options] Other options. default: no options.
+   * @returns Decipher object.
    */
   function createDecipheriv(algorithm: string, key: Buffer | string, iv: Buffer | string, options?: any): Decipher;
 
@@ -345,63 +345,63 @@ declare module "crypto" {
   /**
    * Generates a new asymmetric key pair of the given type. RSA, EC are currently supported.
    *
-   * @param {keyPairOptions} type Must be 'rsa' or 'ec'.
-   * @param {keyPairOptions} [opt] Key options.
-   * @returns {Pair} Pair of keys.
+   * @param type Must be 'rsa' or 'ec'.
+   * @param [opt] Key options.
+   * @returns Pair of keys.
    */
   function generateKeyPair(type: 'rsa' | 'ec', opt?: keyPairOptions): Pair;
 
   /**
    * Check whether the private key is valid, and return this private key if it is valid.
    *
-   * @param {string} privateKey Private key string.
-   * @param {string} [passwd] Private key passwd.
-   * @returns {KeyObject} Private key object.
+   * @param privateKey Private key string.
+   * @param [passwd] Private key passwd.
+   * @returns Private key object.
    */
   function createPrivateKey(privateKey: string, passwd?: string): KeyObject;
 
   /**
    * Creates and returns a public key object.
    *
-   * @param {string} privateKey Private key string.
-   * @param {string} passwd Private key passwd.
-   * @returns {KeyObject} Public key object.
+   * @param privateKey Private key string.
+   * @param passwd Private key passwd.
+   * @returns Public key object.
    */
   function createPublicKey(privateKey: string, passwd: string): KeyObject;
 
   /**
    * Use private key for data encryption. TODO: mix
    *
-   * @param {(KeyObject | string)} privateKey Private key.
-   * @param {Buffer} buff Data that needs to be encrypted.
-   * @returns {Buffer} Encrypted data.
+   * @param privateKey Private key.
+   * @param buff Data that needs to be encrypted.
+   * @returns Encrypted data.
    */
   function privateDecrypt(privateKey: KeyObject | string, buff: Buffer): Buffer;
 
   /**
    * Use private key for data decryption. TODO: mix
    *
-   * @param {(KeyObject | string)} privateKey Private key.
-   * @param {Buffer} buff Data that needs to be decrypted.
-   * @returns {Buffer} Decrypted data.
+   * @param privateKey Private key.
+   * @param buff Data that needs to be decrypted.
+   * @returns Decrypted data.
    */
   function privateEncrypt(privateKey: KeyObject | string, buff: Buffer): Buffer;
 
   /**
    * Use public key for data encryption. TODO: mix
    *
-   * @param {(KeyObject | string)} publicKey Public key.
-   * @param {Buffer} buff Data that needs to be encrypted.
-   * @returns {Buffer} Encrypted data.
+   * @param publicKey Public key.
+   * @param buff Data that needs to be encrypted.
+   * @returns Encrypted data.
    */
   function publicDecrypt(publicKey: KeyObject | string, buff: Buffer): Buffer;
 
   /**
    * Use public key for data decryption. TODO: mix
    *
-   * @param {(KeyObject | string)} publicKey Public key.
-   * @param {Buffer} buff Data that needs to be decryped.
-   * @returns {Buffer} Decrypted data.
+   * @param publicKey Public key.
+   * @param buff Data that needs to be decryped.
+   * @returns Decrypted data.
    */
   function publicEncrypt(publicKey: KeyObject | string, buff: Buffer): Buffer;
 
@@ -424,15 +424,15 @@ declare module "crypto" {
   /**
    * Get the total number of current credit certificates in the system
    *
-   * @returns {number} Number of certificates.
+   * @returns Number of certificates.
    */
   function creditCertNum(): number;
 
   /**
    * Get the specified credit certificate information.
    *
-   * @param {number} index Certificate index.
-   * @returns {certificateObject} Credit certificate infomation.
+   * @param index Certificate index.
+   * @returns Credit certificate infomation.
    */
   function creditCertInfo(index: number): certificateObject;
 
@@ -441,10 +441,10 @@ declare module "crypto" {
    * The `salt` should be as unique as possible.
    * It is recommended that the `salt` value be random and at least 16 bytes long.
    *
-   * @param {(string | Buffer)} passwd Password.
-   * @param {(string | Buffer)} salt Salt.
-   * @param {number} keylen Key length in bytes.
-   * @returns {Buffer} Key buffer.
+   * @param passwd Password.
+   * @param salt Salt.
+   * @param keylen Key length in bytes.
+   * @returns Key buffer.
    */
   function scrypt(passwd: string | Buffer, salt: string | Buffer, keylen: number): Buffer;
 }

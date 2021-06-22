@@ -28,8 +28,6 @@ declare module "fs" {
     isSymbolicLink(): boolean; // Whether it is a symbolic link file.
   }
 
-
-
   interface direntInfo {
     name: string;
     type: number;
@@ -169,7 +167,6 @@ declare module "fs" {
 
   /**
    * Convert a configuration object to JSON format and save it in a specified file, and use it with `fs.load()` for simple configuration saving ad loading.
-   * 
    * @param path File path.
    * @param obj Objects to be stored.
    */
@@ -253,7 +250,7 @@ declare module "fs" {
 
   /**
    * If the specified `path` is a directory, this function traverses all subdirectories
-   * and calculates the sum of all file sizes in the directory. 
+   * and calculates the sum of all file sizes in the directory.
    * If `path` is file, returns the size of the file, or 0 if `path` target infomation cannot be obtained.
    * @param path Directory or file path.
    * @return Total file size.
@@ -297,10 +294,10 @@ declare module "fs" {
    * Clear all files or directories in a directory, `recursion` is `true` means that recursive cleanup of subdirectories is encountered.
    * If `ignoreError` is `false`, an exception will be thrown when an error is encountered.
    *
-   * @param {string} path
-   * @param {boolean} [recursion]
-   * @param {boolean} [ignoreErro]
-   * @returns {boolean}
+   * @param path  Directory path.
+   * @param [recursion] Whether to recursively delete subfiles. default: false.
+   * @param [ignoreErro] Whether to continue deleting when an error occurs. default: false.
+   * @returns Whether remove directory is successful.
    */
   function clrdir(path: string, recursion?: boolean, ignoreErro?: boolean): boolean;
 
@@ -466,9 +463,9 @@ declare module "fs" {
     /**
      * Set file owner. Only privileged mode allows.
      *
-     * @param {number} uid Host OS user ID.
-     * @param {number} gid Host OS group ID.
-     * @returns {boolean} Whether the owner set successful.
+     * @param uid Host OS user ID.
+     * @param gid Host OS group ID.
+     * @returns Whether the owner set successful.
      */
     chown(uid: number, gid: number): boolean;
 
@@ -485,21 +482,21 @@ declare module "fs" {
      * Compare the contents of two files, return `true` if they are the same, otherwise return `false`. If `target` is a `String`,
      * it means to the target file path.
      *
-     * @param {(string | File)} target The target file.
-     * @param {number} [targetStart] Target file start offset. default: 0.
-     * @param {number} [targetEnd] Target file end offset (not include). default: target.size().
-     * @param {number} [sourceStart] Source file start offset. default: 0.
-     * @param {number} [sourceEnd] Source file end offset (not include). default: this.size().
-     * @returns {boolean} Comparing results.
+     * @param target The target file.
+     * @param [targetStart] Target file start offset. default: 0.
+     * @param [targetEnd] Target file end offset (not include). default: target.size().
+     * @param [sourceStart] Source file start offset. default: 0.
+     * @param [sourceEnd] Source file end offset (not include). default: this.size().
+     * @returns Comparing results.
      */
     compare(target: string | File, targetStart?: number, targetEnd?: number, sourceStart?: number, sourceEnd?: number): boolean;
 
     /**
      * Modify file access time and modification time attributes.
      *
-     * @param {(number | Date | string)} atime Access time.
-     * @param {(number | Date | string)} mtime Modification time.
-     * @returns {boolean} Whether the operation is successful.
+     * @param atime Access time.
+     * @param mtime Modification time.
+     * @returns Whether the operation is successful.
      */
     utimes(atime: number | Date | string, mtime: number | Date | string): boolean;
 

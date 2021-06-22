@@ -83,8 +83,7 @@ declare module 'console' {
       /**
        * Get the current call stack.
        *
-       * @returns {any[]}
-       * @memberof Console
+       * @returns Returns.
        */
       backtrace(): any[];
 

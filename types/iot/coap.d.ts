@@ -23,11 +23,11 @@ declare module "coap" {
   /**
    * This CoapClient object (request object) is created internally and returned from coap.request().
    *
-   * @param {string} url Coap url.
-   * @param {(client: CoapClient) => void} callback Request handler. The same as clinet.begin envent callback.
-   * @param {CoapRequestOptions} [opts] Details in CoapRequestOptions
-   * @param {object} [dtlsOpt] DTLS securely connections options. default: undefined, means use UDP connection.
-   * @returns {CoapClient} The coap client request object.
+   * @param url Coap url.
+   * @param callback Request handler. The same as clinet.begin envent callback.
+   * @param [opts] Details in CoapRequestOptions
+   * @param [dtlsOpt] DTLS securely connections options. default: undefined, means use UDP connection.
+   * @returns The coap client request object.
    */
   function request(url: string, callback: (client: CoapClient) => void, opts?: CoapRequestOptions, dtlsOpt?: object): CoapClient;
 
@@ -37,20 +37,20 @@ declare module "coap" {
    * Since most requests are GET requests, http provides this convenience method.
    * The only difference between this method and http.request() is that it sets the method to GET and call request.end() automatically.
    *
-   * @param {string} url Coap url.
-   * @param {(client: CoapClient) => void} callback Request handler. The same as client.begin event callback.
-   * @param {CoapRequestOptions} [opts] Details in CoapRequestOptions
-   * @param {object} [dtlsOpt] DTLS securely connections options. default: undefined, means use UDP connection.
-   * @returns {CoapClient}
+   * @param url Coap url.
+   * @param callback Request handler. The same as client.begin event callback.
+   * @param [opts] Details in CoapRequestOptions
+   * @param [dtlsOpt] DTLS securely connections options. default: undefined, means use UDP connection.
+   * @returns Returns coapClient.
    */
   function get(url: string, callback: (client: CoapClient) => void, opts?: CoapRequestOptions, dtlsOpt?: object): CoapClient;
-  
+
   /**
    * Get the current process CoAP work mode.
    *
-   * @returns {string} Coap work mode.
-   *                   'on' CoAP is enabled.
-   *                   'off' CoAP is not enabled.
+   * @returns Coap work mode.
+   *          'on' CoAP is enabled.
+   *          'off' CoAP is not enabled.
    */
   function mode(): string;
 
@@ -58,25 +58,24 @@ declare module "coap" {
     close(): void; // Close coap client
 
     /**
-     * This method set or append payload data. This method can call multiple times. 
+     * This method set or append payload data. This method can call multiple times.
      * After write all data, user should call client.end() to end request.
      *
-     * @param {(string | object | Buffer)} chunk Coap payload.
-     * @memberof CoapClient
+     * @param chunk Coap payload.
      */
     write(chunk: string | object | Buffer): void;
 
     /**
      * Send data to server
      *
-     * @param {(string | object | Buffer)} [chunk] Coap payload data.
-     * @param {{confirm: boolean, token: Buffer, Options: object}} [opts] Send options
-     *                   - confirm The request send is confirm or no.
-     *                   - token Coap token used to identification resources.
-     *                   - options The request coap options. See CoapPackage.options.
+     * @param [chunk] Coap payload data.
+     * @param [opts] Send options
+     *                - confirm The request send is confirm or no.
+     *                - token Coap token used to identification resources.
+     *                - options The request coap options. See CoapPackage.options.
      */
     end(chunk?: string | object | Buffer, opts?: {confirm: boolean, token: Buffer, Options: object}): void;
-    
+
     /**
      * In observe mode, the serve will continue to reply to the data monitored by the client until the client calls reset to end the process.
      *
@@ -98,10 +97,10 @@ declare module "coap" {
   /**
    * This method creates a CoapServer.
    *
-   * @param {object} saddr Server udp socket address.
-   * @param {CoapServerOptions} [opts] Details in CoapServerOptions.
-   * @param {object} [dtlsOpt] DTLS securely connections options. default: undefined, means use UDP connection.
-   * @returns {CoapServer}
+   * @param saddr Server udp socket address.
+   * @param [opts] Details in CoapServerOptions.
+   * @param [dtlsOpt] DTLS securely connections options. default: undefined, means use UDP connection.
+   * @returns Returns coapServer.
    */
   function createServer(saddr: object, opts?: CoapServerOptions, dtlsOpt?: object): CoapServer;
 
@@ -153,23 +152,23 @@ declare module "coap" {
     /**
      * Set or remove package option.
      *
-     * @param {string} key Option name.
-     * @param {*} [value] Option value. If val equal undefined, this option will be removed.
+     * @param key Option name.
+     * @param [value] Option value. If val equal undefined, this option will be removed.
      */
     setOption(key: string, value?: any): void;
 
     /**
      * Add or append package option.
      *
-     * @param {string} key Option name.
-     * @param {*} value Option value.
+     * @param key Option name.
+     * @param value Option value.
      */
     appendOption(key: string, value: any): void;
 
     /**
      * Set multiple options.
      *
-     * @param {object} opts Coap options.
+     * @param opts Coap options.
      */
     setOptions(opts: object): void;
 
@@ -177,34 +176,33 @@ declare module "coap" {
      * Get option value.
      * NOTICE: The value is `true` if option's format is `empty`.
      *
-     * @param {string} key Option name.
-     * @returns {*} Option value.
+     * @param key Option name.
+     * @returns Option value.
      */
     getOption(key: string): any;
 
     /**
      * Set package payload.
      *
-     * @param {(string | Buffer | object)} [chunk] Payload data. If chunk undefined, payload set to undefined.
+     * @param [chunk] Payload data. If chunk undefined, payload set to undefined.
      */
     setPayload(chunk?: string | Buffer | object): void;
 
     /**
      * Set or append package payload. This api can be call multiple times.
      *
-     * @param {(string | Buffer | object)} [chunk] Payload data.
-     * @returns {boolean} Append payload success or not.
+     * @param [chunk] Payload data.
+     * @returns Append payload success or not.
      */
     appendPayload(chunk?: string | Buffer | object): boolean;
 
     /**
-     * Confirm(CON): A request that needs to be acknowledged. If a `CON` request is sent, 
+     * Confirm(CON): A request that needs to be acknowledged. If a `CON` request is sent,
      * the other party must respond. This request is used for reliable transmission.
-     * 
      * No confirm(NON): There is no need to confirm the request, if the `NON` request is sent,
      * then the other party does not have to respond. This request is unreliable.
      *
-     * @returns {boolean} The request is confirm or no.
+     * @returns The request is confirm or no.
      */
     isConfirm(): boolean;
   }

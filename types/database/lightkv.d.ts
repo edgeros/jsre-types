@@ -9,11 +9,11 @@ declare module "lightkv" {
   type KV = string | object | Buffer;
 
   class LightKV {
-    constructor(filename: string, flags?: string, type?: number);
+    constructor(fileName: string, flags?: string, type?: number);
 
-    static STRING: 1;
-    static OBJECT: 2;
-    static BUFFER: 3;
+    static STRING: 1; // The data stored in the database is a `String`.
+    static OBJECT: 2; // The data stored in the database is a `Object`.
+    static BUFFER: 3; // The data stored in the database is a `Buffer`.
 
     /**
      * Close the database, the iterator that is in use after the database is closed will no longer be able to use.
@@ -21,14 +21,14 @@ declare module "lightkv" {
     close(): void;
 
     /**
-     * Get whether the value of the specified key exists.
+     * Get whether the value of the specified `key` exists.
      * @param key Keyword.
      */
     has(key: string | number): KV;
 
     /**
-     * Insert or rewrite a record. If there is value with the same key before,
-     * the previous value will be overwritten.
+     * Insert or rewrite a record. If there is `value` with the same `key` before,
+     * the previous `value` will be overwritten.
      * @param key Keyword.
      * @param value Value.
      */
@@ -38,13 +38,14 @@ declare module "lightkv" {
      *  If the value specified by key does not exist, return undefined.
      * @param key Keyword.
      * @param type Database default value type. default: used type when constructing this object.
+     * @returns Value. If the value specified by `key` does not exist, return `undefined`.
      */
     get(key: string | number, type?: number): KV;
 
     /**
      * Delete a specified record by key.
      * @param key Keyword.
-     * @return {boolean} Return `true` if there is a record and deleted, otherwise return `false`. 
+     * @return Return `true` if there is a record and deleted, otherwise return `false`.
      *                   EdgerOS 1.4.2 and later versions add this return value.
      */
     delete(key: string | number): boolean;
@@ -67,24 +68,47 @@ declare module "lightkv" {
     rollback(): void;
 
     /**
-     * returns a new Iterator object that contains the keys for each element in this database.
+     * Returns a new `Iterator` object that contains the keys for each element in this database.
      */
     keys(): Iterator<any>;
 
     /**
-     *  returns a new Iterator object that contains the values for each element in this database.
+     * Returns a new `Iterator` object that contains the values for each element in this database.
      */
     values(): Iterator<any>;
 
     /**
-     * The entries() method returns a new Iterator object that contains the [key, value] pairs for each element in this database.
+     * The `entries()` method returns a new `Iterator` object that contains the `[key, value]` pairs for each element in this database.
      */
     entries(): Iterator<any>;
 
+    /**
+     * The `[Symbol.iterator]` method returns a new `Iterator` object that contains the values for each element in this database.
+     *
+     * @returns Iterator object.
+     */
     [Symbol.iterator](): Iterator<any>;
 
+    /**
+     * Tracersing the database, similar to other objects `*.forEach()` calls.
+     *
+     * @param callback Callback function.
+     * @param [thisArg] The `this` object bound when the callback function is called. default: no binding.
+     */
     forEach(callback: (value: string, key: string, kv: object) => void, thisArg?: object): void;
-    toMap(map?: object, getDefaultValue?: (...args: any) => void): object[];
+
+    /**
+     * Store all the contents of the database in a `Map` object.
+     *
+     * @returns Map object.
+     */
+    toMap(): object[];
+
+    /**
+     * Fill all the contents of the `map` object into the database.
+     *
+     * @param map Map Object.
+     */
     fillin(map: object): void;
   }
   export = LightKV;

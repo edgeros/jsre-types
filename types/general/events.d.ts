@@ -23,40 +23,38 @@ declare module "events" {
     /**
      * Make target object inherit Emitter properties and methods.
      *
-     * @static
-     * @param {Object} obj
-     * @memberof EventEmitter
+     * @param Inherits obj.
      */
-    static inherits(obj: Object): void;
+    static inherits(obj: object): void;
 
     /**
      * Adds the `listener` callback function to the end of the listener's list for the given `event`.
      * No checks are made to see if the `listener` has already been added.
      * In case of multiple calls the `listener` will be added and called multiple times.
      *
-     * @param {(string | string[])} event The name or names of the event.
-     * @param {(...arg: any) => void} listener The callback function.
-     * @returns {this} This emitter.
+     * @param event The name or names of the event.
+     * @param listener The callback function.
+     * @returns This emitter.
      */
     addListener(event: string | string[], listener: ListenerFunction): this;
 
     /**
      * Adds the `listener` callback function to the end of the listener's list for the given `event`.
-     * No checks are made to see if the `listener` has already been added. 
+     * No checks are made to see if the `listener` has already been added.
      * In case of multiple calls the `listener` will be added called multiple times.
      *
-     * @param {(string | string[])} event The name or names of the event.
-     * @param {(...arg: any) => void} listener The callback function.
-     * @returns {this} This emitter.
+     * @param event The name or names of the event.
+     * @param listener The callback function.
+     * @returns This emitter.
      */
     on(event: string | string[], listener: ListenerFunction): this;
 
     /**
      * Removes `listener` from the list of event listeners. Alias of `emitter.removeListener()`.
      *
-     * @param {string} event The name of event.
-     * @param {ListenerFunction} listener The callback function.
-     * @returns {this} This emitter.
+     * @param event The name of event.
+     * @param listener The callback function.
+     * @returns This emitter.
      */
     off(event: string, listener: ListenerFunction): this;
 
@@ -64,9 +62,9 @@ declare module "events" {
      * Synchronously call each of the listeners registered for the event, in the order they were registered,
      * passing the supplied arguments to each.
      *
-     * @param {string} event The name of the event.
-     * @param {...any} args Optional arguments. default: undefined.
-     * @returns {boolean} Return true if the event had listeners, false otherwise.
+     * @param event The name of the event.
+     * @param args Optional arguments. default: undefined.
+     * @returns Return true if the event had listeners, false otherwise.
      */
     emit(event: string, ...args: any): boolean;
 
@@ -75,9 +73,9 @@ declare module "events" {
      * Using this method, it is possible to register a listener that is called at most once for a particular `event`.
      * The listener will be invoked only once, when the first `event` is emitted.
      *
-     * @param {string} event The name of the event.
-     * @param {ListenerFunction} listener The callback function.
-     * @returns {this} This emitter.
+     * @param event The name of the event.
+     * @param listener The callback function.
+     * @returns This emitter.
      */
     once(event: string, listener: ListenerFunction): this;
 
@@ -85,9 +83,9 @@ declare module "events" {
      * Removes `listener` from the list of event listeners.
      * If you add the same `listener` multiple times, this removes only one instance of them.
      *
-     * @param {string} event The name of the event.
-     * @param {ListenerFunction} listener The callback function.
-     * @returns {this} This emitter.
+     * @param event The name of the event.
+     * @param listener The callback function.
+     * @returns This emitter.
      */
     removeListener(event: string, listener: ListenerFunction): this;
 
@@ -95,32 +93,31 @@ declare module "events" {
      * Removes all listeners.
      * If `event` was specified, it only removes the listeners for that event.
      *
-     * @param {string} [event]
-     * @returns {this}
-     * @memberof EventEmitter
+     * @param [event] Event strings.
+     * @returns Returns
      */
     removeAllListeners(event?: string): this;
 
     /**
      * Get all listened events.
      *
-     * @returns {Array<EdgerOS.EventEmitter>} An array of all listened events.
+     * @returns An array of all listened events.
      */
-    eventNames(): Array<EdgerOS.EventEmitter>;
+    eventNames(): EdgerOS.EventEmitter[];
 
     /**
      * Returns a copy of the listener array for the event named `event`.
      *
-     * @param {string} event The name of the event.
-     * @returns {Array<EdgerOS.EventEmitter>} An array of all listened function on this event.
+     * @param event The name of the event.
+     * @returns An array of all listened function on this event.
      */
-    listeners(event: string): Array<EdgerOS.EventEmitter>;
+    listeners(event: string): EdgerOS.EventEmitter[];
 
     /**
      * Returns the number of listeners for the event named `event`.
      *
-     * @param {string} event The name of the event.
-     * @returns {number} Number of all listened functions on this event.
+     * @param event The name of the event.
+     * @returns Number of all listened functions on this event.
      */
     listenerCount(event: string): number;
 
@@ -128,7 +125,6 @@ declare module "events" {
      * This symbol shall be used to install a listener for only monitoring `'error'`
      * events. Listeners installed using this symbol are called before the regular
      * `'error'` listeners are called.
-     *
      * Installing a listener using this symbol does not change the behavior once an
      * `'error'` event is emitted, therefore the process will still crash if no
      * regular `'error'` listener is installed.

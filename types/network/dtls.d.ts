@@ -97,9 +97,8 @@ declare module "dtls" {
      * With the support of the server for virtual hosts, one server can provide services for multiple domain names,
      * so SNI must be supported to meet the demand.
      *
-     * @param {certOptions} opt
-     * @returns {boolean}
-     * @memberof Dtls
+     * @param opt  Options.
+     * @returns Returns.
      */
     addcert(opt: certOptions): boolean;
 
