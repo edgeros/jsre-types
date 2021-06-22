@@ -19,7 +19,7 @@ declare module "HttpProxy" {
   type HttpInput = typeof HttpInputType;
   type HttpOutput = typeof HttpOutputType;
 
-  interface opts {
+  interface Opts {
     httpTarget?: string; // {string} Http target URL. For HTTP[S] proxy.
     httpTlsOpt?: object; // {object} TLS securely connections options. default: undefined, means use TCP connection. For HTTP[S] proxy.
     wsTarget?: string; // {string} Websocket target URL. For WS[S] proxy.
@@ -33,13 +33,33 @@ declare module "HttpProxy" {
   }
 
   class HttpProxy {
-    constructor(opts?: opts)
+    constructor(opts?: Opts)
 
-    static create(opts?: opts): HttpProxy;
+    static create(opts?: Opts): HttpProxy;
 
-    web(req: HttpInput, res: HttpOutput, opts?: opts): this;
-    ws(req: HttpInput, net: Socket, cb: (...args: any) => void, opts?: opts): this;
-    stop(): this;
+    /**
+     * Used for proxying regular HTTP(s) requests.
+     *
+     * @param {HttpInput} req HttpInput object.
+     * @param {HttpOutput} res HttpOutput object.
+     * @param {Opts} [opts] Reference `HttpProxy.create opts` argument. This options will override the options of `HttpProxy.create`.
+     */
+    web(req: HttpInput, res: HttpOutput, opts?: Opts): void;
+
+    /**
+     * Used for proxying WS(S) requests.
+     *
+     * @param {HttpInput} req HttpInput object.
+     * @param {Socket} net Base socket object.
+     * @param {(...args: any) => void} cb Callback function.
+     * @param {Opts} [opts] Reference `HttpProxy.create opts` argument. This options will override the options of `HttpProxy.create`.
+     */
+    ws(req: HttpInput, net: Socket, cb: (...args: any) => void, opts?: Opts): void;
+
+    /**
+     * A function that closes and stops proxy.
+     */
+    stop(): void;
 
     on(event: "request" | "response", callback: (proxyRes: HttpClient, req: HttpServerRequest, res: HttpServerResponse) => void): this;
   }

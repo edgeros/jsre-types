@@ -6,27 +6,38 @@ declare module "dtls" {
   import { Buffer } from 'buffer';
 
   interface SockAddr {
-    domain: number;
-    addr: string;
-    port: string;
+    domain: number; // Address domain: `socket.AF_INET` or `socket.AF_INET6`.
+    addr: string; // Address.
+    port: string; // Port.
+  }
+
+  interface DtlsServerOptions {
+    name?: string; // Server name for multitasking. If it is a single task server, this can be undefined.
+    ca?: string; // Optional trusted CA certificates to verify client certificate. default: no CA certificates.
+    cert: string; // Server certificate.
+    key: string; // Private key of server certificate.
+    passwd?: string; // Private key password. default: no password.
+    ipcert?: boolean; // If the client does not send the SNI option, whether to find the corresonding IP signature certificate. default: false.
+    renegotiate?: boolean; // If this server support renegotiate. default: false.
   }
 
   interface DtlsClientOptions {
-    name: string;
-    ca: string;
-    cert: string;
-    key: string;
-    passwd: string;
-    ipcert: boolean;
-    renegotiate: boolean;
+    rejectUnauthorinzed?: boolean; // Whether the server certificate should be verified against the list of supplied CAs. default: false.
+    loadDefaultCerts?: boolean; // Whether to load JSRE/EdgerOS environment default trusted certificates. default: false.
+    ca?: string; // Trusted CA certificates chain. default: undefined.
+    cert?: string; // Client certificate.
+    key?: string; // Private key of client certificate.
+    passwd?: string; // Private key password. default: no password.
+    server?: string; // Set the server host name (usually is the server domain name) to check against the received server certificate. default: undefined.
+    renegotiate?: boolean; // If this client support renegotiate. default: false.
   }
 
   interface certOptions {
-    name: string;
-    ca: string;
-    cert: string;
-    key: string;
-    passwd: string;
+    name: string; // Server domain name.
+    ca: string; // Optional trusted CA certificates. default: no CA certificates.
+    cert: string; // Server certificate.
+    key: string; // Private key of server certificate.
+    passwd: string; // Private key password. default: no password.
   }
 
   /**
@@ -37,7 +48,7 @@ declare module "dtls" {
    * @param opt Dtls server option.
    * @param sockaddr Local address.
    */
-  function createServer(opt: DtlsClientOptions, sockaddr: SockAddr): Dtls;
+  function createServer(opt: DtlsServerOptions, sockaddr: SockAddr): Dtls;
 
   /**
    * Create a Datagram TLS client and connects to the specified remote host. Use synchronous mode.
@@ -80,6 +91,16 @@ declare module "dtls" {
     accept(remoteAddr?: SockAddr, timeout?: number): object;
     accept(unused: any, callback: (dtls: Dtls, remoteAddr: SockAddr) => void): void;
 
+    /**
+     * This method adds a SNI(Server Name Indication) certificate to the tls server. SNI is an extension used to improve SSL or TLS for servers.
+     * It mainly solves the disadvantage that one server can only use one certificate(one domain name).
+     * With the support of the server for virtual hosts, one server can provide services for multiple domain names,
+     * so SNI must be supported to meet the demand.
+     *
+     * @param {certOptions} opt
+     * @returns {boolean}
+     * @memberof Dtls
+     */
     addcert(opt: certOptions): boolean;
 
     /**
@@ -87,10 +108,10 @@ declare module "dtls" {
      *
      * Returns: {Integer} The number of bytes actually sent, negative error.
      *
-     * @param content string to be send.
+     * @param string string to be send.
      * @param timeout Wait timeout in milliseconds. default: undefined means wait forever.
      */
-    send(content: string, timeout?: number): object;
+    send(string: string, timeout?: number): object;
     send(buffer: Buffer, offset?: number, length?: number, timeout?: number): object;
 
     /**
@@ -154,7 +175,7 @@ declare module "dtls" {
      *
      * @param ifname Network interface name. default: all network interface.
      */
-    bindToDevice(ifname: string): boolean;
+    bindToDevice(ifname?: string): boolean;
 
     /**
      * Changes the specified udp TTL value of the IP header.

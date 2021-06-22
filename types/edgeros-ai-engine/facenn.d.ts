@@ -30,13 +30,39 @@ declare module "facenn" {
 
   interface FaceKey {
     keys: FaceKey[]; // {Array} Face keys.
-    male: boolean; // {Boolean} Gender, extra only.
-    age: number; // {Integer} Age, extra only.
+    male: boolean; // {Boolean} Gender, when extra.male is true.
+    age: number; // {Integer} Age, when extra.age is true.
     emotion: 'angry' | 'disgust' | 'fear' | 'happy' | 'sad' | 'surprise' | 'neutral'; // {string} Emotion, extra only.
     live?: boolean; // Living probability, when extra.live is true.
   }
 
+  /**
+   * Detect face infos in given video buffer.
+   *
+   * @param {Buffer} videoBuf Video buffer.
+   * @param {FacennAttribute} attribute Video attribute.
+   * @param {boolean} [quick] Does quick mode?
+   * @returns {FaceInfo[]} Face info objects array which detected.
+   */
   function detect(videoBuf: Buffer, attribute: FacennAttribute, quick?: boolean): FaceInfo[];
+
+  /**
+   * Get the feature of given face info.
+   *
+   * @param {Buffer} videoBuf Video buffer.
+   * @param {FacennAttribute} attribute Video attribute.
+   * @param {FaceInfo} faceInfo Face info.
+   * @param {Object} [extra] Does need extra face key? default: undefined.
+   * @returns {FaceKey}
+   */
   function feature(videoBuf: Buffer, attribute: FacennAttribute, faceInfo: FaceInfo, extra?: Object): FaceKey;
+
+  /**
+   *  Compare the similarity between two face, return value range `0.0 ~ 1.0`.
+   *
+   * @param {FaceKey} faceKey1 Face keys 1.
+   * @param {FaceKey} faceKey2 Face keys 2.
+   * @returns {number} The similarity between two face.
+   */
   function compare(faceKey1: FaceKey, faceKey2: FaceKey): number;
 }

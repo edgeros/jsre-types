@@ -14,7 +14,7 @@ declare module "synctable" {
     set(key: string, value: number | string | boolean | object | Buffer): void;
     get(key: string): number | string | boolean | object | Buffer;
     has(key: string): boolean;
-    delete(key: string | number): void;
+    delete(key: string | number): boolean;
     clear(): void;
     forEach(callback: (value: number | string | boolean | object | Buffer, key: string | number, table: Synctable) => void, thisArg?: object): void;
     entries(): Iterator<any>;

@@ -18,13 +18,111 @@ declare module "events" {
     addEventListener(event: string, listener: (...args: any[]) => void, opts?: { once: boolean }): any;
   }
   class EventEmitter {
-    constructor(options?: EventEmitterOptions);
+    constructor();
 
-    static once(emitter: NodeEventTarget, event: string | symbol): Promise<any[]>;
-    static once(emitter: DOMEventTarget, event: string): Promise<any[]>;
-    static on(emitter: EdgerOS.EventEmitter, event: string): AsyncIterableIterator<any>;
+    /**
+     * Make target object inherit Emitter properties and methods.
+     *
+     * @static
+     * @param {Object} obj
+     * @memberof EventEmitter
+     */
+    static inherits(obj: Object): void;
 
-    static listenerCount(emitter: EdgerOS.EventEmitter, event: string | symbol): number;
+    /**
+     * Adds the `listener` callback function to the end of the listener's list for the given `event`.
+     * No checks are made to see if the `listener` has already been added.
+     * In case of multiple calls the `listener` will be added and called multiple times.
+     *
+     * @param {(string | string[])} event The name or names of the event.
+     * @param {(...arg: any) => void} listener The callback function.
+     * @returns {this} This emitter.
+     */
+    addListener(event: string | string[], listener: ListenerFunction): this;
+
+    /**
+     * Adds the `listener` callback function to the end of the listener's list for the given `event`.
+     * No checks are made to see if the `listener` has already been added. 
+     * In case of multiple calls the `listener` will be added called multiple times.
+     *
+     * @param {(string | string[])} event The name or names of the event.
+     * @param {(...arg: any) => void} listener The callback function.
+     * @returns {this} This emitter.
+     */
+    on(event: string | string[], listener: ListenerFunction): this;
+
+    /**
+     * Removes `listener` from the list of event listeners. Alias of `emitter.removeListener()`.
+     *
+     * @param {string} event The name of event.
+     * @param {ListenerFunction} listener The callback function.
+     * @returns {this} This emitter.
+     */
+    off(event: string, listener: ListenerFunction): this;
+
+    /**
+     * Synchronously call each of the listeners registered for the event, in the order they were registered,
+     * passing the supplied arguments to each.
+     *
+     * @param {string} event The name of the event.
+     * @param {...any} args Optional arguments. default: undefined.
+     * @returns {boolean} Return true if the event had listeners, false otherwise.
+     */
+    emit(event: string, ...args: any): boolean;
+
+    /**
+     * Adds the `listener` as a one time listener for the `event`.
+     * Using this method, it is possible to register a listener that is called at most once for a particular `event`.
+     * The listener will be invoked only once, when the first `event` is emitted.
+     *
+     * @param {string} event The name of the event.
+     * @param {ListenerFunction} listener The callback function.
+     * @returns {this} This emitter.
+     */
+    once(event: string, listener: ListenerFunction): this;
+
+    /**
+     * Removes `listener` from the list of event listeners.
+     * If you add the same `listener` multiple times, this removes only one instance of them.
+     *
+     * @param {string} event The name of the event.
+     * @param {ListenerFunction} listener The callback function.
+     * @returns {this} This emitter.
+     */
+    removeListener(event: string, listener: ListenerFunction): this;
+
+    /**
+     * Removes all listeners.
+     * If `event` was specified, it only removes the listeners for that event.
+     *
+     * @param {string} [event]
+     * @returns {this}
+     * @memberof EventEmitter
+     */
+    removeAllListeners(event?: string): this;
+
+    /**
+     * Get all listened events.
+     *
+     * @returns {Array<EdgerOS.EventEmitter>} An array of all listened events.
+     */
+    eventNames(): Array<EdgerOS.EventEmitter>;
+
+    /**
+     * Returns a copy of the listener array for the event named `event`.
+     *
+     * @param {string} event The name of the event.
+     * @returns {Array<EdgerOS.EventEmitter>} An array of all listened function on this event.
+     */
+    listeners(event: string): Array<EdgerOS.EventEmitter>;
+
+    /**
+     * Returns the number of listeners for the event named `event`.
+     *
+     * @param {string} event The name of the event.
+     * @returns {number} Number of all listened functions on this event.
+     */
+    listenerCount(event: string): number;
 
     /**
      * This symbol shall be used to install a listener for only monitoring `'error'`

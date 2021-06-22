@@ -44,8 +44,10 @@ declare module "lightkv" {
     /**
      * Delete a specified record by key.
      * @param key Keyword.
+     * @return {boolean} Return `true` if there is a record and deleted, otherwise return `false`. 
+     *                   EdgerOS 1.4.2 and later versions add this return value.
      */
-    delete(key: string | number): void;
+    delete(key: string | number): boolean;
 
     /**
      * Begin a write-transaction on this database.

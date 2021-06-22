@@ -6,26 +6,91 @@ declare module "http" {
   import { Buffer } from 'buffer';
 
   interface HttpClientRequestOptions {
+    /*
+     * { socket.AF_INET | socket.AF_INET6 } If the url is provided as a domain name, the domain name is resolved to an ipv4 or ipv6 address based on the domain. 
+     * default: socket.AF_INET.
+     */
     domain?: string;
-    method?: string;
-    path?: string;
-    timeout?: number;
-    headers?: object;
-    forbidAutoEnd?: object;
-    post?: string | Buffer;
+    /* 
+     * Server socket address. default: Use url parameter resolution, if you request the same domain name multiple times,
+     * it is recommended to set this parameter after manual domain name resolution to speed up the request.
+     */
+    saddr: Object;
+    method?: string; // Http method, default: GET.
+    path?: string; // The request uri path, default: url parsed path.
+    timeout?: number; // The request timeout. If the request times out, `HttpClient` will close.
+    headers?: object; // Http headers.
+    host?: string; // The domain name or IP address of the server to which the request is sent. default: url host.
+    post?: string | Buffer | Object; // The request post data, default: undefined.
+    async?: boolean; // true - return `Promise` object; false - return `HttpClient` object, default: false.
   }
 
-  function request(url: string, callback: (res: HttpClientResponse) => void, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient;
-  function get(url: string, callback: (res: HttpClientResponse) => void, options?: HttpClientRequestOptions, tlsOpt?: object): any;
+  /**
+   * This `HttpClient` object (request object) is created internally and retured from `http.request()`.
+   * The response object will passed to the callback function.
+   *
+   * @param {string} url Http url.
+   * @param {(res: HttpClientResponse) => void} callback Request handler.
+   * @param {HttpClientRequestOptions} [options]
+   * @param {object} [tlsOpt] TLS securely connections options. default: undefined, means use TCP connection.
+   * @returns {HttpClient} true - return `Promise` object; false - return `HttpClient` object, default: false.
+   */
+  function request(url: string, callback: (res: HttpClientResponse) => void, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<any>;
+  
+  /**
+   * Accepts the same options as `http.request()`, with the method always set to `GET`.
+   * Since most requests are `GET` requests without bodies, http provides this convenience method.
+   * The only difference between this method and `http.request()` is that it sets the method to `GET` and calls `request.end()` automatically.
+   *
+   * @param {string} url Http url.
+   * @param {(res: HttpClientResponse) => void} callback
+   * @param {HttpClientRequestOptions} [options]
+   * @param {object} [tlsOpt] TLS securely connections options. default: undefined, means use TCP.
+   * @returns {*} The http client request object or promise object. depend on `async` option.
+   */
+  function get(url: string, callback: (res: HttpClientResponse) => void, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<any>;
 
   class HttpClient {
     constructor(callback: (...args: any) => void, saddr: { res: HttpClientResponse }, tlsOpt?: object);
 
-    open(timeout: number | string): HttpClient;
+    /**
+     * open
+     *
+     * @param {number} timeout Request timeout, If the request times out, `HttpClient` will close. default: wait connect forever.
+     * @param {boolean} async true - return `Promise` object; false - return client object, default: false.
+     * @returns {HttpClient} The http client request object or promise object. depend on `async` param.
+     */
+    open(timeout?: number, async?: boolean): HttpClient | Promise<any>; 
+    
+    /**
+     * Close http connection.
+     */
     close(): void;
+
+    /**
+     * Send a request to the http server, this request method can be `GET`, `PUT`, `POST`... This function will not be blocked,
+     * when the server responds, the `callback` function will be called.
+     *
+     * @param {HttpClientRequestOptions} options Request property.
+     * @param {(string | Buffer)} chunk The request post data, default: undefined.
+     */
     request(options: HttpClientRequestOptions, chunk: string | Buffer): void;
+
+    /**
+     * Send data to sever. If `Content-Length` not set, `client.write()` set 'Transfer-Encoding' to 'chunked',
+     * and this method can call multiple times. After write all data, user should call `client.end()` to end request.
+     *
+     * @param {(string | number | boolean | object | Buffer)} chunk Http body data.
+     */
     write(chunk: string | number | boolean | object | Buffer): void;
-    end(chunk?: string | number | boolean | object | Buffer): void;
+
+    /**
+     * If `chunk` is not empty, the `chunk` is sent to the server and the request is ended. 
+     * After the request is finished, continuing to send data is invalid.
+     *
+     * @param {(string | number | boolean | object | Buffer)} [chunk] Http post data. default: undefined.
+     */
+    end(chunk: string | number | boolean | object | Buffer): void;
 
     on(event: "response" | "end" | "close" | "error" | "finish" | 'aborted', callback: (res?: HttpClientResponse) => void): this;
     on(event: 'error', callback: (error: Error) => void): this;
@@ -43,25 +108,84 @@ declare module "http" {
   }
 
   class HttpServer {
-    static createServer(group: string, handle: (...args: any) => void, subs: number, subMode?: string, saddr?: object, tlsOpt?: object): HttpServer;
-
-    static createSubServer(group: string, handle: (...args: any) => void): HttpServer;
     constructor();
 
+    /**
+     * This method creates a master-server. When the master-server starts, it can create a specified number(subs)
+     * of sub-servers (subs), refer to `HttpServer mult-task`.
+     *
+     * @param {string} group Server group name(master server module). Usually the module name is used as the group name.
+     *                       If the server work on mult-task mode(subs > 0) and `subMode` is missing, the `group` must be support as app module name.
+     * @param {(...args: any) => void} handle Http request handle function.
+     * @param {number} subs The new task counts, if subs > 0, server run in mult-task.
+     * @param {string} [subMode] sub-server module. If the sub-server is the same module as the master-server, 
+     *                           `subMode` can be defualted and provided by `group`. Otherwise, `subMode` represents the sub-server module.
+     * @param {object} [saddr] Server socket address. If the port of `saddr` is set to 0, the setting port will be assigned automatically, 
+     *                         and the port can be found through `server.port()`.
+     * @param {object} [tlsOpt] TLS securely connections options. default: undefined, means use TCP connection.
+     * @returns {HttpServer}
+     */
+    static createServer(group: string, handle: (...args: any) => void, subs: number, subMode?: string, saddr?: object, tlsOpt?: object): HttpServer;
+
+    /**
+     * Use this method to create a sub-server when the sub-server is not the same module as the master-server.
+     *
+     * @param {string} group Server group name, the same as master-server group name.
+     * @param {(...args: any) => void} handle Http request handle function.
+     * @returns {HttpServer}
+     */
+    static createSubServer(group: string, handle: (...args: any) => void): HttpServer;
+
+    /**
+     * Get whether the server object is the master server.
+     *
+     * @returns {boolean} Whether it is the master server.
+     */
     isMaster(): boolean;
+
     groupName: {
-      group: string;
-      name: string;
+      group: string; // The server group name, see `HttpServer mult-task`.
+      name: string; // The server name, see `HttpServer mult-task`.
     };
+
+    /**
+     * This method adds a SNI (Server Name Indication) certificate to the tls server. SNI is an extension used to improve SSL or TLS for servers.
+     * It mainly solves the disadvantage that one server can only use one certificate (one domain name). With the support of the server for virtual hosts,
+     * one server can provide services for multiple domain names, so SNI must be supported to meet the demand.
+     *
+     * @param {{ name: string, ca: string, cert: string, key: string, passwd: string, }} opt
+     *          name: Server domain name.
+     *          ca: Optional trusted CA certificates. default: no CA certificates.
+     *          cert: Server certificate.
+     *          key: Private key of server certificate.
+     *          passwd: Private key password. default: no password.
+     * @returns {boolean} Whether if was added successfully.
+     */
     addcert(opt: { name: string, ca: string, cert: string, key: string, passwd: string, }): boolean;
+
+    /**
+     * Start http server.
+     *
+     * @returns {this}
+     */
     start(): this;
+
+    /**
+     * Stop http server.
+     *
+     * @returns {this}
+     */
     stop(): this;
+
+    /**
+     * When the server starts with the `MASTER` module, `server.port()` gets the port of the server, otherwise it returns `undefined`.
+     *
+     * @returns {(number | undefined)} Server socket port.
+     */
     port(): number | undefined;
 
-    addListener(event: "start" | "stop" | "request", listener: () => void): this;
-
     on(event: "start" | "stop", listener: () => void): this;
-    on(event: "request" | "upgrade", listener: (req: HttpServerRequest, res: HttpServerResponse) => void): this;
+    on(event: "request", listener: (req: HttpServerRequest, res: HttpServerResponse) => void): this;
   }
 
   class HttpServerRequest extends HttpInput {
@@ -76,19 +200,15 @@ declare module "http" {
 
   class HttpServerResponse extends HttpOutput {
     constructor();
-    method: string;
-    path: string;
-    statusCode: number;
-    statusMessage: string;
-    setHeader(key: string, val: string): void;
-    getHeader(key: string): string;
-    removeHeader(key: string): void;
-    clearHeaders(): void;
-    writeHead(headOpt: object | number | string, headers: string): void;
-    end(chunk?: any): void;
-    write(chunk: any): void;
 
-    addListener(event: "end", listener: () => void): this;
+    /**
+     * Close the response session and close HTTP connection.
+     *
+     * @param {Error} [error] Error which will be passed as payload in `error` event.
+     * @returns {this}
+     */
+    destroy(error?: Error): this;
+
     on(event: "end" | "finish" | "close" | "error" | "drain", listener: () => void): this;
   }
 
@@ -166,6 +286,13 @@ declare module "http" {
     clearHeaders(): void;
 
     /**
+     * Set or get HTTP status. If `status` undefined, this method return output `statusCode`. Otherwise, set output `statusCode`.
+     *
+     * @param {string} [status] HTTP status.
+     */
+    status(status?: string): void;
+
+    /**
      * Send data to client/server. If Content-Length not set, output.write() set 'Transfer-Encoding' to 'chunked',
      * and this method can call multiple times. After write all data, user should call output.end() to end output.
      *
@@ -180,6 +307,11 @@ declare module "http" {
      * @param chunk Http body data. default: undefined.
      */
     end(chunk?: string | number | boolean | object | Buffer): void;
+
+    /**
+     * Get whether the current network connection is connected.
+     */
+    connected(): void;
   }
 
   class HttpInput {

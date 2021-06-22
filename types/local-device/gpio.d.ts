@@ -53,14 +53,13 @@ declare module "gpio" {
      * @param timeout Wait timeout in milliseconds. default: undefined means wait forever.
      */
     wait(timeout?: number): boolean;
-    /**
-     * Set current mode of GPIO.
-     *
-     * @param flags GPIO open flags.
-     */
-    wait(flags: number): void;
 
-    async(enable: boolean): void;
+    /**
+     * Wait interrupt using asynchronous mode. After enabling this mode, the `gpio.wait()` method will be deleted.
+     *
+     * @param {boolean} [enable] Whether to enable asynchonous mode. default: true.
+     */
+    async(enable?: boolean): void;
 
     /**
      * Get current mode of GPIO.
@@ -69,6 +68,11 @@ declare module "gpio" {
      */
     getMode(): number;
 
+    /**
+     * Set current mode of GPIO.
+     *
+     * @param {number} flags GPIO open flags.
+     */
     setMode(flags: number): void;
   }
   export = Gpio;

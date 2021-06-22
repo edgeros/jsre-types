@@ -6,27 +6,29 @@ declare module "fs" {
   import { Buffer } from "buffer";
 
   interface fsStatInfo {
-    dev: string;
-    ino: number;
-    mode: string;
-    nlink: number;
-    uid: number;
-    gid: number;
-    size: number;
-    atime: number;
-    mtime: number;
-    ctime: number;
-    blksize: number;
-    blocks: number;
+    dev: string; // Device ID of device containing file.
+    ino: number; // File inode number.
+    mode: string; // File mode, The file type can be judged by this member.
+    nlink: number; // Number of hard links to the file.
+    uid: number; // User ID of file.
+    gid: number; // Group ID of file.
+    size: number; // File size in bytes.
+    atime: number; // Time of last access (millisecond from 1970-01-01 00:00:00 UTC).
+    mtime: number; // Time of last modification (millisecond from 1970-01-01 00:00:00 UTC).
+    ctime: number; // Time of last status change (millisecond from 1970-01-01 00:00:00 UTC).
+    blksize: number; // I/O block size.
+    blocks: number; // Number of  blocks allocated.
 
-    isBlockDevice(): boolean;
-    isCharacterDevice(): boolean;
-    isDirectory(): boolean;
-    isFIFO(): boolean;
-    isFile(): boolean;
-    isSocket(): boolean;
-    isSymbolicLink(): boolean;
+    isBlockDevice(): boolean; // Whether it is a block device file.
+    isCharacterDevice(): boolean; // Whether it is a character device file.
+    isDirectory(): boolean; // Whether it is a directory.
+    isFIFO(): boolean; // Whether it is a FIFO device file.
+    isFile(): boolean; // Whether it is a Ordinary data file.
+    isSocket(): boolean; // Whether it is a socket file.
+    isSymbolicLink(): boolean; // Whether it is a symbolic link file.
   }
+
+
 
   interface direntInfo {
     name: string;
@@ -34,10 +36,10 @@ declare module "fs" {
   }
 
   interface ReadStreamOptions {
-    flags?: string; // default: 'r'
-    mode?: number; // default: 0666
-    start?: number; // default: 0
-    end?: number; // default: infinity
+    flags?: string; // See support of file system `flags`. default: 'r'
+    mode?: number; // default: 0o666
+    start?: number; // Start of file, default: 0
+    end?: number; // End of file, default: infinity
     autoClose?: boolean; // default: true
     emitClose?: boolean; // default: false
     highWaterMark?: number; // default: 64k
@@ -46,7 +48,7 @@ declare module "fs" {
 
   interface WriteStreamOptions {
     flags?: string; // default: 'w'
-    mode?: number; // default: 0666
+    mode?: number; // default: 0o666
     start?: number; // default: 0
     autoClose?: boolean; // default: true
     emitClose?: boolean; // default: false
@@ -77,7 +79,7 @@ declare module "fs" {
   function access(path: string, flags: number): boolean;
 
   /**
-   * Check if the specified file is accessible.
+   * Same as `fs.access(path, fs.F_OK)`.
    *
    * Returns: {boolean} Returns true if the file exists, false otherwise.
    *
@@ -94,7 +96,7 @@ declare module "fs" {
    *
    * @param path File path.
    * @param flags Open flags, detailed in the following. default: 'r'.
-   * @param mode If it is a new file, specify the file permissions. default:0666.
+   * @param mode If it is a new file, specify the file permissions. default:0o666.
    */
   function open(path: string, flags?: number, mode?: number): File;
 
@@ -148,20 +150,26 @@ declare module "fs" {
    * Returns: {Boolean} Whether all data is successfully written.
    *
    * @param path File path.
-   * @param content Content to write.
+   * @param string Content to write.
+   * @param buffer Write data buffer.
+   * @param offset Buffer offset. default: 0.
+   * @param length Write length. default: buffer.length.
    * @param mode File create mode. default: 0666.
    */
-  function writeFile(path: string, content: string, mode?: number): boolean;
+  function writeFile(path: string, string: string, mode?: number): boolean;
   function writeFile(path: string, buffer: Buffer, offset?: number, length?: number, mode?: number): boolean;
 
   /**
-   * path {string} File path.
+   * Application often need to save configuration objects, `fs.load()` provides a simple processing method to load configuration in JSON format.
    * @param path File path.
    * @param def The default object returned if load fails. default: undefined.
+   * @return Object saved in the specified file.
    */
   function load(path: string, def?: object): object;
 
   /**
+   * Convert a configuration object to JSON format and save it in a specified file, and use it with `fs.load()` for simple configuration saving ad loading.
+   * 
    * @param path File path.
    * @param obj Objects to be stored.
    */
@@ -188,13 +196,13 @@ declare module "fs" {
    */
   function stat(path: string, followLink?: boolean): fsStatInfo;
 
-  function S_ISDIR(mode: string): boolean;
-  function S_ISCHR(mode: string): boolean;
-  function S_ISBLK(mode: string): boolean;
-  function S_ISREG(mode: string): boolean;
-  function S_ISLNK(mode: string): boolean;
-  function S_ISFIFO(mode: string): boolean;
-  function S_ISSOCK(mode: string): boolean;
+  function S_ISDIR(mode: string): boolean; // If true it is a directory.
+  function S_ISCHR(mode: string): boolean; // If true it is a character device.
+  function S_ISBLK(mode: string): boolean; // If true it is block device.
+  function S_ISREG(mode: string): boolean; // If true it is general data file.
+  function S_ISLNK(mode: string): boolean; // If true it is link file.
+  function S_ISFIFO(mode: string): boolean; // If ture it is fifo/pipe file.
+  function S_ISSOCK(mode: string): boolean; // If true it is socket file.
 
   /**
    * Set file or directory permissions. Only privileged mode allows setting execution permissions.
@@ -208,9 +216,11 @@ declare module "fs" {
 
   /**
    * Set file or directory owner. Only privileged mode allows.
+   * Same as `file.chown()` but use path as argument.
    * @param path File path.
    * @param uid Host OS user ID.
    * @param gid Host OS group ID.
+   * @retunr Whether the owner set is successful.
    */
   function chown(path: string, uid: number, gid: number): boolean;
 
@@ -225,10 +235,11 @@ declare module "fs" {
   function truncate(path: string, offset: number): boolean;
 
   /**
-   *
+   * Modify file access time and modification time attributes.
    * @param path File path.
    * @param atime Access time.
    * @param mtime Modification time.
+   * @return Whether the operation is successful.
    */
   function utimes(path: string, atime: number | Date | string, mtime: number | Date | string): boolean;
 
@@ -236,12 +247,16 @@ declare module "fs" {
    * Compare the contents of two files, return true if they are the same, otherwise return false.
    * @param path1 First file path.
    * @param path2 Second file path.
+   * @return Comparing results.
    */
   function compare(path1: string, path2: string): boolean;
 
   /**
-   *
+   * If the specified `path` is a directory, this function traverses all subdirectories
+   * and calculates the sum of all file sizes in the directory. 
+   * If `path` is file, returns the size of the file, or 0 if `path` target infomation cannot be obtained.
    * @param path Directory or file path.
+   * @return Total file size.
    */
   function size(path: string): number;
 
@@ -260,8 +275,9 @@ declare module "fs" {
   /**
    * Create a directory and return false if the directory exists. Otherwise create new directory and returns true.
    * @param path Directory path.
-   * @param mode File mode. default: 0666.
+   * @param mode File mode. default: 0o666.
    * @param recursion Whether to recursively fill in the missing directory. default: false.
+   * @return Whether create directory is successfull.
    */
   function mkdir(path: string, mode?: string, recursion?: boolean): boolean;
 
@@ -271,12 +287,21 @@ declare module "fs" {
    *
    * Returns: {Boolean} Whether remove directory is successful.
    *
-   * @param path File path.
+   * @param path Directory path.
    * @param recursion Whether to recursively delete subfiles. default: false.
    * @param ignoreError Whether to continue deleting when an error occurs. default: false.
    */
   function rmdir(path: string, recursion?: boolean, ignoreError?: boolean): boolean;
 
+  /**
+   * Clear all files or directories in a directory, `recursion` is `true` means that recursive cleanup of subdirectories is encountered.
+   * If `ignoreError` is `false`, an exception will be thrown when an error is encountered.
+   *
+   * @param {string} path
+   * @param {boolean} [recursion]
+   * @param {boolean} [ignoreErro]
+   * @returns {boolean}
+   */
   function clrdir(path: string, recursion?: boolean, ignoreErro?: boolean): boolean;
 
   /**
@@ -297,7 +322,7 @@ declare module "fs" {
    *
    * Returns: {Array} object dirent array.
    *
-   * @param path File path.
+   * @param path Directory path.
    */
   function dumpdir(path: string): direntInfo[];
 
@@ -347,7 +372,7 @@ declare module "fs" {
      *
      * @param path File path.
      * @param flags Open flags, detailed in the following. default: 'r'.
-     * @param mode If it is a new file, specify the file permissions. default:0666.
+     * @param mode If it is a new file, specify the file permissions. default:0o666.
      */
     constructor(path: string, flags?: number, mode?: number);
 
@@ -382,10 +407,13 @@ declare module "fs" {
      *
      * Returns: {Integer} The number of bytes actually write.
      *
-     * @param content Content to write.
+     * @param string Content to write.
+     * @param buffer Write data buffer.
+     * @param offset Buffer offset. default: 0.
+     * @param length Write length. default: buffer.length.
      * @param position Position. default: current file position.
      */
-    write(content: string, position?: number): number;
+    write(string: string, position?: number): number;
     write(buffer: Buffer, offset?: number, length?: number, position?: number): number;
 
     /**
@@ -435,6 +463,13 @@ declare module "fs" {
      */
     chmod(mode: number): boolean;
 
+    /**
+     * Set file owner. Only privileged mode allows.
+     *
+     * @param {number} uid Host OS user ID.
+     * @param {number} gid Host OS group ID.
+     * @returns {boolean} Whether the owner set successful.
+     */
     chown(uid: number, gid: number): boolean;
 
     /**
@@ -446,8 +481,26 @@ declare module "fs" {
      */
     truncate(offset: number): boolean;
 
+    /**
+     * Compare the contents of two files, return `true` if they are the same, otherwise return `false`. If `target` is a `String`,
+     * it means to the target file path.
+     *
+     * @param {(string | File)} target The target file.
+     * @param {number} [targetStart] Target file start offset. default: 0.
+     * @param {number} [targetEnd] Target file end offset (not include). default: target.size().
+     * @param {number} [sourceStart] Source file start offset. default: 0.
+     * @param {number} [sourceEnd] Source file end offset (not include). default: this.size().
+     * @returns {boolean} Comparing results.
+     */
     compare(target: string | File, targetStart?: number, targetEnd?: number, sourceStart?: number, sourceEnd?: number): boolean;
 
+    /**
+     * Modify file access time and modification time attributes.
+     *
+     * @param {(number | Date | string)} atime Access time.
+     * @param {(number | Date | string)} mtime Modification time.
+     * @returns {boolean} Whether the operation is successful.
+     */
     utimes(atime: number | Date | string, mtime: number | Date | string): boolean;
 
     /**
@@ -470,23 +523,26 @@ declare module "fs" {
   type readEventTypes = "close" | "open" | "ready" | "data" | "end" | "error" | "pause" | "readable" | "resume";
 
   class ReadStream {
+    // The number of bytes that have been read so far.
     bytesRead: number;
+    // The path to the file the stream is reading from as specified in the first argument to `fs.createReadStream()`.
     path: string;
+    // This property is `true` if the underlying file has not been opened yet, i.e. before the `ready` event is emitted.
     pending: boolean;
 
-    destroy(err?: Error): this;
-    isPaused(): boolean;
-    pause(): this;
-    pipe(destination: WriteStream, options?: ReadStreamOptions): WriteStream;
-    read(size?: number): Buffer | null;
-    resume(): this;
-    unpipe(destination?: WriteStream): this;
-    destroyed: boolean;
-    readable: boolean;
-    readonly readableEnded: boolean;
-    readonly readableFlowing: boolean | null;
-    readonly readableHighWaterMark: number;
-    readonly readableLength: number;
+    destroy(err?: Error): this; // See stream.Readable from detail.
+    isPaused(): boolean; // See stream.Readable from detail.
+    pause(): this; // See stream.Readable from detail.
+    pipe(destination: WriteStream, options?: ReadStreamOptions): WriteStream; // See stream.Readable from detail.
+    read(size?: number): Buffer | null; // See stream.Readable from detail.
+    resume(): this; // See stream.Readable from detail.
+    unpipe(destination?: WriteStream): this; // See stream.Readable from detail.
+    destroyed: boolean; // See stream.Readable from detail.
+    readable: boolean; // See stream.Readable from detail.
+    readonly readableEnded: boolean; // See stream.Readable from detail.
+    readonly readableFlowing: boolean | null; // See stream.Readable from detail.
+    readonly readableHighWaterMark: number; // See stream.Readable from detail.
+    readonly readableLength: number; // See stream.Readable from detail.
 
     on(event: readEventTypes, listener: (chunk?: any) => void): this;
   }

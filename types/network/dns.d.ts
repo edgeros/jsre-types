@@ -17,8 +17,7 @@ declare module "dns" {
   function lookup(hostname: string, domain: number, callback: (error: Error, ipaddr: string) => void, timeout?: number): void;
 
   /**
-   * Find the IP address of the specified hostname.
-   * The domain name query process task is blocked until the query success or times out.
+   * Same as `dns.lookup()` but returns object. 
    *
    * Returns: {string} IP address.
    *
@@ -27,8 +26,9 @@ declare module "dns" {
    * @param callback callback
    * @param timeout timeout
    */
-  function gethostbyname(hostname: string, domain: number, callback?: (error: Error, ipaddr: string) => void, timeout?: number): object;
+  function gethostbyname(hostname: string, domain?: number): object;
   function gethostbyname(hostname: string, callback: (error: Error, ipaddr: string) => void, timeout?: number): object;
+  function gethostbyname(hostname: string, domain: number, callback?: (error: Error, ipaddr: string) => void, timeout?: number): object;
 
   /**
    * Find the IP address of the specified hostname.
@@ -45,7 +45,19 @@ declare module "dns" {
   function getaddrinfo(hostname: string, domain?: number, flags?: number, callback?: (error: Error, ipaddr: string) => void, timeout?: number): string;
   function getaddrinfo(hostname: string, callback: (error: Error, ipaddr: string) => void, timeout?: number): string;
 
+  /**
+   * In synchronous mode, set the current task DNS cache alive time. When `ms` is 0, it means that DNS result cache is not used,
+   * and the minimum effective time of `ms` is 10 seconds. Default setting is 300 seconds.
+   *
+   * @param {number} [ms] DNS cache alive in milliseconds. default: undefined (get current setting)
+   * @returns {number} Current DNS cache alive time.
+   */
   function cacheTimeout(ms?: number): number;
 
+  /**
+   * Flush all DNS cache. If the `hostname` argument is specified, only the DNS cache of the specified `hostname` will be flushed.
+   *
+   * @param {string} hostname Hostname.
+   */
   function cacheFlush(hostname: string): void;
 }
