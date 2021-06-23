@@ -168,6 +168,7 @@
 /// <reference path="./edgeros-image/barencoder.d.ts" />
 /// <reference path="./edgeros-image/bardecoder.d.ts" />
 /// <reference path="./edgeros-image/imagecodec.d.ts" />
+/// <reference path="./edgeros-image/thumbnail.d.ts" />
 
 /*----------------------------------------------*
  *                                              *

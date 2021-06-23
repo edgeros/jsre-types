@@ -47,7 +47,7 @@ declare module "socket.io" {
      * @param server The server to bind to.
      * @param options options
      */
-    constructor(server: HttpServer | WebApp, options: IoOptions);
+    constructor(server: HttpServer | WebApp, options?: IoOptions);
 
     /**
      * If value is true the attached server (see server.attach()) will serve the client files.
@@ -58,7 +58,7 @@ declare module "socket.io" {
      *
      * @param value default: true.
      */
-    serveClient(value: boolean): this | boolean;
+    serveClient(value?: boolean): this | boolean;
 
     /**
      * Sets the path value under which engine.io and the static files will be served.
@@ -68,7 +68,7 @@ declare module "socket.io" {
      *
      * @param value default: true.
      */
-    path(value: string): this | string;
+    path(value?: string): this | string;
 
     /**
      * Sets the allowed origins value. Defaults to any origins being allowed.
@@ -98,7 +98,7 @@ declare module "socket.io" {
      * @param server The server to bind to.
      * @param options options
      */
-    attach(server: HttpServer | WebApp, options: object): void;
+    attach(server: HttpServer | WebApp, options?: object): void;
 
     /**
      * Advanced use only. Binds the server to a specific engine.io Server (or compatible API) instance.
@@ -231,26 +231,6 @@ declare module "socket.io" {
      * @param fn fn
      */
     use(fn: CallbackFunction): void;
-
-    /**
-     * Sends a message event. See socket.emit(eventName[, ...args][, ack])
-     *
-     * Returns {Socket}
-     *
-     * @param args args
-     */
-    use(...args: any): Socket;
-
-    /**
-     * Emits an event to the socket identified by the string name.
-     * Any other parameters can be included. All serializable datastructures are supported, including Buffer.
-     *
-     * Returns {Socket}
-     *
-     * @param eventName event name
-     * @param args args
-     */
-    use(eventName: string, ...args: any): Socket;
 
     send(...args: any): Socket;
     send(ack: CallbackFunction): Socket;

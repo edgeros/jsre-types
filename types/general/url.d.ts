@@ -25,9 +25,32 @@ declare module 'url' {
 
   class URL {
     constructor(input: string, base?: string);
+
+    /**
+     * The URL.parse() method takes a URL string, parses it, and returns a URL object.
+     * @param urlString The URL string to parse.
+     * @param parseQueryString If true, the query property will always be set to an object returned by the querystring module's parse() method.
+     *                         If false, the query property on the returned URL object will be an unparsed, undecoded string. default: false.
+     */
     static parse(urlString: string, parseQueryString?: boolean): URLOptions;
+
+    /**
+     * Create a customizable serialization of a URL String representation of a URL object.
+     * @param url URL object create by URL.parse().
+     * @param options Format options.
+     */
     static format(url: string, options?: formatOptions): string;
+
+    /**
+     * Create a local file URL object.
+     * @param path File path.
+     */
     static pathToFileURL(path: string): URLOptions;
+
+    /**
+     * Get file path by specified URL.
+     * @param url URL, protocol must be 'file'.
+     */
     static fileURLToPath(url: string | object): string;
 
     hash: string;

@@ -202,10 +202,20 @@ declare module "task" {
       delete(key: string): void;
     };
 
+    /**
+     * Get the task ID created before, If the return 0, the task ID is invalid.
+     */
     id(): number;
 
+    /**
+     * Get whether the specified task is alive. If this task is detached, you cannot get the alive status of this task.
+     */
     isAlive(): boolean;
 
+    /**
+     * This function requests to delete the target task. The target task can detect the delete request by using `Task.testCancel()`.
+     * @param callback Execute this callback after the task exits. default: no callback.
+     */
     cancel(callback?: (id: number, retVal: number) => void): number;
 
     /**

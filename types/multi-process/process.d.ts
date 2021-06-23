@@ -84,10 +84,10 @@ declare module "process" {
    * Install a SIGTERM signal callback. When the current process receives the SIGTERM signal,
    * it will kill the specified child process and then exit. Kill child process to also use SIGTERM signal.
    * @param pid Process ID.
-   * @param remove Whether to remove previously added pids from the recycle list.
+   * @param remove Whether to remove previously added pids from the recycle list. or SigNo
    * returns Whether the clear save is successfully.
    */
-  function termClear(pid: number, remove?: boolean): boolean;
+  function termClear(pid: number, remove?: boolean | number): boolean;
 
   /* Reserved function. */
   function termSigno(pid: number, signo: number): boolean;
@@ -148,7 +148,7 @@ declare module "process" {
    *
    * @param array Whether to output as an array mode. default: false.
    */
-  function environ(array: boolean): object | string[];
+  function environ(array?: boolean): object | string[];
 
   function on(event: "will", handler: () => void): void;
   function on(event: "child", handler: (child: any) => void): void;

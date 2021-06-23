@@ -24,15 +24,70 @@ declare module "videooverlay" {
     'F32X53', // 32X53 font.
   }
   class VideoOverlay {
+    /**
+     * Clear all overlays.
+     */
     clear(): boolean;
+
+    /**
+     * Draw a text on overlay.
+     * @param x x position.
+     * @param y y position.
+     * @param text Text which need draw.
+     * @param color Text color.
+     * @param bcolor Background color.
+     */
     text(x: number, y: number, text: string, color: number, bcolor?: number): boolean;
+
+    /**
+     * Draw a point on overlay.
+     * @param x x position.
+     * @param y y position.
+     * @param color Point color.
+     */
     point(x: number, y: number, color: number): boolean;
+
+    /**
+     * Draw a line on overlay.
+     * @param x0 x0 position.
+     * @param y0 y0 position.
+     * @param x1 x1 position.
+     * @param y1  y1 position.
+     * @param color Line color.
+     * @param width Line width.
+     */
     line(x0: number, y0: number, x1: number, y1: number, color: number, width?: number): boolean;
+
+    /**
+     * Draw a rectangle on overlay.
+     * @param x0 x position of upper left corner.
+     * @param y0 y position of upper left corner.
+     * @param x1 x position of lower right corner.
+     * @param y1 y position of lower right corner.
+     * @param color Line color.
+     * @param width Line width.
+     * @param r The radius of fillet.
+     * @param fill Does fill rectangle.
+     */
     rect(x0: number, y0: number, x1: number, y1: number, color: number, width?: number, r?: number, fill?: boolean): boolean;
 
+    /**
+     * Draw a circle on overlay.
+     * @param x x position of center.
+     * @param y y position of center.
+     * @param r Inter Line color.
+     * @param color Line color.
+     * @param width Line width.
+     * @param fill Does fill circle.
+     */
     circle(x: number, y: number, r: number, color: number, width?: number, fill?: boolean): void;
+
     font(font: FontOptions): boolean;
 
+    /**
+     * Draw all overlays to specified buffer.
+     * @param buf Buffer which need to be draw.
+     */
     draw(buf: Buffer): boolean;
   }
   export = VideoOverlay;

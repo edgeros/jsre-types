@@ -59,8 +59,16 @@ declare module "redis" {
   function createClient(redis_url: string, options?: RedisOptions): RedisClient;
   function createClient(port: number, host?: string, options?: RedisOptions): RedisClient;
 
+  /**
+   * A handy callback function for displaying return values when testing.
+   */
   function print(): void;
 
+  /**
+   * Calling add_command will add a new command to the prototype. The exact command name will be used when calling using this new command.
+   * Using arbitrary arguments is possible as with any other command.
+   * @param command_name Command name.
+   */
   function add_command(command_name: string): void;
 
   interface Subscriber {
@@ -85,10 +93,30 @@ declare module "redis" {
   }
 
   class RedisClient {
+    /**
+     * When connecting to a Redis server that requires authentication, the `AUTH` command must be sent as the first command after connecting.
+     * This can be tricky to coordinate with reconnections, the ready check, etc. To make this easier, `client.auth()` stashes `password` and will send it after each connection,
+     * including reconnections. `callback` is invoked only once, after the response to the very first `AUTH` command sent.
+     * @param password Password.
+     * @param callback Callback function.
+     */
     auth(password: string, callback?: (error: Error) => void): void;
 
+    /**
+     * This sends the quit command to the redis server and ends cleanly right after all running commands were properly handled.
+     * If this is called while reconnecting (and therefore no connection to the redis server exists) it is going to end the connection right away instead of resulting in further reconnections!
+     * All offline commands are going to be flushed with an error in that case.
+     * @param callback Callback function.
+     */
     quit(callback: (error: Error) => void): void;
 
+    /**
+     * Forcibly close the connection to the Redis server. That this does not wait until all replies have been parsed.
+     * If you want to exit cleanly, call client.quit() as mentioned above.
+     * You should set flush to true, if you are not absolutely sure you do not care about any other commands.
+     * If you set flush to false all still running commands will silently fail.
+     * @param flush Flush.
+     */
     end(flush: boolean): void;
 
     on(event: "ready" | "connect" | "end" | "warning", callback: () => void): void;

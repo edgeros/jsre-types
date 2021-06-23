@@ -30,7 +30,22 @@ declare module "sddc" {
 
   class Sddc {
     constructor(ifname: string);
+
+    /**
+     * Set the current device information. When other devices request information about this device, this device will provide this information.
+     * When the current device information changes, the device notifies previously discovered devices and lets them re-acquire the new information.
+     * @param product Production information.
+     * @param vendor Product manufacturer.
+     * @param excl This device is App exclusive. default: false.
+     * @param server Server summary provided by this machine. default: {}.
+     */
     setInfo(product: SddcSetInfoProduct, vendor: string, excl?: boolean, server?: object): void;
+
+    /**
+     * The SDDC protocol management object allows you to set a filter callback. Any data packet first goes through the filter callback.
+     * If it is allowed, the protocol processing is performed.
+     * @param callback Set communication filter.
+     */
     setFilter(callback: (uid: string, addr: string) => void): void;
 
     /**
@@ -41,7 +56,19 @@ declare module "sddc" {
     security(uid: string, token: string): void;
     start(): void;
     close(): void;
+
+    /**
+     * Send a discover packet to discover surrounding or specified devices.
+     * @param dest Destination IP address. default: local broadcast.
+     */
     discover(dest?: string): void;
+
+    /**
+     * Invite a previously discovered device to the network.
+     * @param uid Device unique ID.
+     * @param callback Invitation result.
+     * @param retries Number of retries. default: 4.
+     */
     invite(uid: string, callback?: (error: Error) => void, retries?: number): void;
     delete(uid: string): boolean;
 

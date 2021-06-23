@@ -88,6 +88,13 @@ declare module "tls" {
     accept(remoteAddr: SockAddr, timeout?: number): Tls;
     accept(unused: any, callback: (tls: Tls, remoteAddr: SockAddr) => void): Tls;
 
+    /**
+     * This method adds a SNI (Server Name Indication) certificate to the tls server. SNI is an extension used to improve SSL or TLS for servers.
+     * It mainly solves the disadvantage that one server can only use one certificate (one domain name).
+     * With the support of the server for virtual hosts, one server can provide services for multiple domain names,
+     * so SNI must be supported to meet the demand.
+     * @param opt The server option.
+     */
     addcert(opt: certOptions): boolean;
 
     /**
@@ -205,7 +212,7 @@ declare module "tls" {
      *
      * @param timeToLive IP TTL: 0 ~ 255.
      */
-    setTTS(timeToLive: number): boolean;
+    setTTL(timeToLive: number): boolean;
 
     /**
      * Specifies that the rules used in validating addresses supplied to socket.bind() should allow reuse of local addresses.

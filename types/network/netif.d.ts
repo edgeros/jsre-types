@@ -60,8 +60,16 @@ declare module "netif" {
      */
     static list(): IfNameItem[];
 
+    /**
+     * Get network interface type.
+     * @param ifname Network interface name.
+     */
     static type(ifname: string): string;
 
+    /**
+     * Get network interface statistics since system startup.
+     * @param ifname Network interface name.
+     */
     static stats(ifname: string): IfStats;
 
     /**
@@ -72,7 +80,7 @@ declare module "netif" {
     static ifnameList(): string[];
 
     /**
-     * Get the specified index network interface name, if not found return undefined.
+     * Get the specified `index` network interface name, if not found return `undefined`.
      *
      * Returns: {string} Network interface name.
      *
@@ -81,7 +89,7 @@ declare module "netif" {
     static indexToIfname(index: number): string;
 
     /**
-     * Get the specified name network interface index, if not found return zero.
+     * Get the specified `name` network interface index, if not found return zero.
      *
      * Returns: {number} Network interface index.
      *
@@ -103,6 +111,9 @@ declare module "netif" {
      */
     ifname(): string;
 
+    /**
+     * Get network interface type.
+     */
     type(): string;
 
     /**
@@ -137,6 +148,9 @@ declare module "netif" {
      */
     addr6(addrIndex: number): IfIp6Addr;
 
+    /**
+     * Whether the network interface is enabled.
+     */
     isUp(): boolean;
 
     /**

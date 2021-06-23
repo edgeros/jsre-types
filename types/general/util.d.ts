@@ -164,10 +164,26 @@ declare module "util" {
    */
   function mixin(target: object, source: object): object;
 
+  /**
+   * When the target object does not have the attributes of the source, complete them, the same attributes will not change.
+   * @param target Target object.
+   * @param source Source object.
+   */
   function fillup(target: object, ...source: object[]): void;
 
+  /**
+   * Replace the existing contents of the target with the contents of the source.
+   * This method is particularly suitable for: Replace the old configuration with a new one.
+   * @param target Target object.
+   * @param source Source object.
+   */
   function update(target: object, ...source: object[]): void;
 
+  /**
+   * Compare target and source objects and return compare result.
+   * @param target Target object.
+   * @param source Source object.
+   */
   function different(target: object, source: object): boolean;
 
   /**

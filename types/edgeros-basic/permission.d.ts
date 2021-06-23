@@ -21,11 +21,38 @@ declare module "permission" {
     device?: any[];
   }
   namespace intenal {
+    /**
+     * Install a permission change callback function.
+     * @param callback This callback function will be called when the current application has permission to change.
+     */
     function update(callback: (...args: any) => void): void;
+
+    /**
+     * Checks if the application has the specified permissions.
+     * @param permChk Need to determine the permission object.
+     * @param callback Permission comparison result callback function.
+     */
     function check(permChk: object, callback: (res: boolean) => void): void;
+
+    /**
+     * Checks if the application has the specified device operate permissions.
+     * @param devId 16-bytes device ID.
+     * @param callback Permission comparison result callback function.
+     */
     function device(devId: string, callback: (res: boolean) => void): void;
+
+    /**
+     * Call Setting App to set permissions. This App must have `share` permissions, otherwise can only notify customers via UI to set permissions.
+     * @param perm Need to tell the Setting App what permissions we wants.
+     *             Or Need to tell the Setting App what device we wants to control.
+     */
     function request(perm?: object): void;
     function request(devid?: object): void;
+
+    /**
+     * Fetch the current App permissions, if successful, `permission.check()` and `permission.device()` are both synchronous operations after this call.
+     * @param callback Callback function.
+     */
     function fetch(callback?: (error: Error, perm: object) => void): void;
   }
   export = intenal;

@@ -29,7 +29,19 @@ declare module "thingnn" {
     PIX_FMT_GRAY2RGB24: number;
     PIX_FMT_RGBA2RGB24: number;
 
+    /**
+     * Detect thing infos in given video buffer.
+     * @param videoBuf Video buffer.
+     * @param attribute Video attribute.
+     */
     detect(videoBuf: Buffer, attribute: ThingnnAttribute): ThingnnInfo[];
+
+    /**
+     * Identify the name of given thing info.
+     * @param videoBuf Video buffer.
+     * @param attribute Video attribute.
+     * @param thingInfo Thing info object.
+     */
     identify(videoBuf: Buffer, attribute: ThingnnAttribute, thingInfo: ThingnnInfo): string;
   }
   export = Thingnn;

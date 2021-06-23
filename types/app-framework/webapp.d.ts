@@ -62,10 +62,34 @@ declare module "webapp" {
      */
     static static(root: string, options?: object): void;
 
+    /**
+     * Get whether the server object is the master server.
+     */
     isMaster(): boolean;
+
+    /**
+     * This method adds a SNI (Server Name Indication) certificate to the tls server.
+     * SNI is an extension used to improve SSL or TLS for servers.
+     * It mainly solves the disadvantage that one server can only use one certificate (one domain name).
+     * With the support of the server for virtual hosts, one server can provide services for multiple domain names,
+     * so SNI must be supported to meet the demand.
+     * @param opt TLS server option.
+     */
     addcert(opt: CertOptions): boolean;
+
+    /**
+     * Start app server. The app's setting must be done before this operator.
+     */
     start(): void;
+
+    /**
+     * Stop app server.
+     */
     stop(): void;
+
+    /**
+     * When the server starts with the `MASTER` module, `app.port()` gets the port of the server, otherwise it returns `undefined`.
+     */
     port(): number | undefined;
 
     /**

@@ -52,7 +52,7 @@ declare module "timers" {
      * Set or get a running timer interval.
      * @param interval New interval
      */
-    interval(interval: number): number;
+    interval(interval?: number): number;
 
     /**
      * Pause a running timer

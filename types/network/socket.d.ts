@@ -307,7 +307,7 @@ declare module "socket" {
    * @param sockFd Socket file descriptor.
    * @param timeToLive IP TTL: 0 ~ 255.
    */
-  function setTTS(sockFd: number, timeToLive: number): boolean;
+  function setTTL(sockFd: number, timeToLive: number): boolean;
 
   /**
    * Permits sending of broadcast messages, for UDP, RAW(in futrue) only.

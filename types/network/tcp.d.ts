@@ -71,7 +71,7 @@ declare module "tcp" {
      * @param remoteAddr Remote connector address. default: undefined (does not care).
      * @param timeout Wait timeout in milliseconds. default: undefined means wait forever.
      */
-    accept(remoteAddr: SockAddr, timeout?: number): Tcp;
+    accept(remoteAddr?: SockAddr, timeout?: number): Tcp;
 
     /**
      * The tcp.accept() function shall extract the first connection on the queue of tcp pending connections,
@@ -249,7 +249,7 @@ declare module "tcp" {
      *
      * @param timeToLive IP TTL: 0 ~ 255.
      */
-    setTTS(timeToLive: number): boolean;
+    setTTL(timeToLive: number): boolean;
 
     /**
      * Specifies that the rules used in validating addresses supplied to socket.bind() should allow reuse of local addresses.

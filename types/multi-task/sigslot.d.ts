@@ -20,14 +20,35 @@ declare module "sigslot" {
      */
     constructor(name?: string, global?: boolean);
 
+    /**
+     * Get the current process GSS working mode
+     */
     static gssMode(): GssMode;
 
+    /**
+     * Get whether the current process is connected to the Global Signal Slot forwarding server (GSSD). When the current process starts,
+     * if GSS is enabled, the JSRE environment will automatically try to connect to GSSD.
+     */
     static gssIsConnect(): boolean;
 
+    /**
+     * This function is a synchronous wait function, waiting for the current process to successfully connect to GSSD.
+     * If the timeout is specified, no connection is successful within the specified time, false will returned.
+     * @param timeout Wait timeout milliseconds. default: wait forever.
+     */
     static gssWaitConnect(timeout?: number): boolean;
 
+    /**
+     * Before connecting with GSSD, all information that needs to be delivered to other processes will be saved in the queue to be sent.
+     * This function gets the number of messages to be sent currently.
+     */
     static gssQueueCount(): number;
 
+    /**
+     * When a sigslot object with a global property calls the sigslot.on() method, an event subscription message will be generated and sent to the GSS server.
+     * When current process does not successfully connect with the GSS server, the subscription request will be stored in an unconfirmed queue,
+     * this function gets whether there are unconfirmed subscription messages for the current process.
+     */
     static gssHasUnconfirmed(): boolean;
 
     /**
@@ -75,7 +96,14 @@ declare module "sigslot" {
      */
     emit(event: string, message?: string | object): void;
 
+    /**
+     * This function adds a reference to this `SigSlot` object to prevent the object from being recycled.
+     */
     ref(): void;
+
+    /**
+     * This function reduces the reference of this `SigSlot` object and must be used in pairs with `sigslot.ref()`.
+     */
     unref(): void;
   }
   export = Sigslot;
