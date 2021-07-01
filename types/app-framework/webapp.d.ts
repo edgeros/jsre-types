@@ -60,7 +60,7 @@ declare module "webapp" {
     /**
      * Start app server. The app's setting must be done before this operator.
      */
-    static static(root: string, options?: object): void;
+    static static(root: string, options?: object): HandleFunction;
 
     /**
      * Get whether the server object is the master server.
