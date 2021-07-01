@@ -235,7 +235,8 @@ declare module "webapp" {
      * @param handle handle
      * @param handles A middleware function or router object.
      */
-    use(path?: string | RegExp, handle?: HandleFunction, ...handles: HandleFunction[]): void;
+    use(path: string | RegExp, handle: HandleFunction, ...handles: HandleFunction[]): void;
+    use(handle: HandleFunction, ...handles: HandleFunction[]): void;
   }
   export = WebApp;
 }
