@@ -26,6 +26,227 @@ declare module "webapp" {
 
   type HandleFunction = (...args: any) => void;
 
+  type ApplicationRequestHandler<T> = IRouterHandler<T> &
+    IRouterMatcher<T> &
+    ((...handlers: RequestHandlerParams[]) => T);
+
+  interface IRouterHandler<T, Route extends string = string> {
+    (...handlers: Array<RequestHandler<RouteParameters<Route>>>): T;
+    (...handlers: Array<RequestHandlerParams<RouteParameters<Route>>>): T;
+    <
+      P = RouteParameters<Route>,
+      ResBody = any,
+      ReqBody = any,
+      ReqQuery = ParsedQs,
+      Locals extends Record<string, any> = Record<string, any>
+      >(
+      // tslint:disable-next-line no-unnecessary-generics (This generic is meant to be passed explicitly.)
+      ...handlers: Array<RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>>
+    ): T;
+    <
+      P = RouteParameters<Route>,
+      ResBody = any,
+      ReqBody = any,
+      ReqQuery = ParsedQs,
+      Locals extends Record<string, any> = Record<string, any>
+      >(
+      // tslint:disable-next-line no-unnecessary-generics (This generic is meant to be passed explicitly.)
+      ...handlers: Array<RequestHandlerParams<P, ResBody, ReqBody, ReqQuery, Locals>>
+    ): T;
+    <
+      P = ParamsDictionary,
+      ResBody = any,
+      ReqBody = any,
+      ReqQuery = ParsedQs,
+      Locals extends Record<string, any> = Record<string, any>
+      >(
+      // tslint:disable-next-line no-unnecessary-generics (This generic is meant to be passed explicitly.)
+      ...handlers: Array<RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>>
+    ): T;
+    <
+      P = ParamsDictionary,
+      ResBody = any,
+      ReqBody = any,
+      ReqQuery = ParsedQs,
+      Locals extends Record<string, any> = Record<string, any>
+      >(
+      // tslint:disable-next-line no-unnecessary-generics (This generic is meant to be passed explicitly.)
+      ...handlers: Array<RequestHandlerParams<P, ResBody, ReqBody, ReqQuery, Locals>>
+    ): T;
+  }
+
+  interface IRouterMatcher<
+    T,
+    Method extends 'all' | 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head' = any
+    > {
+    <
+      Route extends string,
+      P = RouteParameters<Route>,
+      ResBody = any,
+      ReqBody = any,
+      ReqQuery = ParsedQs,
+      Locals extends Record<string, any> = Record<string, any>
+      >(
+      // tslint:disable-next-line no-unnecessary-generics (it's used as the default type parameter for P)
+      path: Route,
+      // tslint:disable-next-line no-unnecessary-generics (This generic is meant to be passed explicitly.)
+      ...handlers: Array<RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>>
+    ): T;
+    <
+      Path extends string,
+      P = RouteParameters<Path>,
+      ResBody = any,
+      ReqBody = any,
+      ReqQuery = ParsedQs,
+      Locals extends Record<string, any> = Record<string, any>
+      >(
+      // tslint:disable-next-line no-unnecessary-generics (it's used as the default type parameter for P)
+      path: Path,
+      // tslint:disable-next-line no-unnecessary-generics (This generic is meant to be passed explicitly.)
+      ...handlers: Array<RequestHandlerParams<P, ResBody, ReqBody, ReqQuery, Locals>>
+    ): T;
+    <
+      P = ParamsDictionary,
+      ResBody = any,
+      ReqBody = any,
+      ReqQuery = ParsedQs,
+      Locals extends Record<string, any> = Record<string, any>
+      >(
+      path: PathParams,
+      // tslint:disable-next-line no-unnecessary-generics (This generic is meant to be passed explicitly.)
+      ...handlers: Array<RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>>
+    ): T;
+    <
+      P = ParamsDictionary,
+      ResBody = any,
+      ReqBody = any,
+      ReqQuery = ParsedQs,
+      Locals extends Record<string, any> = Record<string, any>
+      >(
+      path: PathParams,
+      // tslint:disable-next-line no-unnecessary-generics (This generic is meant to be passed explicitly.)
+      ...handlers: Array<RequestHandlerParams<P, ResBody, ReqBody, ReqQuery, Locals>>
+    ): T;
+    (path: PathParams, subApplication: WebApp): T;
+  }
+
+  type RequestHandlerParams<
+    P = ParamsDictionary,
+    ResBody = any,
+    ReqBody = any,
+    ReqQuery = ParsedQs,
+    Locals extends Record<string, any> = Record<string, any>
+    > =
+    | RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>
+    | ErrorRequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>
+    | Array<RequestHandler<P> | ErrorRequestHandler<P>>;
+
+  interface RequestHandler<
+    P = ParamsDictionary,
+    ResBody = any,
+    ReqBody = any,
+    ReqQuery = ParsedQs,
+    Locals extends Record<string, any> = Record<string, any>
+    > {
+    // tslint:disable-next-line callable-types (This is extended from and can't extend from a type alias in ts<2.2)
+    (
+      req: WebRequest<P, ResBody, ReqBody, ReqQuery, Locals>,
+      res: WebResponse<ResBody, Locals>,
+      next: NextFunction,
+    ): void;
+  }
+
+  type RouteParameters<Route extends string> = string extends Route
+    ? ParamsDictionary
+    : Route extends `${string}(${string}`
+      ? ParamsDictionary
+      : Route extends `${string}:${infer Rest}`
+        ? (GetRouteParameter<Rest> extends `${infer ParamName}?`
+        ? { [P in ParamName]?: string }
+        : { [P in GetRouteParameter<Rest>]: string }) &
+        (Rest extends `${GetRouteParameter<Rest>}${infer Next}` ? RouteParameters<Next> : unknown)
+        : { };
+
+  interface ParamsDictionary {
+    [key: string]: string;
+  }
+
+  type PathParams = string | RegExp | Array<string | RegExp>;
+
+  type ErrorRequestHandler<
+    P = ParamsDictionary,
+    ResBody = any,
+    ReqBody = any,
+    ReqQuery = ParsedQs,
+    Locals extends Record<string, any> = Record<string, any>
+    > = (
+    err: any,
+    req: WebRequest<P, ResBody, ReqBody, ReqQuery, Locals>,
+    res: WebResponse<ResBody, Locals>,
+    next: NextFunction,
+  ) => void;
+
+  interface ParsedQs { [key: string]: undefined | string | string[] | ParsedQs | ParsedQs[]; }
+
+  type GetRouteParameter<RouteAfterColon extends string> = RouteAfterColon extends `${infer Char}${infer Rest}`
+    ? Char extends '/' | '-' | '.'
+      ? ''
+      : `${Char}${GetRouteParameter<Rest>}`
+    : RouteAfterColon;
+
+  interface NextFunction {
+    (err?: any): void;
+    /**
+     * same as express.
+     */
+    (deferToNext: 'router' | 'route'): void;
+  }
+
+  interface WebRequest <
+    P = ParamsDictionary,
+    ResBody = any,
+    ReqBody = any,
+    ReqQuery = ParsedQs,
+    Locals extends Record<string, any> = Record<string, any>
+    > {
+    app: object;
+    url: string;
+    method: 'get' | 'GET' | 'post' | 'POST' | 'put' | 'PUT';
+    headers: object;
+    body: object | Buffer | string;
+    path: string;
+    params: string;
+    query: object;
+    cookies: object;
+    header(name: string): string | undefined;
+    param(name: string, defaultValue: object): object | undefined;
+    on(event: 'data', callback: (buf: Buffer) => void): void;
+    on(event: 'end' | 'close', callback: () => void): void;
+    on(event: 'error', callback: (error: Error) => void): void;
+  }
+
+  interface WebResponse <
+    ResBody = any,
+    Locals extends Record<string, any> = Record<string, any>,
+    StatusCode extends number = number
+    > {
+    app: object;
+    write(chunk: string | number | boolean | object | Buffer): boolean;
+    end(chunk?: string | number | boolean | object | Buffer): void;
+    send(body: string | number | boolean | object | Buffer): WebResponse | undefined;
+    sendFile(path: string, options?: {root: string}): void;
+    sendStatus(statusCode: number, reason?: string): WebResponse | undefined;
+    json(obj: object, status?: number): WebResponse | undefined;
+    render(name: string, options?: {cache: boolean, filename: string}, callback?: (error: Error, html: string) => void): void;
+    cookie(name: string, value: string | object, options?: {maxAge: number, path?: string}): void;
+    clearCookie(name: string, options?: object): void;
+    location(path: string): void;
+    redirect(path: string): boolean;
+    redirect(status: number, path: string): boolean;
+    on(event: 'end' | 'finish' | 'close', callback: () => void): void;
+    on(event: 'error', callback: (error: Error) => void): void;
+  }
+
   class WebApp {
     groupName: GroupName;
     /**
@@ -235,8 +456,9 @@ declare module "webapp" {
      * @param handle handle
      * @param handles A middleware function or router object.
      */
-    use(path: string | RegExp, handle: HandleFunction, ...handles: HandleFunction[]): void;
-    use(handle: HandleFunction, ...handles: HandleFunction[]): void;
+    // use(path: string | RegExp, handle: HandleFunction, ...handles: HandleFunction[]): void;
+    // use(handle: HandleFunction, ...handles: HandleFunction[]): void;
+    use: ApplicationRequestHandler<this>;
   }
   export = WebApp;
 }

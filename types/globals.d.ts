@@ -10,15 +10,16 @@ declare var exports: any;
 declare var console: Console;
 declare var sys: Sys;
 
-interface module {
+declare const module: {
   id: string;
   tag: string;
   modDir: string;
   parent: object;
+  directory: string;
   exports: {
     [key in any]: any
   };
-}
+};
 
 // Buffer class
 type BufferEncoding = "ascii" | "utf-8" | "base64" | "hex";

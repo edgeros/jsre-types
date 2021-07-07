@@ -432,7 +432,7 @@ declare module "crypto" {
    * Get the specified credit certificate information.
    *
    * @param index Certificate index.
-   * @returns Credit certificate infomation.
+   * @returns Credit certificate information.
    */
   function creditCertInfo(index: number): certificateObject;
 

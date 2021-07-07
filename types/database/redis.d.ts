@@ -25,6 +25,7 @@ declare module "redis" {
     // While loading, the server will not respond to any commands.
     // To work around this, Node Redis has a "ready check" which sends the INFO command to the server.
     // The response from the INFO command indicates whether the server is ready for more commands.
+    // The response from the INFO command indicates whether the server is ready for more commands.
     // When ready, redis emits a ready event. Setting no_ready_check to true will inhibit this check.
     no_ready_check: boolean;
     // true	By default, if there is no active connection to the Redis server,
@@ -115,7 +116,7 @@ declare module "redis" {
      * If you want to exit cleanly, call client.quit() as mentioned above.
      * You should set flush to true, if you are not absolutely sure you do not care about any other commands.
      * If you set flush to false all still running commands will silently fail.
-     * @param flush Flush.
+     * @param flush Callback function.
      */
     end(flush: boolean): void;
 
