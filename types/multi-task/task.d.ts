@@ -240,7 +240,7 @@ declare module "task" {
        * @param length length
        * @param addition addition
        */
-      send(buff: Buffer | string, offset?: number, length?: number, addition?: object): boolean;
+      send(buff: Buffer | string | object, offset?: number, length?: number, addition?: object): boolean;
 
       static on(event: "message", handler: (...args: any) => void): void;
       static on(event: "uncaughtException", handler: (error: Error) => void): void;
