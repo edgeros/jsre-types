@@ -1,6 +1,6 @@
 {
   "name": "@edgeros/jsre-types",
-  "version": "1.4.5",
+  "version": "1.4.6",
   "description": "edgeros types",
   "types": "./types/index.d.ts",
   "scripts": {
@@ -15,6 +15,6 @@
   "author": "xieyuanbin@acoinfo.com",
   "license": "Apache-2.0",
   "devDependencies": {
-    "dtslint": "^4.0.9"
+    "dtslint": "^4.1.2"
   }
 }
