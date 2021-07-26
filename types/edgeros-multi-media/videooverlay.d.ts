@@ -23,11 +23,11 @@ declare module "videooverlay" {
     'F24X40', // 24X40 font.
     'F32X53', // 32X53 font.
   }
-  class VideoOverlay {
+  namespace videooverlay {
     /**
      * Clear all overlays.
      */
-    clear(): boolean;
+    function clear(): boolean;
 
     /**
      * Draw a text on overlay.
@@ -37,7 +37,7 @@ declare module "videooverlay" {
      * @param color Text color.
      * @param bcolor Background color.
      */
-    text(x: number, y: number, text: string, color: number, bcolor?: number): boolean;
+    function text(x: number, y: number, text: string, color: number, bcolor?: number): boolean;
 
     /**
      * Draw a point on overlay.
@@ -45,7 +45,7 @@ declare module "videooverlay" {
      * @param y y position.
      * @param color Point color.
      */
-    point(x: number, y: number, color: number): boolean;
+    function point(x: number, y: number, color: number): boolean;
 
     /**
      * Draw a line on overlay.
@@ -56,7 +56,7 @@ declare module "videooverlay" {
      * @param color Line color.
      * @param width Line width.
      */
-    line(x0: number, y0: number, x1: number, y1: number, color: number, width?: number): boolean;
+    function line(x0: number, y0: number, x1: number, y1: number, color: number, width?: number): boolean;
 
     /**
      * Draw a rectangle on overlay.
@@ -69,7 +69,7 @@ declare module "videooverlay" {
      * @param r The radius of fillet.
      * @param fill Does fill rectangle.
      */
-    rect(x0: number, y0: number, x1: number, y1: number, color: number, width?: number, r?: number, fill?: boolean): boolean;
+    function rect(x0: number, y0: number, x1: number, y1: number, color: number, width?: number, r?: number, fill?: boolean): boolean;
 
     /**
      * Draw a circle on overlay.
@@ -80,15 +80,15 @@ declare module "videooverlay" {
      * @param width Line width.
      * @param fill Does fill circle.
      */
-    circle(x: number, y: number, r: number, color: number, width?: number, fill?: boolean): void;
+    function circle(x: number, y: number, r: number, color: number, width?: number, fill?: boolean): void;
 
-    font(font: FontOptions): boolean;
+    function font(font: FontOptions): boolean;
 
     /**
      * Draw all overlays to specified buffer.
      * @param buf Buffer which need to be draw.
      */
-    draw(buf: Buffer): boolean;
+    function draw(buf: Buffer): boolean;
   }
-  export = VideoOverlay;
+  export = videooverlay;
 }

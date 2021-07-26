@@ -7,17 +7,19 @@ declare module "thermal" {
   /**
    * This module is a General Buzzer operation module.
    */
-  class Thermal {
-    constructor()
-    /**
-     * Close thermal object.
-     */
-    close(): void;
-    /**
-     * @param fa Whether to get Fahrenheit temperature. default: false.
-     * return CPU current temperature.
-     */
-    read(fa?: boolean): number;
+  namespace thermal {
+    class Thermal {
+      constructor()
+      /**
+       * Close thermal object.
+       */
+      close(): void;
+      /**
+       * @param fa Whether to get Fahrenheit temperature. default: false.
+       * return CPU current temperature.
+       */
+      read(fa?: boolean): number;
+    }
   }
-  export = Thermal;
+  export = thermal.Thermal;
 }

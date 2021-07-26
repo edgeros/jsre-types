@@ -15,57 +15,10 @@ declare module "leveldb" {
     maxFileSize?: number; // {number} Maximum size of database file. default: 1024 * 1024 * 1024.
   }
 
-  let SEEK_FIRST: number;
-  let SEEK_LAST: number;
-  let SEEK_NEXT: number;
-  let SEEK_PREV: number;
-
-  /**
-   * Get a default database option, no special circumstances do not need to modify the default value.
-   * Returns: {object} LevelDB opens or repairs options.
-   *
-   * @param flags Flags string.
-   */
-  function defaultOpt(flags: string): LevelDBOptions;
-
-  /**
-   * Open or create a database with the specified options.
-   *
-   * Returns: {object} A LevelDB object.
-   *
-   * @param dbPath Database path.
-   * @param opt LevelDB option object. default: leveldb.defaultOpt('c+').
-   */
-  function open(dbPath: string, opt?: LevelDBOptions): Db;
-
-  /**
-   * When the database cannot be opened due to an unexpected situation,
-   * you can use this function to repair and then try to open again.
-   *
-   * Returns: {Boolean} Whether the database is repaired.
-   *
-   * @param dbPath Database path.
-   * @param opt LevelDB option object. default: leveldb.defaultOpt('c+').
-   */
-  function repair(dbPath: string, opt?: LevelDBOptions): boolean;
-
-  /**
-   * Delete a database, if the database can not be repaired, you can delete the database after backup.
-   * Since LevelDB is a directory, you can use the `zip` module for compressed and backups.
-   *
-   * Returns: {Boolean} Whether the database is destroyed.
-   *
-   * @param dbPath Database path.
-   */
-  function destroy(dbPath: string): boolean;
-
-  function version(): string;
-
   interface DbItem {
     key: string;
     vaule: Buffer;
   }
-
   class Db {
     /**
      * Close the database.
@@ -143,4 +96,53 @@ declare module "leveldb" {
      */
     iterGet(): DbItem;
   }
+
+  namespace leveldb {
+    let SEEK_FIRST: number;
+    let SEEK_LAST: number;
+    let SEEK_NEXT: number;
+    let SEEK_PREV: number;
+  
+    /**
+     * Get a default database option, no special circumstances do not need to modify the default value.
+     * Returns: {object} LevelDB opens or repairs options.
+     *
+     * @param flags Flags string.
+     */
+    function defaultOpt(flags: string): LevelDBOptions;
+  
+    /**
+     * Open or create a database with the specified options.
+     *
+     * Returns: {object} A LevelDB object.
+     *
+     * @param dbPath Database path.
+     * @param opt LevelDB option object. default: leveldb.defaultOpt('c+').
+     */
+    function open(dbPath: string, opt?: LevelDBOptions): Db;
+  
+    /**
+     * When the database cannot be opened due to an unexpected situation,
+     * you can use this function to repair and then try to open again.
+     *
+     * Returns: {Boolean} Whether the database is repaired.
+     *
+     * @param dbPath Database path.
+     * @param opt LevelDB option object. default: leveldb.defaultOpt('c+').
+     */
+    function repair(dbPath: string, opt?: LevelDBOptions): boolean;
+  
+    /**
+     * Delete a database, if the database can not be repaired, you can delete the database after backup.
+     * Since LevelDB is a directory, you can use the `zip` module for compressed and backups.
+     *
+     * Returns: {Boolean} Whether the database is destroyed.
+     *
+     * @param dbPath Database path.
+     */
+    function destroy(dbPath: string): boolean;
+  
+    function version(): string;
+  }
+  export = leveldb;
 }

@@ -1,42 +1,10 @@
 declare module 'edgeros:mqtt' {
-  export * from 'mqtt';
+  import mqtt = require('mqtt');
+  export = mqtt;
 }
 
 declare module "mqtt" {
   import { Buffer } from 'buffer';
-
-  /**
-   * Create an MQTT client and connect to the specified server. Use synchronous mode.
-   *
-   * Returns: {object} A MQTT Client object.
-   *
-   * @param saddr Server socket address.
-   * @param tlsOpt TLS securely connections options. default: undefined, means use TCP connection.
-   * @param timeout Synchronous connection time to wait in milliseconds, default: undefined means timeout with default connect timeout setting.
-   */
-  function open(saddr: object, tlsOpt?: object, timeout?: number): Mqtt;
-
-  /**
-   * Create an MQTT client and connect to the specified server.
-   *
-   * Returns: {object} A MQTT Client object.
-   *
-   * @param saddr Server socket address.
-   * @param tlsOpt TLS securely connections options. default: undefined, means use TCP connection.
-   * @param callback Connected callback function.
-   *                      client {object} Client object.
-   * @param bufSize Buffer size (512 ~ 4096). default: 2048.
-   */
-  function open(saddr: object, tlsOpt: object, callback: (...args: any) => void, bufSize?: number): Mqtt;
-
-  /**
-   * Get the current process MQTT working mode
-   *    'off' MQTT is not enabled.
-   *    'listener' MQTT listen only mode.
-   *    'publisher' MQTT can subscribe and publish.
-   */
-  function mode(): string;
-
   interface ClientOpt {
     // The broker identifies each client by its client id.
     client: Buffer | string;
@@ -119,4 +87,39 @@ declare module "mqtt" {
     on(event: "connect" | "disconnect" | "close" | "error", callback: (...args: any) => void): this;
     on(event: "message", callback: (topic?: string, message?: string, qos?: number, packetId?: number) => void): this;
   }
+
+  namespace mqtt {
+    /**
+     * Create an MQTT client and connect to the specified server. Use synchronous mode.
+     *
+     * Returns: {object} A MQTT Client object.
+     *
+     * @param saddr Server socket address.
+     * @param tlsOpt TLS securely connections options. default: undefined, means use TCP connection.
+     * @param timeout Synchronous connection time to wait in milliseconds, default: undefined means timeout with default connect timeout setting.
+     */
+    function open(saddr: object, tlsOpt?: object, timeout?: number): Mqtt;
+
+    /**
+     * Create an MQTT client and connect to the specified server.
+     *
+     * Returns: {object} A MQTT Client object.
+     *
+     * @param saddr Server socket address.
+     * @param tlsOpt TLS securely connections options. default: undefined, means use TCP connection.
+     * @param callback Connected callback function.
+     *                      client {object} Client object.
+     * @param bufSize Buffer size (512 ~ 4096). default: 2048.
+     */
+    function open(saddr: object, tlsOpt: object, callback: (...args: any) => void, bufSize?: number): Mqtt;
+
+    /**
+     * Get the current process MQTT working mode
+     *    'off' MQTT is not enabled.
+     *    'listener' MQTT listen only mode.
+     *    'publisher' MQTT can subscribe and publish.
+     */
+    function mode(): string;
+  }
+  export = mqtt;
 }

@@ -1,5 +1,6 @@
 declare module 'edgeros:tls' {
-  export * from 'tls';
+  import tls = require('tls');
+  export = tls;
 }
 
 declare module "tls" {
@@ -33,42 +34,6 @@ declare module "tls" {
     key: string;
     passwd: string;
   }
-
-  /**
-   * Create a Tls server and bind to the specified address.
-   *
-   * Returns: {object} Tls object.
-   *
-   * @param opt Tls server option.
-   * @param sockaddr Local address.
-   * @param backlog Number of outstanding connections. default: 5.
-   * @param dev The network interface you want to bind. default: not bind.
-   */
-  function createServer(opt: TlsClientOptions, sockaddr: SockAddr, backlog: number, dev?: string): Tls;
-
-  /**
-   * Create a Tls client and connects to the specified remote host. Use synchronous mode.
-   *
-   * Returns: {object} Tls object.
-   *
-   * @param opt Tls server option.
-   * @param sockaddr Local address.
-   * @param timeout Wait timeout in milliseconds. default: undefined means timeout with default connect timeout setting.
-   */
-  function createClient(opt: TlsClientOptions, sockaddr: SockAddr, timeout?: number): Tls;
-  function createClient(opt: TlsClientOptions, sockaddr: SockAddr, callback: (tls: object) => void): Tls;
-
-  /**
-   * Create a Tls object with socket file descriptor, mainly used to multitasking Tls server.
-   *
-   * Returns: {object} Tls object.
-   *
-   * @param name Server name for multitasking.
-   * @param sockFd Socket file descriptor, MUST Tls socket.
-   * @param timeout Wait timeout in milliseconds. default: undefined means timeout with default handshake timeout setting.
-   */
-  function createByFd(name: string, sockFd: number, timeout?: number): Tls;
-  function createByFd(name: string, sockFd: number, callback: (tls: Tls) => void): Tls;
 
   class Tls {
     /**
@@ -270,4 +235,43 @@ declare module "tls" {
      */
     setSendBufferSize(size: number): boolean;
   }
+
+  namespace tls {
+    /**
+     * Create a Tls server and bind to the specified address.
+     *
+     * Returns: {object} Tls object.
+     *
+     * @param opt Tls server option.
+     * @param sockaddr Local address.
+     * @param backlog Number of outstanding connections. default: 5.
+     * @param dev The network interface you want to bind. default: not bind.
+     */
+    function createServer(opt: TlsClientOptions, sockaddr: SockAddr, backlog: number, dev?: string): Tls;
+  
+    /**
+     * Create a Tls client and connects to the specified remote host. Use synchronous mode.
+     *
+     * Returns: {object} Tls object.
+     *
+     * @param opt Tls server option.
+     * @param sockaddr Local address.
+     * @param timeout Wait timeout in milliseconds. default: undefined means timeout with default connect timeout setting.
+     */
+    function createClient(opt: TlsClientOptions, sockaddr: SockAddr, timeout?: number): Tls;
+    function createClient(opt: TlsClientOptions, sockaddr: SockAddr, callback: (tls: object) => void): Tls;
+  
+    /**
+     * Create a Tls object with socket file descriptor, mainly used to multitasking Tls server.
+     *
+     * Returns: {object} Tls object.
+     *
+     * @param name Server name for multitasking.
+     * @param sockFd Socket file descriptor, MUST Tls socket.
+     * @param timeout Wait timeout in milliseconds. default: undefined means timeout with default handshake timeout setting.
+     */
+    function createByFd(name: string, sockFd: number, timeout?: number): Tls;
+    function createByFd(name: string, sockFd: number, callback: (tls: Tls) => void): Tls;
+  }
+  export = tls;  
 }

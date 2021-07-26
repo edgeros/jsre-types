@@ -1,5 +1,6 @@
 declare module 'edgeros:redis' {
-  export * from 'redis';
+  import redis = require('redis');
+  export = redis;
 }
 
 declare module "redis" {
@@ -55,22 +56,6 @@ declare module "redis" {
   }
 
   type CallbackFunction = (...args: any) => void;
-
-  function createClient(options: RedisOptions): RedisClient;
-  function createClient(redis_url: string, options?: RedisOptions): RedisClient;
-  function createClient(port: number, host?: string, options?: RedisOptions): RedisClient;
-
-  /**
-   * A handy callback function for displaying return values when testing.
-   */
-  function print(): void;
-
-  /**
-   * Calling add_command will add a new command to the prototype. The exact command name will be used when calling using this new command.
-   * Using arbitrary arguments is possible as with any other command.
-   * @param command_name Command name.
-   */
-  function add_command(command_name: string): void;
 
   interface Subscriber {
     on(event: "message", cb: (channel: string, message: string) => void): void;
@@ -154,4 +139,23 @@ declare module "redis" {
     command_queue_length: number;
     offline_queue_length: number;
   }
+
+  namespace redis {
+    function createClient(options: RedisOptions): RedisClient;
+    function createClient(redis_url: string, options?: RedisOptions): RedisClient;
+    function createClient(port: number, host?: string, options?: RedisOptions): RedisClient;
+
+    /**
+     * A handy callback function for displaying return values when testing.
+     */
+    function print(): void;
+
+    /**
+     * Calling add_command will add a new command to the prototype. The exact command name will be used when calling using this new command.
+     * Using arbitrary arguments is possible as with any other command.
+     * @param command_name Command name.
+     */
+    function add_command(command_name: string): void;
+  }
+  export = redis;
 }

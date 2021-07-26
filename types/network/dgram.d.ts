@@ -30,19 +30,6 @@ declare module 'dgram' {
     port?: number;
   }
 
-  // options or type
-  /**
-   * Creates a `dgram.Socket` object. Once the socket is created, calling `socket.bind()` will instruct the socket to begin listening for datagram messages.
-   * When `address` and `port` are not passed to `socket.bind()` the method will bind the socket to the "all interfaces"
-   * address on a random port (it does the right thing for both `udp4` and `upd6` sockets).
-   * The bound address and port can be retrieved using.
-   *
-   * @param options Options
-   * @param [callback] Attached as a listener for `'message'` events. Optinal.
-   * @returns `dgram.Socket` object.
-   */
-  function createSocket(options: SockOptions | "udp4" | "udp6", callback?: () => void): Dgram;
-
   class Dgram {
     /**
      * Close the underlying socket and stop listening for data on it.
@@ -177,4 +164,21 @@ declare module 'dgram' {
      */
     dropSourceSpecificMembership(sourceAddress: string, groupAddress?: string, multicastInterface?: string): boolean;
   }
+
+  namespace dgram {
+    // options or type
+    /**
+     * Creates a `dgram.Socket` object. Once the socket is created, calling `socket.bind()` will instruct the socket to begin listening for datagram messages.
+     * When `address` and `port` are not passed to `socket.bind()` the method will bind the socket to the "all interfaces"
+     * address on a random port (it does the right thing for both `udp4` and `upd6` sockets).
+     * The bound address and port can be retrieved using.
+     *
+     * @param options Options
+     * @param [callback] Attached as a listener for `'message'` events. Optinal.
+     * @returns `dgram.Socket` object.
+     */
+    function createSocket(options: SockOptions | "udp4" | "udp6", callback?: () => void): Dgram;
+  }
+  export = dgram;
+
 }

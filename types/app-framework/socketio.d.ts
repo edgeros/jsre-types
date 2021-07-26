@@ -25,29 +25,16 @@ declare module "socket.io" {
     address: string;
     xdomain: string;
     secure: string;
+    issued: number;
     url: string;
     query: object;
   }
 
   type CallbackFunction = (...args: any) => void;
 
-  class Server {
+  interface Server {
     sockets: Namespace;
     engine: object;
-
-    /**
-     * The current state of CAN-Bus. If the bus state is normal,
-     * it returns 0. Other values indicate a bus error. This error is ‘Bit OR’ integer.
-     */
-    state: number;
-
-    /**
-     * Returns: *{object}* socketio server object.
-     *
-     * @param server The server to bind to.
-     * @param options options
-     */
-    constructor(server: HttpServer | WebApp, options?: IoOptions);
 
     /**
      * If value is true the attached server (see server.attach()) will serve the client files.
@@ -90,7 +77,7 @@ declare module "socket.io" {
      *
      * @param fn default: true.
      */
-    origins(fn: (...args: any) => void): this;
+    origins(fn: (origin: string, callback: (error: Error, success: boolean) => void) => void): this;
 
     /**
      * Attaches the Server to an engine.io instance on server with the supplied options (optionally).
@@ -98,7 +85,7 @@ declare module "socket.io" {
      * @param server The server to bind to.
      * @param options options
      */
-    attach(server: HttpServer | WebApp, options?: object): void;
+    attach(server: HttpServer | typeof WebApp, options?: object): void;
 
     /**
      * Advanced use only. Binds the server to a specific engine.io Server (or compatible API) instance.
@@ -136,7 +123,7 @@ declare module "socket.io" {
     close(callback?: CallbackFunction): void;
   }
 
-  class Namespace {
+  interface Namespace {
     /**
      * The namespace identifier property.
      */
@@ -191,7 +178,7 @@ declare module "socket.io" {
     on(event: "connect" | "connection", handler: (socket: Socket) => void): void;
   }
 
-  class Socket {
+  interface Socket {
     /**
      * A unique identifier for the session, that comes from the underlying Client.
      */
@@ -329,7 +316,7 @@ declare module "socket.io" {
     on(event: "error", listener: (error: Error) => void): void;
   }
 
-  class Client {
+  interface Client {
     /**
      * A reference to the underlying engine.io Socket connection.
      */
@@ -341,5 +328,7 @@ declare module "socket.io" {
      */
     request: object;
   }
-  export = Server;
+
+  function io(server: HttpServer | typeof WebApp, options?: IoOptions): Server;
+  export = io;
 }

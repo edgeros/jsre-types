@@ -15,16 +15,19 @@ declare module "router/npfctl" {
     portEnd?: number; // {Integer} End TCP or UDP port.
   }
 
-  let npfctl: {
-    mac(ifname: string, allow: boolean, mac: string): number;
-    ip(ifname: string, allow: boolean, ipStart: string, ipEnd: string): number;
-    tcp(ifname: string, allow: boolean, ipStart: string, ipEnd: string, portStart: number, portEnd: number): boolean;
-    udp(ifname: string, allow: boolean, ipStart: string, ipEnd: string, portStart: number, portEnd: number): boolean;
-
-    get(ifname?: string): NpfctlRule[];
-    get(index: number): NpfctlRule;
-    // ifname or index
-    delete(ifname?: string | number): boolean;
-  };
+  namespace routernpfctl {
+    interface NpfctlStatic {
+      mac(ifname: string, allow: boolean, mac: string): number;
+      ip(ifname: string, allow: boolean, ipStart: string, ipEnd: string): number;
+      tcp(ifname: string, allow: boolean, ipStart: string, ipEnd: string, portStart: number, portEnd: number): boolean;
+      udp(ifname: string, allow: boolean, ipStart: string, ipEnd: string, portStart: number, portEnd: number): boolean;
+  
+      get(ifname?: string): NpfctlRule[];
+      get(index: number): NpfctlRule;
+      // ifname or index
+      delete(ifname?: string | number): boolean;
+    }
+  }
+  let npfctl: routernpfctl.NpfctlStatic;
   export = npfctl;
 }

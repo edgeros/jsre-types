@@ -1,5 +1,6 @@
 declare module 'edgeros:webmedia' {
-  export * from 'webmedia';
+  import webmedia = require('webmedia');
+  export = webmedia;
 }
 
 declare module "webmedia" {
@@ -30,12 +31,8 @@ declare module "webmedia" {
     mediaSource?: MediaSource; // {object} Media source options.
     streamChannel?: StreamChannel; // {object} Stream channel options.
     dataChannel?: DataChannel; // {object} Data channel options.
-    ser?: HttpServer | WebApp;
+    ser?: HttpServer | typeof WebApp;
   }
-
-  function createServer(opts: WebMediaServerOption, ser?: HttpServer | WebApp): MediaServer;
-
-  function registerSource(name: string, classType: MediaSource): boolean;
 
   interface MediaServer {
     source?: MediaSource;
@@ -118,4 +115,10 @@ declare module "webmedia" {
     on(event: "start" | "stop", callback: () => void): void;
     on(event: eventType, client: MediaClient, opts: WebMediaServerOption, data: MediaDataChannelProtocol): void;
   }
+
+  namespace webmedia {
+    function createServer(opts: WebMediaServerOption, ser?: HttpServer | typeof WebApp): MediaServer;
+    function registerSource(name: string, classType: MediaSource): boolean;
+  }
+  export = webmedia;
 }

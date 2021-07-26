@@ -16,15 +16,18 @@ declare module "router/flowctl" {
     portStart: number; // {Integer} Starting TCP or UDP port.
     portEnd: number; // {Integer} End TCP or UDP port.
   }
-  let flowctl: {
-    if(ifname: string, upLimit: number, downLimit: number, bufSize?: number): number;
-    ip(ifname: string, ipStart: string, ipEnd: string, upLimit: number, downLimit: number, bufSize?: number): number;
-    tcp(ifname: string, ipStart: string, ipEnd: string, portStart: number, portEnd: number, upLimit: number, downLimit: number, bufSize?: number): number;
-    udp(ifname: string, ipStart: string, ipEnd: string, portStart: number, portEnd: number, upLimit: number, downLimit: number, bufSize?: number): number;
-    get(ifname?: string): FlowctlRule[];
-    get(index: number): FlowctlRule;
-    // ifname or index
-    delete(ifname: string | number): boolean;
-  };
+  namespace routerflowctl {
+    interface FlowctlStatic {
+      if(ifname: string, upLimit: number, downLimit: number, bufSize?: number): number;
+      ip(ifname: string, ipStart: string, ipEnd: string, upLimit: number, downLimit: number, bufSize?: number): number;
+      tcp(ifname: string, ipStart: string, ipEnd: string, portStart: number, portEnd: number, upLimit: number, downLimit: number, bufSize?: number): number;
+      udp(ifname: string, ipStart: string, ipEnd: string, portStart: number, portEnd: number, upLimit: number, downLimit: number, bufSize?: number): number;
+      get(ifname?: string): FlowctlRule[];
+      get(index: number): FlowctlRule;
+      // ifname or index
+      delete(ifname: string | number): boolean;
+    }
+  }
+  let flowctl: routerflowctl.FlowctlStatic;
   export = flowctl;
 }

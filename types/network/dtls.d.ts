@@ -1,5 +1,6 @@
 declare module 'edgeros:dtls' {
-  export * from 'dtls';
+  import dtls = require('dtls');
+  export = dtls;
 }
 
 declare module "dtls" {
@@ -39,39 +40,6 @@ declare module "dtls" {
     key: string; // Private key of server certificate.
     passwd: string; // Private key password. default: no password.
   }
-
-  /**
-   * Create a Datagram TLS server and bind to the specified address.
-   *
-   * Returns: {object} Dtls object.
-   *
-   * @param opt Dtls server option.
-   * @param sockaddr Local address.
-   */
-  function createServer(opt: DtlsServerOptions, sockaddr: SockAddr): Dtls;
-
-  /**
-   * Create a Datagram TLS client and connects to the specified remote host. Use synchronous mode.
-   *
-   * Returns: {object} Dtls object.
-   *
-   * @param opt Dtls server option.
-   * @param sockaddr Remote address.
-   * @param timeout Wait timeout in milliseconds. default: undefined means timeout with default connect timeout setting.
-   */
-  function createClient(opt: DtlsClientOptions, sockaddr: SockAddr, timeout?: number): Dtls;
-  function createClient(opt: DtlsClientOptions, sockaddr: SockAddr, callback: (dtls: Dtls) => void): Dtls;
-
-  /**
-   * Create a dtls object with socket file descriptor, mainly used to multitasking Datagram TLS server. Use synchronous mode.
-   * Returns: {object} Dtls object.
-   *
-   * @param name Server name for multitasking.
-   * @param sockFd Socket file descriptor, MUST udp socket descriptor.
-   * @param timeout Wait timeout in milliseconds. default: undefined means timeout with default handshake timeout setting.
-   */
-  function createByFd(name: string, sockFd: number, timeout?: number): Dtls;
-  function createByFd(name: string, sockFd: number, callback: (dtls: Dtls) => void): Dtls;
 
   class Dtls {
     /**
@@ -226,4 +194,40 @@ declare module "dtls" {
      */
     setSendBufferSize(size: number): boolean;
   }
+
+  namespace dtls {
+    /**
+     * Create a Datagram TLS server and bind to the specified address.
+     *
+     * Returns: {object} Dtls object.
+     *
+     * @param opt Dtls server option.
+     * @param sockaddr Local address.
+     */
+    function createServer(opt: DtlsServerOptions, sockaddr: SockAddr): Dtls;
+  
+    /**
+     * Create a Datagram TLS client and connects to the specified remote host. Use synchronous mode.
+     *
+     * Returns: {object} Dtls object.
+     *
+     * @param opt Dtls server option.
+     * @param sockaddr Remote address.
+     * @param timeout Wait timeout in milliseconds. default: undefined means timeout with default connect timeout setting.
+     */
+    function createClient(opt: DtlsClientOptions, sockaddr: SockAddr, timeout?: number): Dtls;
+    function createClient(opt: DtlsClientOptions, sockaddr: SockAddr, callback: (dtls: Dtls) => void): Dtls;
+  
+    /**
+     * Create a dtls object with socket file descriptor, mainly used to multitasking Datagram TLS server. Use synchronous mode.
+     * Returns: {object} Dtls object.
+     *
+     * @param name Server name for multitasking.
+     * @param sockFd Socket file descriptor, MUST udp socket descriptor.
+     * @param timeout Wait timeout in milliseconds. default: undefined means timeout with default handshake timeout setting.
+     */
+    function createByFd(name: string, sockFd: number, timeout?: number): Dtls;
+    function createByFd(name: string, sockFd: number, callback: (dtls: Dtls) => void): Dtls;
+  }
+  export = dtls;  
 }

@@ -1,5 +1,6 @@
 declare module 'edgeros:udp' {
-  export * from 'udp';
+  import udp = require('udp');
+  export = udp;
 }
 
 declare module "udp" {
@@ -9,33 +10,6 @@ declare module "udp" {
     addr: string;
     port: number;
   }
-
-  /**
-   * Create a Udp server and bind to the specified address.
-   *
-   * Returns: {object} Udp object.
-   *
-   * @param sockaddr Local address.
-   */
-  function createServer(sockaddr: SockAddr): Udp;
-
-  /**
-   * Create a Udp client and connects to the specified remote host. Use synchronous mode.
-   *
-   * Returns: {object} Udp object.
-   *
-   * @param sockaddr Local address.
-   */
-  function createClient(sockaddr: SockAddr): Udp;
-
-  /**
-   * Create a Udp object with socket file descriptor, mainly used to multitasking Udp server.
-   *
-   * Returns: {object} Udp object.
-   *
-   * @param sockFd Socket file descriptor, MUST Udp socket.
-   */
-  function createByFd(sockFd: number): Udp;
 
   class Udp {
     /**
@@ -246,4 +220,34 @@ declare module "udp" {
      */
     setMulticastLoop(enable: boolean): boolean;
   }
+
+  namespace udp {
+    /**
+     * Create a Udp server and bind to the specified address.
+     *
+     * Returns: {object} Udp object.
+     *
+     * @param sockaddr Local address.
+     */
+    function createServer(sockaddr: SockAddr): Udp;
+  
+    /**
+     * Create a Udp client and connects to the specified remote host. Use synchronous mode.
+     *
+     * Returns: {object} Udp object.
+     *
+     * @param sockaddr Local address.
+     */
+    function createClient(sockaddr: SockAddr): Udp;
+  
+    /**
+     * Create a Udp object with socket file descriptor, mainly used to multitasking Udp server.
+     *
+     * Returns: {object} Udp object.
+     *
+     * @param sockFd Socket file descriptor, MUST Udp socket.
+     */
+    function createByFd(sockFd: number): Udp;
+  }
+  export = udp;
 }

@@ -15,16 +15,19 @@ declare module "router/rttable" {
     ifname?: string; // {string} Route network interface.
   }
 
-  let rttable: {
-    RTF_UP: number; // This route is valid.
-    RTF_GATEWAY: number; // This route is a gateway route.
-    RTF_HOST: number; // This route is a host route.
-    RTF_DYNAMIC: number; // This route is a dynamic route.
-
-    list(domain: number): RttableRouting[];
-    add(domain: number, flags: number, dest: string, genmask: string, gateway: string, ifname?: string, metric?: number): boolean;
-    delete(domain: number, flags: number, dest: string, genmask?: string, gateway?: string, ifname?: string): boolean;
-    default(domain: number, gateway: string, ifname?: string, metric?: number): boolean;
-  };
+  namespace routerrttable {
+    interface RttableStatic {
+      RTF_UP: number; // This route is valid.
+      RTF_GATEWAY: number; // This route is a gateway route.
+      RTF_HOST: number; // This route is a host route.
+      RTF_DYNAMIC: number; // This route is a dynamic route.
+  
+      list(domain: number): RttableRouting[];
+      add(domain: number, flags: number, dest: string, genmask: string, gateway: string, ifname?: string, metric?: number): boolean;
+      delete(domain: number, flags: number, dest: string, genmask?: string, gateway?: string, ifname?: string): boolean;
+      default(domain: number, gateway: string, ifname?: string, metric?: number): boolean;
+    }
+  }
+  let rttable: routerrttable.RttableStatic;
   export = rttable;
 }

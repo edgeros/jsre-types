@@ -1,26 +1,19 @@
 declare module 'edgeros:websocket' {
-  export * from 'websocket';
+  import websocket = require('websocket');
+  export = websocket;
 }
 
 declare module "websocket" {
   import { Buffer } from 'buffer';
   import { HttpServer } from "http";
+  import * as socket from 'socket';
   import WebApp = require("edgeros:webapp");
 
-  /**
-   * This method creates websocket server.
-   *
-   * Returns: {WsServer} WsServer object.
-   *
-   * @param path The uri path of websocket server.
-   * @param saddr it can be:
-   *                  Server socket address, the server listen it self's port.
-   *                  HttpServer object, the http protocol upgrade to websocket protocol. In this mode,
-   *                  the websocket does not listen it self's port, the tlsOpt js invalid.
-   *                  WebApp object, the same to HttpServer.
-   * @param tlsOpt TLS securely connections options. default: undefined, means use TCP onnection.
-   */
-  function createServer(path: string, saddr: HttpServer | WebApp | object, tlsOpt: object): WsServer;
+  interface ClientOptions {
+    saddr: object;
+    domain: socket.AF_INET | socket.AF_INET6;
+    async: boolean;
+  }
 
   class WsServer {
     /**
@@ -116,4 +109,24 @@ declare module "websocket" {
     on(event: "open" | "close", listener: () => void): this;
     on(event: "message", listener: (msg: string | Buffer) => void): this;
   }
+
+  namespace websocket {
+    /**
+     * This method creates websocket server.
+     *
+     * Returns: {WsServer} WsServer object.
+     *
+     * @param path The uri path of websocket server.
+     * @param saddr it can be:
+     *                  Server socket address, the server listen it self's port.
+     *                  HttpServer object, the http protocol upgrade to websocket protocol. In this mode,
+     *                  the websocket does not listen it self's port, the tlsOpt js invalid.
+     *                  WebApp object, the same to HttpServer.
+     * @param tlsOpt TLS securely connections options. default: undefined, means use TCP onnection.
+     */
+    function createServer(path: string, saddr: HttpServer | typeof WebApp | object, tlsOpt: object): WsServer;
+
+    function createClient(url: string, options?: ClientOptions, tlsOpt?: object): WsClient;
+  }
+  export = websocket;
 }

@@ -32,36 +32,39 @@ declare module "HttpProxy" {
     changeOrigin?: boolean;
   }
 
-  class HttpProxy {
-    constructor(opts?: Opts)
+  namespace http_proxy {
+    class HttpProxy {
+      constructor(opts?: Opts)
+  
+      static create(opts?: Opts): HttpProxy;
+  
+      /**
+       * Used for proxying regular HTTP(s) requests.
+       *
+       * @param req HttpInput object.
+       * @param res HttpOutput object.
+       * @param [opts] Reference `HttpProxy.create opts` argument. This options will override the options of `HttpProxy.create`.
+       */
+      web(req: HttpInput, res: HttpOutput, opts?: Opts): void;
+  
+      /**
+       * Used for proxying WS(S) requests.
+       *
+       * @param req HttpInput object.
+       * @param net Base socket object.
+       * @param cb Callback function.
+       * @param [opts] Reference `HttpProxy.create opts` argument. This options will override the options of `HttpProxy.create`.
+       */
+      ws(req: HttpInput, net: Socket, cb: (...args: any) => void, opts?: Opts): void;
+  
+      /**
+       * A function that closes and stops proxy.
+       */
+      stop(): void;
+  
+      on(event: "request" | "response", callback: (proxyRes: HttpClient, req: HttpServerRequest, res: HttpServerResponse) => void): this;
+    }
 
-    static create(opts?: Opts): HttpProxy;
-
-    /**
-     * Used for proxying regular HTTP(s) requests.
-     *
-     * @param req HttpInput object.
-     * @param res HttpOutput object.
-     * @param [opts] Reference `HttpProxy.create opts` argument. This options will override the options of `HttpProxy.create`.
-     */
-    web(req: HttpInput, res: HttpOutput, opts?: Opts): void;
-
-    /**
-     * Used for proxying WS(S) requests.
-     *
-     * @param req HttpInput object.
-     * @param net Base socket object.
-     * @param cb Callback function.
-     * @param [opts] Reference `HttpProxy.create opts` argument. This options will override the options of `HttpProxy.create`.
-     */
-    ws(req: HttpInput, net: Socket, cb: (...args: any) => void, opts?: Opts): void;
-
-    /**
-     * A function that closes and stops proxy.
-     */
-    stop(): void;
-
-    on(event: "request" | "response", callback: (proxyRes: HttpClient, req: HttpServerRequest, res: HttpServerResponse) => void): this;
   }
-  export = HttpProxy;
+  export = http_proxy.HttpProxy;
 }

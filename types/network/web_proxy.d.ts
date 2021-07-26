@@ -1,13 +1,12 @@
 declare module 'edgeros:web_proxy' {
-  export * from 'web_proxy';
+  import web_proxy = require('web_proxy');
+  export = web_proxy;
 }
 
 declare module "web_proxy" {
   import WebApp = require("webapp");
   import { HttpClient, HttpClientResponse } from "http";
   import { HttpServerRequest, HttpServerResponse } from "edgeros:http";
-
-  function create(server: WebApp): WebProxy;
 
   interface WebProxyWebOptions {
     tlsOpt: object;
@@ -42,4 +41,9 @@ declare module "web_proxy" {
 
     on(event: "request" | "response", callback: (proxyRes: HttpClient, req: HttpServerRequest, res: HttpServerResponse) => void): this;
   }
+
+  namespace web_proxy {
+    function create(server: typeof WebApp): WebProxy;
+  }
+  export = web_proxy;
 }

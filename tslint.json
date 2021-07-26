@@ -6,6 +6,7 @@
     "no-namespace": false,
     "no-reference-import": false,
     "no-var-keyword": false,
+    "no-single-declare-module": false,
     "strict-export-declare-modifiers": false
   }
 }

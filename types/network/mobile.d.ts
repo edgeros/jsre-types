@@ -4,19 +4,21 @@ declare module "edgeros:mobile" {
 }
 
 declare module "mobile" {
-  class Mobile {
-    constructor();
-
-    open(): void;
-    close(): void;
-    checkImei(): boolean;
-    checkImsi(): boolean;
-    checkSim(): boolean;
-    checkNet(): boolean;
-    checkQuality(): boolean;
-    checkOperator(): boolean;
-    network(): any;
+  namespace mobile {
+    class Mobile {
+      constructor();
+  
+      open(): void;
+      close(): void;
+      checkImei(): boolean;
+      checkImsi(): boolean;
+      checkSim(): boolean;
+      checkNet(): boolean;
+      checkQuality(): boolean;
+      checkOperator(): boolean;
+      network(): any;
+    }
   }
 
-  export = Mobile;
+  export = mobile.Mobile;
 }

@@ -12,10 +12,13 @@ declare module "router/arp" {
 		strict?: string; // {Boolean} Whether to bind the unique IP address of this MAC address.
 	}
 
-	let ARP: {
-    add(ifname: string, ipaddr: string, mac: string, isStatic?: boolean, strict?: boolean): boolean;
-    delete(ipaddr: string, ifname?: string, force?: boolean): boolean;
-    get(ifname?: string): ARPObject[];
-	};
-	export = ARP;
+	namespace routerarp {
+		interface ARP {
+			add(ifname: string, ipaddr: string, mac: string, isStatic?: boolean, strict?: boolean): boolean;
+			delete(ipaddr: string, ifname?: string, force?: boolean): boolean;
+			get(ifname?: string): ARPObject[];
+		}
+	}
+	let arp: routerarp.ARP;
+	export = arp;
 }

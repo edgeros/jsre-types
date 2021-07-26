@@ -1,29 +1,11 @@
 declare module 'edgeros:lpc' {
-  export * from 'lpc';
+  import lpc = require('lpc');
+  export = lpc;
 }
 
 declare module "lpc" {
-  /**
-   * Create an LPC server.
-   *
-   * Returns: {object} LPC server object.
-   *
-   * @param name LPC service name.
-   * @param callback LPC service I/O error callback. default: undefined.
-   */
-  function Server(name: string, callback?: (...args: any) => void): LpcServer;
-
-  /**
-   * Create an LPC client.
-   *
-   * Returns: {object} LPC client object.
-   *
-   * @param name LPC service name.
-   * @param callback LPC client I/O error callback. default: undefined.
-   */
-  function Client(name: string, callback?: (...args: any) => void): LpcClient;
-
   class LpcServer {
+    constructor(name: string, callback?: (...args: any) => void);
     /**
      * Close this LPC server. this LPC server object is no longer allowed to be used after closed.
      */
@@ -56,6 +38,7 @@ declare module "lpc" {
   }
 
   class LpcClient {
+    constructor(name: string, callback?: (...args: any) => void);
     /**
      * Close the LPC client, this LPC client object is no longer allowed to be used after closed.
      */
@@ -95,4 +78,10 @@ declare module "lpc" {
      */
     fetch(event: string, msg: object, timeout?: number): Promise<any>;
   }
+
+  namespace lpc {
+    const Server: typeof LpcServer;
+    const Client: typeof LpcClient;
+  }
+  export = lpc;
 }

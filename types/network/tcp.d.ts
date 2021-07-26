@@ -1,5 +1,6 @@
 declare module 'edgeros:tcp' {
-  export * from 'tcp';
+  import tcp = require('tcp');
+  export = tcp;
 }
 
 declare module "tcp" {
@@ -14,48 +15,6 @@ declare module "tcp" {
     onoff: boolean;
     time: number;
   }
-
-  /**
-   * Create a TCP server and bind to the specified address.
-   *
-   * Returns: {object} Tcp object.
-   *
-   * @param sockaddr Local address.
-   * @param backlog Number of outstanding connections. default: 5.
-   * @param dev The network interface you want to bind. default: not bind
-   */
-  function createServer(sockaddr: SockAddr, backlog?: number, dev?: string): Tcp;
-
-  /**
-   * Create a TCP client and connects to the specified remote host. Use synchronous mode.
-   *
-   * Returns: {object} Tcp object.
-   *
-   * @param sockaddr Local address.
-   * @param timeout Wait timeout in milliseconds. default: undefined means timeout with default connect timeout setting.
-   */
-  function createClient(sockaddr: SockAddr, timeout?: number): Tcp;
-
-  /**
-   * Create a TCP client and connects to the specified remote host. Use asynchronous mode.
-   *
-   * Returns: {object} Tcp object.
-   *
-   * @param sockaddr Local address.
-   * @param callback Connected callback.
-   *                  tcp {object} Tcp object.
-   */
-  function createClient(sockaddr: SockAddr, callback: (tcp: object) => void): Tcp;
-
-  /**
-   * Create a tcp object with socket file descriptor, mainly used to multitasking TCP server.
-   *
-   * Returns: {object} Tcp object.
-   *
-   * @param sockFd Socket file descriptor, MUST tcp socket.
-   */
-  function createByFd(sockFd: number): Tcp;
-
   class Tcp {
     /**
      * The tcp object socket file descriptor. The iosched module can use this descriptor for event detection.
@@ -308,4 +267,48 @@ declare module "tcp" {
      */
     setSendBufferSize(size: number): boolean;
   }
+
+  namespace tcp {
+    /**
+     * Create a TCP server and bind to the specified address.
+     *
+     * Returns: {object} Tcp object.
+     *
+     * @param sockaddr Local address.
+     * @param backlog Number of outstanding connections. default: 5.
+     * @param dev The network interface you want to bind. default: not bind
+     */
+    function createServer(sockaddr: SockAddr, backlog?: number, dev?: string): Tcp;
+  
+    /**
+     * Create a TCP client and connects to the specified remote host. Use synchronous mode.
+     *
+     * Returns: {object} Tcp object.
+     *
+     * @param sockaddr Local address.
+     * @param timeout Wait timeout in milliseconds. default: undefined means timeout with default connect timeout setting.
+     */
+    function createClient(sockaddr: SockAddr, timeout?: number): Tcp;
+  
+    /**
+     * Create a TCP client and connects to the specified remote host. Use asynchronous mode.
+     *
+     * Returns: {object} Tcp object.
+     *
+     * @param sockaddr Local address.
+     * @param callback Connected callback.
+     *                  tcp {object} Tcp object.
+     */
+    function createClient(sockaddr: SockAddr, callback: (tcp: object) => void): Tcp;
+  
+    /**
+     * Create a tcp object with socket file descriptor, mainly used to multitasking TCP server.
+     *
+     * Returns: {object} Tcp object.
+     *
+     * @param sockFd Socket file descriptor, MUST tcp socket.
+     */
+    function createByFd(sockFd: number): Tcp;
+  }
+  export = tcp;
 }

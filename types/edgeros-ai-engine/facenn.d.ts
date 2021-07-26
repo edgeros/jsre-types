@@ -1,5 +1,6 @@
 declare module 'edgeros:facenn' {
-  export * from 'facenn';
+  import facenn = require('facenn');
+  export = facenn;
 }
 
 declare module "facenn" {
@@ -10,11 +11,6 @@ declare module "facenn" {
     height: number; // {Integer} Video height.
     pixelFormat: number; // {Integer} Pixel format.
   }
-
-  const PIX_FMT_RGB24: number; // RGB24 pixel format.
-  const PIX_FMT_BGR2RGB24: number; // BGR24 to RBG24 pixel format.
-  const PIX_FMT_GRAY2RGB24: number; // Grayscale to RGB24 pixel format.
-  const PIX_FMT_RGBA2RGB24: number; // RGBA to RGB24 pixel format.
 
   // Each object item of the returned array contains the following members:
   interface FaceInfo {
@@ -36,33 +32,40 @@ declare module "facenn" {
     live?: boolean; // Living probability, when extra.live is true.
   }
 
-  /**
-   * Detect face infos in given video buffer.
-   *
-   * @param videoBuf Video buffer.
-   * @param attribute Video attribute.
-   * @param [quick] Does quick mode?
-   * @returns Face info objects array which detected.
-   */
-  function detect(videoBuf: Buffer, attribute: FacennAttribute, quick?: boolean): FaceInfo[];
-
-  /**
-   * Get the feature of given face info.
-   *
-   * @param videoBuf Video buffer.
-   * @param attribute Video attribute.
-   * @param faceInfo Face info.
-   * @param [extra] Does need extra face key? default: undefined.
-   * @returns FaceKey.
-   */
-  function feature(videoBuf: Buffer, attribute: FacennAttribute, faceInfo: FaceInfo, extra?: object): FaceKey;
-
-  /**
-   *  Compare the similarity between two face, return value range `0.0 ~ 1.0`.
-   *
-   * @param faceKey1 Face keys 1.
-   * @param faceKey2 Face keys 2.
-   * @returns The similarity between two face.
-   */
-  function compare(faceKey1: FaceKey, faceKey2: FaceKey): number;
+  namespace facenn {
+    const PIX_FMT_RGB24: number; // RGB24 pixel format.
+    const PIX_FMT_BGR2RGB24: number; // BGR24 to RBG24 pixel format.
+    const PIX_FMT_GRAY2RGB24: number; // Grayscale to RGB24 pixel format.
+    const PIX_FMT_RGBA2RGB24: number; // RGBA to RGB24 pixel format.
+    /**
+     * Detect face infos in given video buffer.
+     *
+     * @param videoBuf Video buffer.
+     * @param attribute Video attribute.
+     * @param [quick] Does quick mode?
+     * @returns Face info objects array which detected.
+     */
+    function detect(videoBuf: Buffer, attribute: FacennAttribute, quick?: boolean): FaceInfo[];
+  
+    /**
+     * Get the feature of given face info.
+     *
+     * @param videoBuf Video buffer.
+     * @param attribute Video attribute.
+     * @param faceInfo Face info.
+     * @param [extra] Does need extra face key? default: undefined.
+     * @returns FaceKey.
+     */
+    function feature(videoBuf: Buffer, attribute: FacennAttribute, faceInfo: FaceInfo, extra?: object): FaceKey;
+  
+    /**
+     *  Compare the similarity between two face, return value range `0.0 ~ 1.0`.
+     *
+     * @param faceKey1 Face keys 1.
+     * @param faceKey2 Face keys 2.
+     * @returns The similarity between two face.
+     */
+    function compare(faceKey1: FaceKey, faceKey2: FaceKey): number;
+  }
+  export = facenn;
 }
