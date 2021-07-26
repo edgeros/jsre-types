@@ -22,7 +22,7 @@ declare module "zip" {
        * @param level The level of compression used when creating the zip file. Must in 0 - 9.
        */
       constructor(zipFile: string, mode?: string, level?: number);
-  
+
       /**
        * Extract all files from the specified zip package to the specified directory.
        *
@@ -32,7 +32,7 @@ declare module "zip" {
        * @param dir Unzipped target directory.
        */
       static extract(zipFile: string, dir: string): boolean;
-  
+
       /**
        * Compress all files in the specified directory and add them to a specified zip file.
        *
@@ -43,7 +43,7 @@ declare module "zip" {
        * @param level The level of compression used when creating the zip file. Must in 0 - 9.
        */
       static compress(zipFile: string, dir: string, level?: number): boolean;
-  
+
       /**
        * Open the file of the specified index in zip package.
        *
@@ -52,31 +52,31 @@ declare module "zip" {
        * @param index File index in zip package or File name in zip package.
        */
       open(index: number | string): boolean;
-  
+
       /**
        * Close the currently open file in zip package.
        */
       close(): void;
-  
+
       /**
        * Destruct the zip object, write the data in the cache back to the disk and release zip data cache.
        */
       end(): void;
-  
+
       /**
        * Get the current open file status information in zip packege.
        *
        * Returns: {object} File state in zip packege.
        */
       stat(): ZipStat;
-  
+
       /**
        * Read the contents of the currently open file and return a buffer object.
        *
        * Returns: {Buffer} File content.
        */
       read(): Buffer;
-  
+
       /**
        * Extract the currently open file in zip package to the specified target.
        *
@@ -85,7 +85,7 @@ declare module "zip" {
        * @param targetFile Target file path.
        */
       fread(targetFile: string): boolean;
-  
+
       /**
        * Write the specified string to the currently open zip internal file.
        *
@@ -94,7 +94,7 @@ declare module "zip" {
        * @param string The string to be written.
        */
       write(string: string): number;
-  
+
       /**
        * rite the specified data to the currently open zip internal file.
        *
@@ -105,7 +105,7 @@ declare module "zip" {
        * @param length Write length. default:buffer.length.
        */
       write(buffer: Buffer, offset?: number, length?: number): number;
-  
+
       /**
        * Add the specified srcFile to the zip package.
        *
@@ -114,9 +114,9 @@ declare module "zip" {
        * @param srcFile Specified source file.
        */
       fwrite(srcFile: string): boolean;
-  
+
       fdump(callback: (data: Buffer, offset?: number) => void): void;
-  
+
       /**
        * Get The total number of files in the current zip package.
        *

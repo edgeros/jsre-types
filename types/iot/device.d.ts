@@ -75,7 +75,7 @@ declare module 'device' {
   namespace device {
     class Device {
       constructor();
-  
+
       /**
        * List all device count currently discovered by the system.
        * When `join` is `true`, only get device count that have been discovered and joined.
@@ -86,7 +86,7 @@ declare module 'device' {
        *    count {Integer} Device count.
        */
       static count(join: boolean, callback: (error: Error, count: number) => void): void;
-  
+
       /**
        * List all devices currently discovered by the system.
        * When join is true, only list devices that have been discovered and joined.
@@ -97,7 +97,7 @@ declare module 'device' {
        *                 list {Array} devid and alias object list.
        */
       static list(join: boolean, callback: (error: Error, list: DeviceSimpleInfo[]) => void): void;
-  
+
       /**
        * Get detailed information for the specified device.
        * The device information includes two parts,
@@ -112,7 +112,7 @@ declare module 'device' {
        *                 info {Object} Device information.
        */
       static info(devid: string, callback: (error: Error, info: DeviceInfo) => void): void;
-  
+
       /**
        * The system device management App can use this method to alias the device,
        * allowing the EdgerOS device to invite this device to join the network.
@@ -123,14 +123,14 @@ declare module 'device' {
        * @param [token] If it is an encrypted communication device, an encrypted token can be set.
        */
       static alias(devid: string, alias: string, callback?: (error: Error) => void, token?: string): void;
-  
+
       /**
        * Get a list of all devices in the system that have been aliased, regardless of whether the device is online.
        *
        * @param callback Callback function.
        */
       static named(callback: (error: Error, list: DeviceSimpleInfo[]) => void): void;
-  
+
       /**
        * The system device management App can use this method to search for peripheral devices now, or search for specified remote devices.
        *
@@ -139,7 +139,7 @@ declare module 'device' {
        * @param [callback] Callback function.
        */
       static discover(addr?: string, smartcfg?: boolean, callback?: (error: Error) => void): void;
-  
+
       /**
        * Exclusive devices only allow one App to access at the same time,
        * shared devices allow multiple apps to access at the same time,
@@ -149,10 +149,10 @@ declare module 'device' {
        * @param callback Callback function.
        */
       static occupation(devid: string, callback: (error: Error, list: any[]) => void): void;
-  
+
       static on(event: 'found'|'join'|'update'|'alias', callback: (devid: string, info: any) => void): void;
       static on(event: 'lost'|'refuse', callback: (devid: string) => void): void;
-  
+
       /**
        * Create a Device.Connector object for batch data transfer with the device.
        * If cipher is true, the data transmission will use a random key for encrypted transmission.
@@ -163,7 +163,7 @@ declare module 'device' {
        * @returns DeviceConnector.
        */
       static Connector: typeof DeviceConnector;
-  
+
       /**
        * Request control of specified device.
        * First you need to use permission.device() to check if you have permission to access this device.
@@ -173,7 +173,7 @@ declare module 'device' {
        * @param callback Indicate an error information when an error occurs.
        */
       request(devid: string, callback: (error: Error) => void): void;
-  
+
       /**
        * Release the previously requested device.
        * When the operation of the device is completed, the device should be released immediately.
@@ -181,7 +181,7 @@ declare module 'device' {
        * @param [callback] Callback function.
        */
       release(callback?: (error: Error) => void): void;
-  
+
       /**
        * Sometimes we need to use some special protocols to access the device, such as CoAP, etc.
        * We can use this function to get the network address of the requested device.
@@ -189,7 +189,7 @@ declare module 'device' {
        * @param callback Callback function.
        */
       address(callback: (error: Error, addr: string) => void): void;
-  
+
       /**
        * Send a message to the specified device.
        * When retries is 0, it means non-reliable sending.
@@ -201,7 +201,7 @@ declare module 'device' {
        * @param [urgent] Whether it is an urgent message. default: false.
        */
       send(msg: object, callback?: (error: Error) => void, retries?: number, urgent?: boolean): void;
-  
+
       on(event: 'message', callback: (msg: any) => void): void;
       on(event: 'lost', callback: () => void): void;
     }

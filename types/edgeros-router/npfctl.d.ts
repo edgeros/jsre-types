@@ -21,7 +21,7 @@ declare module "router/npfctl" {
       ip(ifname: string, allow: boolean, ipStart: string, ipEnd: string): number;
       tcp(ifname: string, allow: boolean, ipStart: string, ipEnd: string, portStart: number, portEnd: number): boolean;
       udp(ifname: string, allow: boolean, ipStart: string, ipEnd: string, portStart: number, portEnd: number): boolean;
-  
+
       get(ifname?: string): NpfctlRule[];
       get(index: number): NpfctlRule;
       // ifname or index

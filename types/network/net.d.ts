@@ -84,12 +84,12 @@ declare module "net" {
   namespace net {
     class Socket extends stream.Duplex {
       constructor(options?: SocketConstructorOpts);
-  
+
       /**
        * Returns the bound `address`.
        */
       address(): AddressInfo | {};
-  
+
       /**
        * Initiate a connection on a given socket. Normally this method is not needed, the socket should be created and opened with `net.createConnection()`.
        * Use this only when implementing a custom Socket.
@@ -111,43 +111,43 @@ declare module "net" {
        * @param connectionListener Common parameter of `socket.connect()` methods. Will be added as listener `connect` event once.
        */
       connect(saddr: object, tlsOpt?: object, connectionListener?: () => void): this;
-  
+
       /**
        * Ensures that no more I/O activity happens on this socket. Destroys the stream and closes the connection.
        * @param error Error object.
        */
       destroy(error?: Error): this;
-  
+
       /**
        * Pauses the reading of data. That is, `'data'` events will not be emitted. Useful to throttle back an upload.
        */
       pause(): this;
-  
+
       /**
        * Resumes reading after a call to `socket.pause()`.
        */
       resume(): this;
-  
+
       /**
        * Enable/disable keep-alive functionality, and optionally set the initial delay before the first keepalive probe is sent on an idle socket.
        * @param enable Default: false.
        * @param initialDelay Default: 0 ms.
        */
       setKeepAlive(enable?: boolean, initialDelay?: number): this;
-  
+
       /**
        * Enable/disable the use of Nagle's algorithm.
        * @param noDelay Default: true.
        */
       setNoDelay(noDelay?: boolean): this;
-  
+
       /**
        * Sets the socket to timeout after `timeout` milliseconds of inactivity on the socket. By default `net.Socket` do not have a timeout.
        * @param timeout Timeout.
        * @param callback Callback function.
        */
       setTimeout(timeout: number, callback?: () => void): this;
-  
+
       // This property shows the number of characters buffered for writing.
       readonly bufferSize: number;
       // The amount of received bytes.
@@ -163,7 +163,7 @@ declare module "net" {
       readonly remotePort?: number;
       readonly timeout: number | undefined;
       readonly readyState: string;
-  
+
       /**
        * events.EventEmitter
        *   1. close
@@ -183,35 +183,35 @@ declare module "net" {
       addListener(event: "data", listener: (data: Buffer) => void): this;
       addListener(event: "error", listener: (err: Error) => void): this;
       addListener(event: "lookup", listener: (err: Error, address: string, family: string | number, host: string) => void): this;
-  
+
       emit(event: string | symbol, ...args: any[]): boolean;
       emit(event: "close", had_error: boolean): boolean;
       emit(event: "connect" | "drain" | "end" | "timeout" | "finish"): boolean;
       emit(event: "data", data: Buffer): boolean;
       emit(event: "error", err: Error): boolean;
       emit(event: "lookup", err: Error, address: string, family: string | number, host: string): boolean;
-  
+
       on(event: string, listener: (...args: any[]) => void): this;
       on(event: "close", listener: (had_error: boolean) => void): this;
       on(event: "connect" | "drain" | "end" | "timeout", listener: () => void): this;
       on(event: "data", listener: (data: Buffer) => void): this;
       on(event: "error", listener: (err: Error) => void): this;
       on(event: "lookup", listener: (err: Error, address: string, family: string | number, host: string) => void): this;
-  
+
       once(event: string, listener: (...args: any[]) => void): this;
       once(event: "close", listener: (had_error: boolean) => void): this;
       once(event: "connect" | "drain" | "end" | "timeout", listener: () => void): this;
       once(event: "data", listener: (data: Buffer) => void): this;
       once(event: "error", listener: (err: Error) => void): this;
       once(event: "lookup", listener: (err: Error, address: string, family: string | number, host: string) => void): this;
-  
+
       prependListener(event: string, listener: (...args: any[]) => void): this;
       prependListener(event: "close", listener: (had_error: boolean) => void): this;
       prependListener(event: "connect" | "drain" | "end" | "timeout", listener: () => void): this;
       prependListener(event: "data", listener: (data: Buffer) => void): this;
       prependListener(event: "error", listener: (err: Error) => void): this;
       prependListener(event: "lookup", listener: (err: Error, address: string, family: string | number, host: string) => void): this;
-  
+
       prependOnceListener(event: string, listener: (...args: any[]) => void): this;
       prependOnceListener(event: "close", listener: (had_error: boolean) => void): this;
       prependOnceListener(event: "connect" | "drain" | "end" | "timeout", listener: () => void): this;

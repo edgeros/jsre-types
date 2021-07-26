@@ -1,5 +1,6 @@
 declare module 'edgeros:leveldb' {
-  export * from 'leveldb';
+  import leveldb = require('leveldb');
+  export = leveldb;
 }
 
 declare module "leveldb" {
@@ -102,7 +103,7 @@ declare module "leveldb" {
     let SEEK_LAST: number;
     let SEEK_NEXT: number;
     let SEEK_PREV: number;
-  
+
     /**
      * Get a default database option, no special circumstances do not need to modify the default value.
      * Returns: {object} LevelDB opens or repairs options.
@@ -110,7 +111,7 @@ declare module "leveldb" {
      * @param flags Flags string.
      */
     function defaultOpt(flags: string): LevelDBOptions;
-  
+
     /**
      * Open or create a database with the specified options.
      *
@@ -120,7 +121,7 @@ declare module "leveldb" {
      * @param opt LevelDB option object. default: leveldb.defaultOpt('c+').
      */
     function open(dbPath: string, opt?: LevelDBOptions): Db;
-  
+
     /**
      * When the database cannot be opened due to an unexpected situation,
      * you can use this function to repair and then try to open again.
@@ -131,7 +132,7 @@ declare module "leveldb" {
      * @param opt LevelDB option object. default: leveldb.defaultOpt('c+').
      */
     function repair(dbPath: string, opt?: LevelDBOptions): boolean;
-  
+
     /**
      * Delete a database, if the database can not be repaired, you can delete the database after backup.
      * Since LevelDB is a directory, you can use the `zip` module for compressed and backups.
@@ -141,7 +142,7 @@ declare module "leveldb" {
      * @param dbPath Database path.
      */
     function destroy(dbPath: string): boolean;
-  
+
     function version(): string;
   }
   export = leveldb;

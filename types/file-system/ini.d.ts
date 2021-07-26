@@ -13,7 +13,7 @@ declare module "ini" {
      * @returns Convert to object.
      */
     function parse(iniString: string): object;
-  
+
     /**
      * Convert specified object to INI format string. Similar to `JSON.stringify()`.
      *

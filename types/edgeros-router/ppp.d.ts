@@ -19,7 +19,7 @@ declare module "router/ppp" {
       connect(ifname: string, user?: string, passwd?: string): boolean;
       disconnect(ifname: string, force?: boolean): boolean;
       phase(ifname: string): number;
-  
+
       PPPoS: 1;
       PPPoE: 2;
       PHASE_DEAD: "phase_dead";

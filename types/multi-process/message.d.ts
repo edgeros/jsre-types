@@ -23,7 +23,7 @@ declare module "message" {
      * @param timeout Wait timeout in milliseconds. default: undefined means wait forever.
      */
     function send(pid: number | string, msg: string | object, timeout?: number): number;
-  
+
     /**
      * Receive a message from the message queue. `message` defaults use asynchronous mode, users must first call `message.async(false)` to convert to synchronous mode
      * before using this method. Only allowed in the main task. You can use `message.fd()` to get the message file descriptor,
@@ -35,18 +35,18 @@ declare module "message" {
      * @param timeout Wait timeout in milliseconds. default: undefined means wait forever.
      */
     function recv(info: InfoObj, timeout?: number): number;
-  
+
     /**
      * Clear all unreceived packets in the message queue.
      */
     function flush(): void;
-  
+
     /**
      * Message defaults use asynchronous mode, if the user wants to use synchronous mode, they must first call `message.async(true)`.
      * @param enable Whether to enable asynchronous mode. default: true.
      */
     function async(enable?: boolean): void;
-  
+
     function on(event: "message", handler: (msg: string, info: object) => void): void;
   }
   export = message;

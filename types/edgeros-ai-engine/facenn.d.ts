@@ -46,7 +46,7 @@ declare module "facenn" {
      * @returns Face info objects array which detected.
      */
     function detect(videoBuf: Buffer, attribute: FacennAttribute, quick?: boolean): FaceInfo[];
-  
+
     /**
      * Get the feature of given face info.
      *
@@ -57,7 +57,7 @@ declare module "facenn" {
      * @returns FaceKey.
      */
     function feature(videoBuf: Buffer, attribute: FacennAttribute, faceInfo: FaceInfo, extra?: object): FaceKey;
-  
+
     /**
      *  Compare the similarity between two face, return value range `0.0 ~ 1.0`.
      *

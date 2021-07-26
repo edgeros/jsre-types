@@ -36,7 +36,7 @@ declare module 'router/ifevent' {
         static readonly IF_ADDRESS = 'IF_ADDRESS';
         static readonly IF_CONFLICT = 'IF_CONFLICT';
         static readonly IF_AUTH_FAIL = 'IF_AUTH_FAIL';
-    
+
         /**
          * Point-to-point network event
          */
@@ -46,7 +46,7 @@ declare module 'router/ifevent' {
         static IF_PPP_RUN: string;
         static IF_PPP_DISCONN: string;
         static IF_PPP_TIMEOUT: string;
-    
+
         static open(): Ifevent | undefined;
         close(): void;
         clear(): void;

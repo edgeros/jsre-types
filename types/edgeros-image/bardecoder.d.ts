@@ -29,8 +29,6 @@ declare module "bardecoder" {
     format: string; // Decoder format.
     ecLevel: string; // Error correction level.
   }
-
-  
   namespace bardecoder {
     let FORMAT_AZTEC: string; // AXTEC decoder(2D, beta).
     let FORMAT_CODABAR: string; // CODABAR decoder(1D industrial).
@@ -64,7 +62,7 @@ declare module "bardecoder" {
      * @param format Decoder format. default: auto recognition.
      */
     function defaultOpt(fast?: boolean, rotate?: boolean, format?: string): DefaultOptions;
-  
+
     /**
      * Returns: {object} Bar code decode result object.
      *
@@ -72,7 +70,7 @@ declare module "bardecoder" {
      * @param opt Bar code decode option object. default: bardecoder.defaultOpt(false, false).
      */
     function decode(path?: string, opt?: any): Decoder;
-  
+
     /**
      * Returns: {object} Bar code decode result object.
      *

@@ -18,7 +18,7 @@ declare module "path" {
      */
     const delimiter: ':';
     const sep: '/';
-  
+
     /**
      * The path.basename() methods returns the last portion of a path, similar to the Unix basename command.
      * Trailing directory separators are ignored, see path.sep.
@@ -29,7 +29,7 @@ declare module "path" {
      * @param ext An optional file extension. default: ''.
      */
     function basename(path: string, ext?: string): string;
-  
+
     /**
      * The path.dirname() method returns the directory name of a path, similar to the Unix dirname command.
      * Trailing directory separators are ignored, see path.sep.
@@ -39,7 +39,7 @@ declare module "path" {
      * @param path Path.
      */
     function dirname(path: string): string;
-  
+
     /**
      * The path.extname() method returns the extension of the path, from the last occurrence of the .
      * (period) character to end of string in the last portion of the path. If there is no .
@@ -51,7 +51,7 @@ declare module "path" {
      * @param path Path.
      */
     function extname(path: string): string;
-  
+
     /**
      * The path.format() method returns a path string from an object. This is the opposite of path.parse().
      *
@@ -60,7 +60,7 @@ declare module "path" {
      * @param pathObject Path object.
      */
     function format(pathObject: PathObj): string;
-  
+
     /**
      * The path.isAbsolute() method determines if path is an absolute path.
      * If the given path is a zero-length string, false will be returned.
@@ -70,7 +70,7 @@ declare module "path" {
      * @param path Path.
      */
     function isAbsolute(path: string): boolean;
-  
+
     /**
      * The path.join() method joins all given path segments together using the platform-specific separator as a delimiter,
      * then normalizes the resulting path.
@@ -80,7 +80,7 @@ declare module "path" {
      * @param paths path
      */
     function join(...paths: string[]): string;
-  
+
     /**
      * The path.normalize() method normalizes the given path, resolving '..' and '.' segments.When multiple,
      * sequential path segment separation characters are found (/), they are replaced by a single instance
@@ -92,7 +92,7 @@ declare module "path" {
      * @param path Path.
      */
     function normalize(path: string): string;
-  
+
     /**
      * The path.parse() method returns an object whose properties represent significant elements of the path.
      * Trailing directory separators are ignored, see path.sep.
@@ -102,7 +102,7 @@ declare module "path" {
      * @param path Path.
      */
     function parse(path: string): PathObj;
-  
+
     /**
      * The path.resolve() method resolves a sequence of paths or path segments into an absolute path.
      * The given sequence of paths is processed from right to left,
@@ -117,14 +117,14 @@ declare module "path" {
      * @param paths path
      */
     function resolve(...paths: string[]): string;
-  
+
     /**
      * Get the current working directory.
      * Since JSRE App is SandBox management,
      * User Mode App calls this method the return value is always '/'
      */
     function cwd(): string;
-  
+
     /**
      * Always returns path without modifications.
      * @param path path
@@ -132,5 +132,4 @@ declare module "path" {
     function toNamespacedPath(path: string): string;
   }
   export = path;
-  
 }

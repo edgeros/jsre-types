@@ -41,7 +41,7 @@ declare module "handnn" {
     const PIX_FMT_RGB2BGR24: number; // RGB24 to BGR24 pixel format.
     const PIX_FMT_GRAY2BGR24: number; // Grayscale to BGR24 pixel format.
     const PIX_FMT_RGBA2BGR24: number; // RGBA to BGR24 pixel firmat.
-  
+
     /**
      * Detect hand infos in given video buffer.
      *
@@ -50,7 +50,7 @@ declare module "handnn" {
      * @returns Hand info objects array which detected.
      */
     function detect(videoBuf: Buffer, attribute: HandnnAttribute): HandnnInfo[];
-  
+
     /**
      * Identify the hand feature of given hand info.
      *

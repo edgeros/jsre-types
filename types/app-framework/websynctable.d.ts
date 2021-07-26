@@ -25,12 +25,12 @@ declare module "websynctable" {
   namespace websynctable {
     class WebSyncTable {
       constructor(server: object | HttpServer | typeof WebApp, table: SyncTable, opts: WebSyncTableInfo);
-  
+
       /**
        * Close this WebSyncTable server, all client requests will no longer respond.
        */
       close(): void;
-  
+
       /**
        * Send a custom message to the specified client or broadcast to all clients.
        * @param event Event message name.
@@ -38,12 +38,12 @@ declare module "websynctable" {
        * @param client Target client. default: broadcast to all clients.
        */
       reverse(event: string, arg: number | string | object, client?: object): boolean;
-  
+
       /**
        * Get the number of client connections.
        */
       clients(): number;
-  
+
       on(event: string, listener: (...arg: any) => void): void;
     }
   }

@@ -19,7 +19,7 @@ declare module "semaphore" {
        * @param prioQueue Priority waiting queue.
        */
       constructor(name: string, value?: number, maxValue?: number, prioQueue?: boolean);
-  
+
       /**
        * A semaphore can be understood as a counter.
        * If the counter is not 0, sem.wait() decrements the counter and return true.
@@ -30,7 +30,7 @@ declare module "semaphore" {
        * @param timeout Wait timeout in milliseconds. default: undefined means wait forever until get this semaphore.
        */
       wait(timeout?: number): boolean;
-  
+
       /**
        * If the current semaphore counter has reached its maximum value, post fails and the counter value does not change.
        * Otherwise the counter is increase one and if there are other tasks waiting for this semaphore, activate the waiting task immediately.
@@ -38,7 +38,7 @@ declare module "semaphore" {
        * Returns: {Boolean} Post successfully returns true, otherwise false.
        */
       post(): boolean;
-  
+
       /**
        * Get the current semaphore counter immediately.
        *

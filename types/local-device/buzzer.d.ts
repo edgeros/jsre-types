@@ -15,21 +15,21 @@ declare module "buzzer" {
   namespace buzzer {
     class Buzzer {
       constructor();
-  
+
       /**
        * Open buzzer object, return undefined if it fails to open.
        *
        * @returns Buzzer.
        */
       static open(): Buzzer;
-  
+
       /**
        * Close this buzzer and reclaiming file descriptors. If user forgets to call this function,
        * the file descriptor is automatically reclaimed when the object is destroyed.
        *
        */
       close(): void;
-  
+
       /**
        * Send a command to the buzzer.
        *

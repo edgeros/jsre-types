@@ -42,14 +42,14 @@ declare module "http" {
       enableTimeout(enable: boolean): void;
       close(): void;
       destroy(err: Error): this;
-  
+
       on(event: "data", listener: (buff: Buffer) => void): this;
       on(event: "end" | "close" | "error", listener: () => void): this;
     }
-  
+
     class HttpServerResponse extends HttpOutput {
       constructor();
-  
+
       /**
        * Close the response session and close HTTP connection.
        *
@@ -57,32 +57,32 @@ declare module "http" {
        * @returns this.
        */
       destroy(error?: Error): this;
-  
+
       on(event: "end" | "finish" | "close" | "error" | "drain", listener: () => void): this;
     }
-  
+
     class HttpOutput {
       /**
        * method Contains a string corresponding to the HTTP method of the request.
        * It is expressed in uppercase and is case sensitive.
        */
       method: string;
-  
+
       /**
        * path HTTP request url query path.
        */
       path: string;
-  
+
       /**
        * statusCode HTTP response status.
        */
       statusCode: number;
-  
+
       /**
        * statusMessage HTTP response status message.
        */
       statusMessage: string;
-  
+
       /**
        * Set an HTTP header.
        *
@@ -90,7 +90,7 @@ declare module "http" {
        * @param value HTTP header value.
        */
       setHeader(key: string, value: string): void;
-  
+
       /**
        * Get an HTTP header. If not exist, return undefined.
        *
@@ -99,7 +99,7 @@ declare module "http" {
        * @param key HTTP header key.
        */
       getHeader(key: string): string | undefined;
-  
+
       /**
        * Set output HTTP header line and headers.
        *
@@ -114,33 +114,33 @@ declare module "http" {
        * @param headers HTTP headers.
        */
       writeHead(headOpt: object | number | string, headers: string): void;
-  
+
       /**
        * Remove a header from HTTP headers.
        *
        * @param key HTTP header key.
        */
       removeHeader(key: string): void;
-  
+
       /**
        * Set HTTP headers. Copy all object from headers to output headers..
        * if number Set or get HTTP status
        * @param headers HTTP headers.
        */
       addHeaders(headers: object | number): void;
-  
+
       /**
        * Clear all HTTP headers.
        */
       clearHeaders(): void;
-  
+
       /**
        * Set or get HTTP status. If `status` undefined, this method return output `statusCode`. Otherwise, set output `statusCode`.
        *
        * @param [status] HTTP status.
        */
       status(status?: string): void;
-  
+
       /**
        * Send data to client/server. If Content-Length not set, output.write() set 'Transfer-Encoding' to 'chunked',
        * and this method can call multiple times. After write all data, user should call output.end() to end output.
@@ -148,7 +148,7 @@ declare module "http" {
        * @param chunk Http body data.
        */
       write(chunk: string | number | boolean | object | Buffer): void;
-  
+
       /**
        * If chunk is not empty, the chunk is sent to the client/server and the output is ended.
        * After the outout is finished, continuing to send data is invalid.
@@ -156,56 +156,56 @@ declare module "http" {
        * @param chunk Http body data. default: undefined.
        */
       end(chunk?: string | number | boolean | object | Buffer): void;
-  
+
       /**
        * Get whether the current network connection is connected.
        */
       connected(): void;
     }
-  
+
     class HttpInput {
       /**
        * HTTP request url.
        */
       url: string;
-  
+
       /**
        * HTTP response status message. See input.statusCode.
        */
       statusMessage: string;
-  
+
       /**
        * HTTP headers.
        */
       headers: object;
-  
+
       /**
        * If HTTP header X-Requested-With exist.
        * A Boolean property that is true if the request’s X-Requested-With header field is XMLHttpRequest,
        * indicating that the request was issued by a client library such as jQuery.
        */
       xhr: boolean;
-  
+
       /**
        * Request body, default: {}.
        * If enableCache() is set, input data will be stored in input.body in `Buffer' type. See input.enableCache().
        */
       body: object | Buffer | string;
-  
+
       /**
        * If enableCache(true) is set, the input data will be stored in input.body in Buffer type when input receives data.
        *
        * @param cache Enable cache or not, default: true.
        */
       enableCache(cache?: boolean): void;
-  
+
       /**
        * If the data reception is not completed or is not aborted,
        * the input data is aborted. The ‘aborted` event is fired when this operation is active.
        */
       abort(): void;
     }
-    /**
+  /**
    * This `HttpClient` object (request object) is created internally and retured from `http.request()`.
    * The response object will passed to the callback function.
    *
@@ -231,7 +231,7 @@ declare module "http" {
   function get(url: string, callback: (res: HttpClientResponse) => void, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<any>;
     class HttpServer {
       constructor();
-  
+
       /**
        * This method creates a master-server. When the master-server starts, it can create a specified number(subs)
        * of sub-servers (subs), refer to `HttpServer mult-task`.
@@ -248,7 +248,7 @@ declare module "http" {
        * @returns  returns httpServer.
        */
       static createServer(group: string, handle: (...args: any) => void, subs: number, subMode?: string, saddr?: object, tlsOpt?: object): HttpServer;
-  
+
       /**
        * Use this method to create a sub-server when the sub-server is not the same module as the master-server.
        *
@@ -257,19 +257,19 @@ declare module "http" {
        * @returns Returns HttpServer.
        */
       static createSubServer(group: string, handle: (...args: any) => void): HttpServer;
-  
+
       /**
        * Get whether the server object is the master server.
        *
        * @returns Whether it is the master server.
        */
       isMaster(): boolean;
-  
+
       groupName: {
         group: string; // The server group name, see `HttpServer mult-task`.
         name: string; // The server name, see `HttpServer mult-task`.
       };
-  
+
       /**
        * This method adds a SNI (Server Name Indication) certificate to the tls server. SNI is an extension used to improve SSL or TLS for servers.
        * It mainly solves the disadvantage that one server can only use one certificate (one domain name). With the support of the server for virtual hosts,
@@ -284,35 +284,35 @@ declare module "http" {
        * @returns Whether if was added successfully.
        */
       addcert(opt: { name: string, ca: string, cert: string, key: string, passwd: string, }): boolean;
-  
+
       /**
        * Start http server.
        *
        * @returns this.
        */
       start(): this;
-  
+
       /**
        * Stop http server.
        *
        * @returns this.
        */
       stop(): this;
-  
+
       /**
        * When the server starts with the `MASTER` module, `server.port()` gets the port of the server, otherwise it returns `undefined`.
        *
        * @returns Server socket port.
        */
       port(): number | undefined;
-  
+
       on(event: "start" | "stop", listener: () => void): this;
       on(event: "request", listener: (req: HttpServerRequest, res: HttpServerResponse) => void): this;
     }
 
     class HttpClient {
       constructor(callback: (...args: any) => void, saddr: { res: HttpClientResponse }, tlsOpt?: object);
-  
+
       /**
        * open
        *
@@ -321,12 +321,12 @@ declare module "http" {
        * @returns The http client request object or promise object. depend on `async` param.
        */
       open(timeout?: number, async?: boolean): HttpClient | Promise<any>;
-  
+
       /**
        * Close http connection.
        */
       close(): void;
-  
+
       /**
        * Send a request to the http server, this request method can be `GET`, `PUT`, `POST`... This function will not be blocked,
        * when the server responds, the `callback` function will be called.
@@ -335,7 +335,7 @@ declare module "http" {
        * @param chunk The request post data, default: undefined.
        */
       request(options: HttpClientRequestOptions, chunk: string | Buffer): void;
-  
+
       /**
        * Send data to sever. If `Content-Length` not set, `client.write()` set 'Transfer-Encoding' to 'chunked',
        * and this method can call multiple times. After write all data, user should call `client.end()` to end request.
@@ -343,7 +343,7 @@ declare module "http" {
        * @param chunk Http body data.
        */
       write(chunk: string | number | boolean | object | Buffer): void;
-  
+
       /**
        * If `chunk` is not empty, the `chunk` is sent to the server and the request is ended.
        * After the request is finished, continuing to send data is invalid.
@@ -351,7 +351,7 @@ declare module "http" {
        * @param [chunk] Http post data. default: undefined.
        */
       end(chunk: string | number | boolean | object | Buffer): void;
-  
+
       on(event: "response" | "end" | "close" | "error" | "finish" | 'aborted', callback: (res?: HttpClientResponse) => void): this;
       on(event: 'error', callback: (error: Error) => void): this;
       setHeader(name: string, value: string): void;

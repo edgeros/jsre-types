@@ -23,13 +23,13 @@ declare module "http_util" {
      * @param path String of http path.
      */
     function normalPath(path: string): string;
-  
+
     /**
      * Parse http url.
      * @param url Http url.
      */
     function parseUrl(url: string): UrlStruct;
-  
+
     /**
      * Parse ip type.
      *
@@ -37,7 +37,7 @@ declare module "http_util" {
      * @returns Ip type that `httpUtil.IP` enumerated.
      */
     function parseHost(host: string): IP;
-  
+
     /**
      * The `httpUtil.getHostAddr()` function get socket address object. If `host` provides the form of a domain name, first resolve the ip through `dns` module.
      *
@@ -47,7 +47,7 @@ declare module "http_util" {
      * @returns Socket address. If fail, return `null` value.
      */
     function getHostAddr(host: string, port: number, domain?: number): null | object;
-  
+
     /**
      * The `httpUtil.getHostAddrAsync()` function get socket address object. If `host` provides the form of a domain name, first resolve the ip through `dns` module.
      *
@@ -59,7 +59,7 @@ declare module "http_util" {
      */
     function getHostAddrAsync(host: string, port: number, callback: (error: Error, saddr: object) => void, timeout?: number): void;
     function getHostAddrAsync(host: string, port: number, domain: number, callback: (error: Error, saddr: object) => void, timeout?: number): void;
-  
+
     /**
      * The `httpUtil.createError()` function is used in the `WebApp` program. When the user program encounters an error,
      * it can create an `Error` object through this function, and then all call `next(error)` to return. For more infomation, please refer to WebApp
@@ -71,5 +71,4 @@ declare module "http_util" {
     function createError(status?: number, reason?: string): Error;
   }
   export = http_util;
-
 }

@@ -31,7 +31,7 @@ declare module "sddc" {
   namespace sddc {
     class Sddc {
       constructor(ifname: string);
-  
+
       /**
        * Set the current device information. When other devices request information about this device, this device will provide this information.
        * When the current device information changes, the device notifies previously discovered devices and lets them re-acquire the new information.
@@ -41,14 +41,14 @@ declare module "sddc" {
        * @param server Server summary provided by this machine. default: {}.
        */
       setInfo(product: SddcSetInfoProduct, vendor: string, excl?: boolean, server?: object): void;
-  
+
       /**
        * The SDDC protocol management object allows you to set a filter callback. Any data packet first goes through the filter callback.
        * If it is allowed, the protocol processing is performed.
        * @param callback Set communication filter.
        */
       setFilter(callback: (uid: string, addr: string) => void): void;
-  
+
       /**
        * Add the communication token of the specified device.
        * @param uid Device unique ID.
@@ -57,13 +57,13 @@ declare module "sddc" {
       security(uid: string, token: string): void;
       start(): void;
       close(): void;
-  
+
       /**
        * Send a discover packet to discover surrounding or specified devices.
        * @param dest Destination IP address. default: local broadcast.
        */
       discover(dest?: string): void;
-  
+
       /**
        * Invite a previously discovered device to the network.
        * @param uid Device unique ID.
@@ -72,7 +72,7 @@ declare module "sddc" {
        */
       invite(uid: string, callback?: (error: Error) => void, retries?: number): void;
       delete(uid: string): boolean;
-  
+
       /**
        * @param uid Device unique ID.
        * @param msg object to send. (will be converted to JSON)
@@ -82,7 +82,7 @@ declare module "sddc" {
        * @param urgent Whether it is an urgent packet. default: false.
        */
       send(uid: string, msg: object | string, req?: boolean, callback?: (error: Error) => void, retries?: number, urgent?: boolean): void;
-  
+
       on(event: "found" | "update" | "lost" | "join", callback: (uid: string, info: SddcFoundParams) => void): void;
       on(event: "refuse" | "message", callback: (uid: string, data: object) => void): void;
       on(event: "token", callback: (...args: any) => void): void;

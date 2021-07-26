@@ -33,8 +33,8 @@ declare module "advnwc" {
     function netifs(
        lan: boolean,
        callback: (error: Error, list: string[]) => void
-     ): void;
-   
+    ): void;
+
     /**
      * Add a QoS rule, and the EdgerOS network protocol stack will process the queued data packets
      * in different priorities according to the rule settings,
@@ -62,8 +62,8 @@ declare module "advnwc" {
        portEnd: number,
        reliable: boolean,
        callback: (error: Error, index: number) => void
-     ): void;
-   
+    ): void;
+
     /**
      * Delete a previously added QoS rule.
      * If index is of type {Integer}, delete the rule of specified index.
@@ -77,8 +77,8 @@ declare module "advnwc" {
        ifname: string,
        index: number,
        callback?: (error: Error) => void
-     ): void;
-   
+    ): void;
+
     /**
      * get list by index
      *
@@ -90,8 +90,8 @@ declare module "advnwc" {
        ifname: string,
        index: number,
        callback?: (error: Error, rules: Rule[]) => void
-     ): void;
-   
+    ): void;
+
     /**
      * Add a net packet filter, this method can isolate some specified devices in the network.
      * When allow is true, it means to join the whitelist, otherwise it will be added to the blacklist.
@@ -118,8 +118,8 @@ declare module "advnwc" {
        portStart: number,
        portEnd: number,
        callback: (error: Error, index: number) => void
-     ): void;
-   
+    ): void;
+
     /**
      * Delete a previously added net packet filter.
      * If index is of type {Integer}, delete the rule of specified index.
@@ -133,8 +133,8 @@ declare module "advnwc" {
        ifname: string,
        index: number,
        callback?: (error: Error) => void
-     ): void;
-   
+    ): void;
+
     /**
      * get list by index
      *
@@ -146,8 +146,8 @@ declare module "advnwc" {
        ifname: string,
        index: number,
        callback?: (error: Error, rules: Rule[]) => void
-     ): void;
-   
+    ): void;
+
     /**
      * Add a flow control rule to control the uplink and downlink speeds of the internal network machines.
      * When the speed exceeds the speed limit, these packets will be buffered.
@@ -175,8 +175,8 @@ declare module "advnwc" {
        portEnd: number,
        bufSize: number,
        callback: (error: Error, index: number) => void
-     ): void;
-   
+    ): void;
+
     /**
      * Delete a previously added flow control rule.
      * If index is of type {Integer}, delete the rule of specified index.
@@ -190,8 +190,8 @@ declare module "advnwc" {
        ifname: string,
        index: number,
        callback?: (error: Error) => void
-     ): void;
-   
+    ): void;
+
     /**
      * get list by index
      *
@@ -203,7 +203,7 @@ declare module "advnwc" {
        ifname: string,
        index: number,
        callback?: (error: Error, rules: Rule[]) => void
-     ): void;
+    ): void;
   }
   export = advnwc;
 }

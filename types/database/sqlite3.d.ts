@@ -38,7 +38,7 @@ declare module "sqlite3" {
        * @param flags Open flags. default: 'c+'.
        */
       constructor(fileName: string, flags?: string);
-  
+
       static SQLITE_ERROR: number;
       static SQLITE_INTERNAL: number;
       static SQLITE_PERM: number;
@@ -61,18 +61,18 @@ declare module "sqlite3" {
       static SQLITE_AUTH: number;
       static SQLITE_RANGE: number;
       static SQLITE_NOTADB: number;
-  
+
       static OK: number;
       static ROW: number;
       static DONE: number;
-  
+
       /**
        * Get Sqlite3 library version.
        *
        * Returns: {string} Sqlite3 library version string.
        */
       static version(): string;
-  
+
       /**
        * Open a database using the specified method. flags can be:
        *
@@ -82,7 +82,7 @@ declare module "sqlite3" {
        * @param flags Open flags. default: 'c+'.
        */
       static open(fileName: string, flags?: string): Sqlite3;
-  
+
       /**
        * Convert the error code to error string.
        *
@@ -91,17 +91,17 @@ declare module "sqlite3" {
        * @param errCode Sqlite3 error code.
        */
       static error(errCode: number): string;
-  
+
       /**
        * Rowid at last insert, which is not recommended without special circumstances.
        */
       lastRowid: number;
-  
+
       /**
        * Close database object.
        */
       close(): void;
-  
+
       /**
        * Back up the current database to the specified file.
        *
@@ -110,28 +110,28 @@ declare module "sqlite3" {
        * @param destFile Destination file.
        */
       backup(destFile: string): number;
-  
+
       /**
        * Open a transaction. Same as db.run('BEGIN;').
        *
        * Returns: {Integer} Sqlite3 error code, Sqlite3.OK or Sqlite3.DONE is success.
        */
       begin(): number;
-  
+
       /**
        * Commit a transaction. Same as db.run('COMMIT;').
        *
        * Returns: {Integer} Sqlite3 error code, Sqlite3.OK or Sqlite3.DONE is success.
        */
       commit(): number;
-  
+
       /**
        * Rollback a transaction. Same as db.run('ROLLBACK;').
        *
        * Returns: {Integer} Sqlite3 error code, Sqlite3.OK or Sqlite3.DONE is success.
        */
       rollback(): number;
-  
+
       /**
        * Run an SQL statement.
        *
@@ -144,7 +144,7 @@ declare module "sqlite3" {
        */
       run(sql: string, ...bind: any): number;
       run(sql: string, query: (...args: any) => void, arg?: any): number;
-  
+
       /**
        * Prepare an SQL statement and return a statement prepair object.
        *
@@ -157,7 +157,7 @@ declare module "sqlite3" {
        */
       prepare(sql: string, ...bind: any): Stmt;
       prepare(sql: string, query?: (...args: any) => void, arg?: any): Stmt;
-  
+
       [Symbol.iterator](): Iterator<any>;
     }
   }

@@ -205,7 +205,7 @@ declare module "dtls" {
      * @param sockaddr Local address.
      */
     function createServer(opt: DtlsServerOptions, sockaddr: SockAddr): Dtls;
-  
+
     /**
      * Create a Datagram TLS client and connects to the specified remote host. Use synchronous mode.
      *
@@ -217,7 +217,7 @@ declare module "dtls" {
      */
     function createClient(opt: DtlsClientOptions, sockaddr: SockAddr, timeout?: number): Dtls;
     function createClient(opt: DtlsClientOptions, sockaddr: SockAddr, callback: (dtls: Dtls) => void): Dtls;
-  
+
     /**
      * Create a dtls object with socket file descriptor, mainly used to multitasking Datagram TLS server. Use synchronous mode.
      * Returns: {object} Dtls object.
@@ -229,5 +229,5 @@ declare module "dtls" {
     function createByFd(name: string, sockFd: number, timeout?: number): Dtls;
     function createByFd(name: string, sockFd: number, callback: (dtls: Dtls) => void): Dtls;
   }
-  export = dtls;  
+  export = dtls;
 }

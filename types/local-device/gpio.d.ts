@@ -20,7 +20,7 @@ declare module "gpio" {
       static TRIG_FALL: number;
       static TRIG_RISE: number;
       static TRIG_LEVEL: number;
-  
+
       /**
        * Open a GPIO file with the specified number and modes.
        *
@@ -28,7 +28,7 @@ declare module "gpio" {
        * @param flags GPIO open flags. default: Gpio.DIR_IN.
        */
       constructor(number: number, flags?: number)
-  
+
       /**
        * Same as new Gpio(), but does not throw an exception, returning undefined means opening failed.
        * Open a GPIO file with the specified number and modes.
@@ -39,13 +39,13 @@ declare module "gpio" {
        * @param flags GPIO open flags. default: Gpio.DIR_IN.
        */
       static open(number: number, flags?: number): object;
-  
+
       /**
        * Close this GPIO and reclaiming file descriptors. If user forgets to call this function,
        * the file descriptor is automatically reclaimed when the object is destroyed.
        */
       close(): void;
-  
+
       /**
        * Waiting for GPIO interrupt. GPIO must enable interrupt.
        *
@@ -54,21 +54,21 @@ declare module "gpio" {
        * @param timeout Wait timeout in milliseconds. default: undefined means wait forever.
        */
       wait(timeout?: number): boolean;
-  
+
       /**
        * Wait interrupt using asynchronous mode. After enabling this mode, the `gpio.wait()` method will be deleted.
        *
        * @param [enable] Whether to enable asynchonous mode. default: true.
        */
       async(enable?: boolean): void;
-  
+
       /**
        * Get current mode of GPIO.
        *
        * Returns: {Integer} GPIO mode.
        */
       getMode(): number;
-  
+
       /**
        * Set current mode of GPIO.
        *

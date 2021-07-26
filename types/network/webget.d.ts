@@ -53,15 +53,14 @@ declare module "webget" {
   namespace webget {
     class WebGet {
       constructor();
-  
       static size(url: string, callback: (size: any) => number | Error, options?: WebGetSizeOptions, tlsOpt?: object): void;
-  
+
       static get(url: string, callback: (loader: WebGet) => void): void;
       static get(url: string, options: WebGetGetOptions, callback: (loader: WebGet) => void, tlsOpt?: object): void;
-  
+
       static file(url: string, filePath: string, callback: (loader: WebGet) => void): void;
       static file(url: string, filePath: string, options: object, callback: (loader: WebGet) => void, tlsOpt?: object): void;
-  
+
       on(event: "response", callback: (info: WebGetOnResponseResult) => void): this;
       on(event: "data", callback: (chunk: Buffer, info: { offset: number, completeSize: number }) => void): this;
       on(event: "end" | "error", callback: CallbackFunction): this;

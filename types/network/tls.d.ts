@@ -248,7 +248,7 @@ declare module "tls" {
      * @param dev The network interface you want to bind. default: not bind.
      */
     function createServer(opt: TlsClientOptions, sockaddr: SockAddr, backlog: number, dev?: string): Tls;
-  
+
     /**
      * Create a Tls client and connects to the specified remote host. Use synchronous mode.
      *
@@ -260,7 +260,7 @@ declare module "tls" {
      */
     function createClient(opt: TlsClientOptions, sockaddr: SockAddr, timeout?: number): Tls;
     function createClient(opt: TlsClientOptions, sockaddr: SockAddr, callback: (tls: object) => void): Tls;
-  
+
     /**
      * Create a Tls object with socket file descriptor, mainly used to multitasking Tls server.
      *
@@ -273,5 +273,5 @@ declare module "tls" {
     function createByFd(name: string, sockFd: number, timeout?: number): Tls;
     function createByFd(name: string, sockFd: number, callback: (tls: Tls) => void): Tls;
   }
-  export = tls;  
+  export = tls;
 }

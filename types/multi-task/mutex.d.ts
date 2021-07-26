@@ -24,7 +24,7 @@ declare module "mutex" {
        * @param eventBlock event block
        */
       constructor(name: string, prioQueue?: boolean, eventBlock?: boolean);
-  
+
       /**
        * Mutex lock operation, if the mutex is not locked, this function will lock and return true.
        * If the mutex has been locked by another task, this operation will block until other tasks are unlock,
@@ -36,14 +36,14 @@ declare module "mutex" {
        * @param timeout Wait timeout in milliseconds. default: undefined means wait forever until mutex.lock() is successful.
        */
       lock(timeout?: number): boolean;
-  
+
       /**
        * Unlock mutex, unlock succeeds if the current task has already locked, otherwise fails.
        *
        * Returns: {Boolean} Unlocked successfully returns true, otherwise false.
        */
       unlock(): boolean;
-  
+
       /**
        * Get the current mutex state immediately, unlocked returns true, otherwise false.
        *

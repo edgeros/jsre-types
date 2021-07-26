@@ -279,7 +279,7 @@ declare module "tcp" {
      * @param dev The network interface you want to bind. default: not bind
      */
     function createServer(sockaddr: SockAddr, backlog?: number, dev?: string): Tcp;
-  
+
     /**
      * Create a TCP client and connects to the specified remote host. Use synchronous mode.
      *
@@ -289,7 +289,7 @@ declare module "tcp" {
      * @param timeout Wait timeout in milliseconds. default: undefined means timeout with default connect timeout setting.
      */
     function createClient(sockaddr: SockAddr, timeout?: number): Tcp;
-  
+
     /**
      * Create a TCP client and connects to the specified remote host. Use asynchronous mode.
      *
@@ -300,7 +300,7 @@ declare module "tcp" {
      *                  tcp {object} Tcp object.
      */
     function createClient(sockaddr: SockAddr, callback: (tcp: object) => void): Tcp;
-  
+
     /**
      * Create a tcp object with socket file descriptor, mainly used to multitasking TCP server.
      *

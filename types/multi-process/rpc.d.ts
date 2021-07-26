@@ -34,12 +34,12 @@ declare module "rpc" {
        * @param onlyPrivilege Only privileged tasks to access this RPC service. default: false.
        */
       constructor(name: string | object, errCallback?: ErrorCallback, onlyPrivilege?: boolean);
-  
+
       /**
        * Close this RPC server. this RPC server object is no longer allowed to be used after closed.
        */
       close(): void;
-  
+
       /**
        * Send a server reply to the specified client.
        *
@@ -51,7 +51,7 @@ declare module "rpc" {
        * @param timeout Wait timeout in milliseconds. default: undefined means wait forever.
        */
       reply(msg: object, to: ToObj, seq: number, timeout?: number): boolean;
-  
+
       /**
        * Send a server asynchronous reverse message to the specified client.
        *
@@ -63,7 +63,7 @@ declare module "rpc" {
        * @param timeout Wait timeout in milliseconds. default: undefined means wait forever.
        */
       reverse(event: string, msg: object, to: ToObj, timeout?: number): boolean;
-  
+
       /**
        * Create a temporary `ReadStream` object to receive the data sent by the client.
        * `alive` is the time to wait for the client `WriteStream` to connect. If the client is not connected within this time interval,
@@ -72,17 +72,16 @@ declare module "rpc" {
        * @param alive Maximum idle time (ms). default: 30000.
        */
       createReadStream(clientPid: number, alive?: number): ReadStream;
-  
+
       /**
        * Create a temporary WriteStream object to send the data to client.
        * @param rid Peer ReadStream id.
        * @param async Whether to use pure asynchronous mode, which is less efficient, but fair to other events. default: true.
        */
       createWriteStream(rid: string, async?: boolean): WriteStream;
-  
+
       on(event: string, handler: (msg: object, from: ServerFrom, seq: number) => void): void;
     }
-  
     class Client {
       /**
        * Create an RPC client using AF_UNIX multi-process communication.
@@ -93,12 +92,12 @@ declare module "rpc" {
        * @param errCallback LPC client I/O error callback. default: undefined.
        */
       constructor(name: string | object, errCallback?: (...args: any) => void);
-  
+
       /**
        * Close the RPC client, this RPC client object is no longer allowed to be used after closed.
        */
       close(): void;
-  
+
       /**
        * Send a call request to the server, this function immediately returns after the request is successfully sent.
        * The `callback` function is called until the server responds or times out.
@@ -108,7 +107,7 @@ declare module "rpc" {
        * @param timeout Wait timeout in milliseconds. default: 60000.
        */
       call(event: string, msg: object, callback: (reply: object) => void, timeout?: number): boolean;
-  
+
       /**
        * Send a call request to the server and wait for server reply.
        * If there is no response within the time specified by timeout, return undefined.
@@ -120,7 +119,7 @@ declare module "rpc" {
        * @param timeout Wait timeout in milliseconds. default: 60000.
        */
       callSync(event: string, msg: object, timeout?: number): object;
-  
+
       /**
        * Send a call request to the server, this function is asynchronous request and return a `Promise` object.
        * @param event Server event that you want to trigger.
@@ -128,13 +127,13 @@ declare module "rpc" {
        * @param timeout Wait timeout in milliseconds. default: 60000.
        */
       fetch(event: string, msg: object, timeout?: number): Promise<any>;
-  
+
       /**
        * Create a temporary ReadStream object to receive the data sent by the server.
        * @param alive Maximum idle time (ms). default: 30000.
        */
       createReadStream(alive?: number): ReadStream;
-  
+
       /**
        * Create a temporary WriteStream object to send the data to server.
        * @param rid Peer `ReadStream` id.

@@ -29,15 +29,15 @@ declare module "yallist" {
       forEachReverse(fn: (...args: any) => void, thisp?: object): void;
       get(n: number): any;
       getReverse(n: number): any;
-  
+
       map(fn: (...args: any) => void, thisp?: object): void;
       mapReverse(fn: (...args: any) => void, thisp?: object): void;
-  
+
       reduce(fn: (...args: any) => void, initial?: object): any;
       reduceReverse(fn: (...args: any) => void, initial?: object): any;
       slice(from?: number, to?: number): Yallist;
       sliceReverse(from?: number, to?: number): Yallist;
-  
+
       pushNode(node: Node): void;
       removeNode(node: Node): void;
       unshiftNode(node: Node): void;

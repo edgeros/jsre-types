@@ -35,9 +35,9 @@ declare module "HttpProxy" {
   namespace http_proxy {
     class HttpProxy {
       constructor(opts?: Opts)
-  
+
       static create(opts?: Opts): HttpProxy;
-  
+
       /**
        * Used for proxying regular HTTP(s) requests.
        *
@@ -46,7 +46,7 @@ declare module "HttpProxy" {
        * @param [opts] Reference `HttpProxy.create opts` argument. This options will override the options of `HttpProxy.create`.
        */
       web(req: HttpInput, res: HttpOutput, opts?: Opts): void;
-  
+
       /**
        * Used for proxying WS(S) requests.
        *
@@ -56,15 +56,14 @@ declare module "HttpProxy" {
        * @param [opts] Reference `HttpProxy.create opts` argument. This options will override the options of `HttpProxy.create`.
        */
       ws(req: HttpInput, net: Socket, cb: (...args: any) => void, opts?: Opts): void;
-  
+
       /**
        * A function that closes and stops proxy.
        */
       stop(): void;
-  
+
       on(event: "request" | "response", callback: (proxyRes: HttpClient, req: HttpServerRequest, res: HttpServerResponse) => void): this;
     }
-
   }
   export = http_proxy.HttpProxy;
 }

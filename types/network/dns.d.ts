@@ -17,7 +17,7 @@ declare module "dns" {
     function lookup(hostname: string, domain?: number): string;
     function lookup(hostname: string, callback: (error: Error, ipaddr: string) => void, timeout?: number): void;
     function lookup(hostname: string, domain: number, callback: (error: Error, ipaddr: string) => void, timeout?: number): void;
-  
+
     /**
      * Same as `dns.lookup()` but returns object.
      *
@@ -29,7 +29,7 @@ declare module "dns" {
      * @param timeout timeout
      */
     function gethostbyname(hostname: string, domain?: number, callback?: (error: Error, ipaddr: string) => void, timeout?: number): object;
-  
+
     /**
      * Find the IP address of the specified hostname.
      * The domain name query process task is blocked until the query success or times out.
@@ -44,7 +44,7 @@ declare module "dns" {
      */
     function getaddrinfo(hostname: string, domain?: number, flags?: number, callback?: (error: Error, ipaddr: string) => void, timeout?: number): string;
     function getaddrinfo(hostname: string, callback: (error: Error, ipaddr: string) => void, timeout?: number): string;
-  
+
     /**
      * In synchronous mode, set the current task DNS cache alive time. When `ms` is 0, it means that DNS result cache is not used,
      * and the minimum effective time of `ms` is 10 seconds. Default setting is 300 seconds.
@@ -53,7 +53,7 @@ declare module "dns" {
      * @returns Current DNS cache alive time.
      */
     function cacheTimeout(ms?: number): number;
-  
+
     /**
      * Flush all DNS cache. If the `hostname` argument is specified, only the DNS cache of the specified `hostname` will be flushed.
      *

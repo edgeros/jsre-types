@@ -12,7 +12,7 @@ declare module "html" {
      * @param options Parse option. default: undefined.
      */
     function parse(htmlString?: string, options?: object): object[];
-  
+
     /**
      * Takes an AST and turns it back into a string of HTML.
      *

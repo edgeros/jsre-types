@@ -87,7 +87,7 @@ declare module "coap" {
       token: Buffer;
       options: object; // Coap options.
       payload: string | Buffer; // Coap payload to be send or received.
-  
+
       // Code request method code for request and response status code for response.
       /*
       * Code        Description
@@ -116,7 +116,7 @@ declare module "coap" {
       code: string;
       path: string; // Coap Uri-Path.
       method: "GET" | "get" | "POST" | "post" | "PUT" | "put" | "DELETE" | "delete";
-  
+
       /**
        * Set or remove package option.
        *
@@ -124,7 +124,7 @@ declare module "coap" {
        * @param [value] Option value. If val equal undefined, this option will be removed.
        */
       setOption(key: string, value?: any): void;
-  
+
       /**
        * Add or append package option.
        *
@@ -132,14 +132,14 @@ declare module "coap" {
        * @param value Option value.
        */
       appendOption(key: string, value: any): void;
-  
+
       /**
        * Set multiple options.
        *
        * @param opts Coap options.
        */
       setOptions(opts: object): void;
-  
+
       /**
        * Get option value.
        * NOTICE: The value is `true` if option's format is `empty`.
@@ -148,14 +148,14 @@ declare module "coap" {
        * @returns Option value.
        */
       getOption(key: string): any;
-  
+
       /**
        * Set package payload.
        *
        * @param [chunk] Payload data. If chunk undefined, payload set to undefined.
        */
       setPayload(chunk?: string | Buffer | object): void;
-  
+
       /**
        * Set or append package payload. This api can be call multiple times.
        *
@@ -163,7 +163,7 @@ declare module "coap" {
        * @returns Append payload success or not.
        */
       appendPayload(chunk?: string | Buffer | object): boolean;
-  
+
       /**
        * Confirm(CON): A request that needs to be acknowledged. If a `CON` request is sent,
        * the other party must respond. This request is used for reliable transmission.
@@ -174,7 +174,7 @@ declare module "coap" {
        */
       isConfirm(): boolean;
     }
-    /**
+  /**
    * This CoapClient object (request object) is created internally and returned from coap.request().
    *
    * @param url Coap url.

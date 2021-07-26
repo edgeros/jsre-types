@@ -1,5 +1,6 @@
 declare module 'edgeros:dgram' {
-  export * from 'dgram';
+  import dgram = require('dgram');
+  export = dgram;
 }
 
 declare module 'dgram' {
@@ -180,5 +181,4 @@ declare module 'dgram' {
     function createSocket(options: SockOptions | "udp4" | "udp6", callback?: () => void): Dgram;
   }
   export = dgram;
-
 }

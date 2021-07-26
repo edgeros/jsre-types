@@ -4,7 +4,6 @@ declare module 'edgeros:rms' {
 }
 
 declare module "rms" {
-  
   namespace rms {
     class Rms {
       /**
@@ -15,7 +14,7 @@ declare module "rms" {
        * Returns: {object} rms object.
        */
       constructor();
-  
+
       /**
        * Control program cycle execution according to the specified period time setting.
        *
@@ -27,6 +26,5 @@ declare module "rms" {
       period(ms: number, gc?: boolean): boolean;
     }
   }
-
   export = rms.Rms;
 }

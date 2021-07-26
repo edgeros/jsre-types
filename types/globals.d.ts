@@ -11,7 +11,7 @@ declare var console: Console;
 declare var sys: Sys;
 
 declare function atob(data: string): Buffer;
-declare function btoa(data: string | Buffer | ArrayBuffer | EdgerOS.TypedArray | Array<any>): string;
+declare function btoa(data: string | Buffer | ArrayBuffer | EdgerOS.TypedArray | any[]): string;
 
 declare const module: {
   id: string;
@@ -302,10 +302,10 @@ declare class Buffer {
   toArray(start?: number, end?: number): {};
 }
 
-declare class Timer{
+declare class Timer {
   /**
-     * Create a JSRE timer object.
-     */
+   * Create a JSRE timer object.
+   */
    constructor();
 
    /**

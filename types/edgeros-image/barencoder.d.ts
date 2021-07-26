@@ -19,7 +19,6 @@ declare module "barencoder" {
     eccLevel: number; // ECC level, can be [0-8].
   }
 
-  
   namespace barencoder {
     let FORMAT_AZTEC: string; // AXTEC encoder(2D, beta).
     let FORMAT_CODABAR: string; // CODABAR encoder(1D industrial).
@@ -50,7 +49,7 @@ declare module "barencoder" {
      * @param eccLevel ECC level, can be [0-8], used for Aztec, PDF417, and QRCode only. default: 2.
      */
     function defaultOpt(width: number, height: number, margin: number, eccLevel: number): EncoderOptions;
-  
+
     /**
      * Returns: {Boolean} true means success, false means failure.
      *

@@ -28,7 +28,7 @@ declare module "monitor" {
        * Returns: {object} A monitor object.
        */
       constructor();
-  
+
       /**
        * Measure CPU usage and return an array, each member of the array is an object,
        *
@@ -37,7 +37,7 @@ declare module "monitor" {
        * @param time Measurement time in milliseconds. default: 1000.
        */
       cpuUsage(time?: number): Usage[];
-  
+
       /**
        * Use the asynchronous mode to measure the CPU usage. The callback parameter is an array of measurement results.
        *
@@ -46,7 +46,7 @@ declare module "monitor" {
        *                  usage {Array} Measurement result.
        */
       cpuUsage(time: number, callback: (usage: any[]) => void): void;
-  
+
       /**
        * Get memory usage and return an array, each member of the array is an object, this object contains the following members:
        *
@@ -55,7 +55,7 @@ declare module "monitor" {
        * @param pid Specify process. default: -1 all process.
        */
       memUsage(pid?: number): Usage[] | number;
-  
+
       /**
        * This method only gets the current process network traffic usage.
        */

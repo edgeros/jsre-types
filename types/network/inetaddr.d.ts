@@ -21,7 +21,7 @@ declare module "inetaddr" {
      * @param addr Address string.
      */
     function isIPv6(addr: string): boolean;
-  
+
     /**
      * Check if the input string is a valid IPv4 or IPv6 address, valid return true, otherwise false.
      *
@@ -30,7 +30,7 @@ declare module "inetaddr" {
      * @param addr Address string.
      */
     function addrValid(addr: string): boolean;
-  
+
     /**
      * Check if the input string is a valid IPv4 or IPv6 netmask, valid return true, otherwise false.
      *
@@ -39,7 +39,7 @@ declare module "inetaddr" {
      * @param addr Netmask string.
      */
     function maskValid(addr: string): boolean;
-  
+
     /**
      * Calculate the netmask prefix length, return negative on error.
      *
@@ -48,7 +48,7 @@ declare module "inetaddr" {
      * @param netmask Netmask string.
      */
     function toPrefix(netmask: string): number;
-  
+
     /**
      * Generates a netmask string with the specified prefix length.
      * The valid length of the IPv4 prefix is 0 ~ 32, and the IPv6 is 0 ~ 128.
@@ -59,7 +59,7 @@ declare module "inetaddr" {
      * @param isIPv6 Whether to return an IPv6 netmask. default: false.
      */
     function fromPrefix(prefix: number, isIPv6?: boolean): string;
-  
+
     /**
      * Compare two IP address (IPv4 Only), if `addr1` > `addr2` returns `1`, if `addr1` < `addr2` returns `-1` and if `addr1` === `addr2` returns `0`.
      *
@@ -68,7 +68,7 @@ declare module "inetaddr" {
      * @returns Returns results.
      */
     function compare(addr1: string, addr2: string): boolean;
-  
+
     /**
      * Get subnet address by IP address and netmask.
      *

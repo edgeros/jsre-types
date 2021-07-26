@@ -230,7 +230,7 @@ declare module "udp" {
      * @param sockaddr Local address.
      */
     function createServer(sockaddr: SockAddr): Udp;
-  
+
     /**
      * Create a Udp client and connects to the specified remote host. Use synchronous mode.
      *
@@ -239,7 +239,7 @@ declare module "udp" {
      * @param sockaddr Local address.
      */
     function createClient(sockaddr: SockAddr): Udp;
-  
+
     /**
      * Create a Udp object with socket file descriptor, mainly used to multitasking Udp server.
      *

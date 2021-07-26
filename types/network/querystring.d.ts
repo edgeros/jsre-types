@@ -28,7 +28,7 @@ declare module "querystring" {
      * @param options Encode options.
      */
     function stringify(obj: ParsedUrlQueryInput, sep?: string, eq?: string, options?: StringifyOptions): string;
-  
+
     /**
      * The `querystring.parse()` method parses a URL query string (str) into a collection of key and value pairs.
      * @param str The URL query string to parse.
@@ -45,13 +45,13 @@ declare module "querystring" {
      * The querystring.decode() function is an alias for querystring.parse().
      */
     const decode: typeof parse;
-  
+
     /**
      * The `querystring.escape()` method performs URL percent-encoding on the given `str` in a manner that is optimized for the specific requirements of URL query strings.
      * @param str String.
      */
     function escape(str: string): string;
-  
+
     /**
      * The `querystring.unescape()` method performs decoding of URL percent-encoded characters on the given `str`.
      * @param str String.

@@ -21,7 +21,7 @@ declare module "canbus" {
        * @param devNo CAN-Bus device number in system.
        */
       constructor(devNo: number);
-  
+
       /**
        * Open a CAN-Bus device with the specified device number.
        * Returns: *{object}* CAN-Bus device object.
@@ -29,7 +29,7 @@ declare module "canbus" {
        * @param devNo CAN-Bus device number in system.
        */
       static open(devNo: number): Canbus;
-  
+
       /**
        * Returns: {object} | {Array} If num is 1 this function return a CAN packet frame object,
        * if num bigger than 1, this function return a CAN packet frame array.
@@ -37,7 +37,7 @@ declare module "canbus" {
        * @param num CAN packet frame number. default: 1.
        */
       static canFrame(num?: number): CanFrame;
-  
+
       /**
        * Returns: {object} | {Array} If num is 1 this function return a CAN FD packet frame object,
        * if num bigger than 1, this function return a CAN FD packet frame array.
@@ -45,25 +45,25 @@ declare module "canbus" {
        * @param num CAN FD packet frame number. default: 1.
        */
       static canFdFrame(num?: number): CanFrame;
-  
+
       /**
        * The current state of CAN-Bus. If the bus state is normal,
        * it returns 0. Other values indicate a bus error. This error is ‘Bit OR’ integer.
        */
       state: number;
-  
+
       /**
        * Get current canbus object event file descriptor. Only for iosched readable and writable event detection in current tasks.
        * Returns: {Integer} Canbus object file descriptor.
        */
       fd(): number;
-  
+
       /**
        * Close this canbus and reclaiming file descriptors. If user forgets to call this function,
        * the file descriptor is automatically reclaimed when the object is destroyed.
        */
       close(): void;
-  
+
       /**
        * Start the CAN-Bus device, user must start the device before sending and receiving data packets.
        *
@@ -72,7 +72,7 @@ declare module "canbus" {
        * You can use console.log(sys.error(sys.errno)) to display the error message.
        */
       start(): boolean;
-  
+
       /**
        * Read one CAN or receive multiple packets from CAN-Bus and stored in the frame object or frameArray.
        * If CAN-Bus is CAN FD mode, frameArray must be created using Canbus.canFdFrame(num),
@@ -85,7 +85,7 @@ declare module "canbus" {
        * @param timeout Read timeout in milliseconds. default: undefined means wait forever.
        */
       read(frame: object | object[], timeout?: number): number;
-  
+
       /**
        * Send one CAN packet to CAN-Bus. If CAN-Bus is CAN FD mode. frame must be created using Canbus.canFdFrame(),
        * if in statndard CAN mode, frame is created using Canbus.canFrame().
@@ -108,14 +108,14 @@ declare module "canbus" {
        *                   If it is negative, CAN-Bus has an error. You can use canbus.state to get the bus error condition.
        */
       write(frameArray: object[], count?: number, timeout?: number): number;
-  
+
       /**
        * Reset the CAN-Bus controller.
        * If detects a bus error, you can use this function to reset the controller and then call canbus.start()
        * to start the bus for packet transmission and reception.
        */
       reset(): void;
-  
+
       /**
        * If the you need to discard the current CAN driver send or receive queued data, you can use this function to clear.
        *
@@ -123,13 +123,13 @@ declare module "canbus" {
        *               default: undefined means clear receive and send buffer.
        */
       flush(option?: string): void;
-  
+
       /**
        * If there has packet in the current send queue that has not been sent,
        * the function returns after waiting for all packets in the send queue to be sent.
        */
       drain(): void;
-  
+
       /**
        * If there are unread packets in the receive buffer,
        * this function returns the number of packets, otherwise it returns 0.
@@ -137,7 +137,7 @@ declare module "canbus" {
        * Returns: {Integer} Returns how many packets in receive queue.
        */
       count(): number;
-  
+
       /**
        * Set CAN-Bus baud rate.
        *
@@ -147,7 +147,7 @@ declare module "canbus" {
        * @param baudRate CAN-Bus baud rate, the following baud rates are recommended: 1000000(1Mpbs) ~ 5000(5Kbps).
        */
       setBaudrate(baudRate: number): boolean;
-  
+
       /**
        * Set CAN-Bus mode BASIC or PELI.
        *
@@ -156,7 +156,7 @@ declare module "canbus" {
        * @param mode CAN-Bus mode, Only allowed to be set to 'basic' or 'peli'.
        */
       setMode(mode: string): boolean;
-  
+
       /**
        * Set CAN-Bus packet type STANDARD or CAN FD.
        *
@@ -165,7 +165,7 @@ declare module "canbus" {
        * @param enable Whether to use CAN FD long package mode.
        */
       setCanFd(enable: boolean): boolean;
-  
+
       /**
        * Set CAN controller to silent mode or not, and if in silent mode, only allows reception.
        *

@@ -7,7 +7,7 @@ declare module "mobile" {
   namespace mobile {
     class Mobile {
       constructor();
-  
+
       open(): void;
       close(): void;
       checkImei(): boolean;

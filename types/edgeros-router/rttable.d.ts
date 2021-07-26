@@ -21,7 +21,7 @@ declare module "router/rttable" {
       RTF_GATEWAY: number; // This route is a gateway route.
       RTF_HOST: number; // This route is a host route.
       RTF_DYNAMIC: number; // This route is a dynamic route.
-  
+
       list(domain: number): RttableRouting[];
       add(domain: number, flags: number, dest: string, genmask: string, gateway: string, ifname?: string, metric?: number): boolean;
       delete(domain: number, flags: number, dest: string, genmask?: string, gateway?: string, ifname?: string): boolean;
