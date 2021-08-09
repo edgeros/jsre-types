@@ -243,6 +243,30 @@ declare class Buffer {
    */
   slice(start?: number, end?: number): Buffer;
 
+  /**
+   * The index of the first occurrence of `value` in `buf`, or `-1` if buf does not contain `value`.
+   * @param value What to search for.
+   * @param byteOffset Where to begin searching in `buf`. If negative, then offset is calculated from the end of `buf`. **default: 0**.
+   * @param encoding If `value` is a string, this is the encoding used to determine the binary representation of the string that will be searched for in `buf`. **default: 'utf8'**.
+   */
+  indexOf(value: string | Buffer | Uint8Array | number, byteOffset?: number, encoding?: string): number;
+
+  /**
+   * Identical to `buf.indexOf()`, except the last occurrence of `value` is found rather than the first occurrence.
+   * @param value What to search for.
+   * @param byteOffset Where to begin searching in `buf`. If negative, then offset is calculated from the end of buf. **default: buf.length**.
+   * @param encoding If `value` is a string, this is the encoding used to determine the binary representation of the string that will be searched for in `buf`. **default: 'utf8'**.
+   */
+  lastIndexOf(value: string | Buffer | Uint8Array | number, byteOffset?: number, encoding?: string): number;
+
+  /**
+   * Equivalent to `buf.indexOf(...) !== -1`.
+   * @param value What to search for.
+   * @param byteOffset Where to begin searching in `buf`. If negative, then offset is calculated from the end of `buf`. **default: 0**.
+   * @param encoding If `value` is a string, this is the encoding used to determine the binary representation of the string that will be searched for in `buf`. **default: 'utf8'**.
+   */
+  includes(value: string | Buffer | Uint8Array | number, byteOffset?: number, encoding?: string): boolean;
+
   // Buffer Read / Write
   readUInt8(offset?: number): number;
   readUInt16LE(offset?: number): number;

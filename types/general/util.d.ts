@@ -8,130 +8,126 @@ declare module "util" {
     function inherits(obj1: object, obj2: object): void;
 
     /**
-     * Returns true if the given value is strictly null. Otherwise, returns false.
-     *
-     * Returns: {Boolean} Is the specified value is null.
+     * Returns `true` if the given `value` is strictly null. Otherwise, returns `false`.
      *
      * @param value Any value.
      */
     function isNull(value: any): boolean;
 
     /**
-     * Returns true if the given value is undefined. Otherwise, returns false.
-     *
-     * Returns: {Boolean} Is the specified value is undefined.
+     * Returns `true` if the given `value` is `undefined`. Otherwise, returns `false`.
      *
      * @param value Any value.
      */
     function isUndefined(value: any): boolean;
 
     /**
-     * Returns true if the given value is null or undefined. Otherwise, returns false.
-     *
-     * Returns: {Boolean} Is the specified value is null or undefined.
+     * Returns `true` if the given `value` is null or `undefined`. Otherwise, returns `false`.
      *
      * @param value Any value.
      */
     function isNullOrUndefined(value: any): boolean;
 
     /**
-     * Returns true if the given value is a Number. Otherwise, returns false.
-     *
-     * Returns: {Boolean} Is the specified value is Number.
+     * Returns `true` if the given `value` is a `Number`. Otherwise, returns `false`.
      *
      * @param value Any value.
      */
     function isNumber(value: any): boolean;
 
     /**
-     * Returns true if the given value is a Integer. Otherwise, returns false.
-     *
-     * Returns: {Boolean} Is the specified value is Integer.
+     * Returns `true` if the given `value` is a `Integer`. Otherwise, returns `false`.
      *
      * @param value Any value.
      */
     function isInteger(value: any): boolean;
 
     /**
-     * Returns true if the given value is a Finite. Otherwise, returns false.
-     *
-     * Returns: {Boolean} Is the specified value is Finite.
+     * Returns `true` if the given `value` is a `Finite`. Otherwise, returns `false`.
      *
      * @param value Any value.
      */
     function isFinite(value: any): boolean;
 
     /**
-     * Returns true if the given value is a Boolean. Otherwise, returns false.
-     *
-     * Returns: {Boolean} Is the specified value is Boolean.
+     * Returns `true` if the given `value` is a `Boolean`. Otherwise, returns `false`.
      *
      * @param value Any value.
      */
     function isBoolean(value: any): boolean;
 
     /**
-     * Returns true if the given value is a string. Otherwise, returns false.
-     *
-     * Returns: {Boolean} Is the specified value is string.
+     * Returns `true` if the given `value` is a `string`. Otherwise, returns `false`.
      *
      * @param value Any value.
      */
     function isString(value: any): boolean;
 
     /**
-     * Returns true if the given value is a object. Otherwise, returns false.
-     *
-     * Returns: {Boolean} Is the specified value is object.
+     * Returns `true` if the given `value` is a `object`. Otherwise, returns `false`.
      *
      * @param value Any value.
      */
     function isObject(value: any): boolean;
 
     /**
-     * Returns true if the given value is a Function. Otherwise, returns false.
-     *
-     * Returns: {Boolean} Is the specified value is Function.
+     * Returns `true` if the given `value` is a `Function`. Otherwise, returns `false`.
      *
      * @param value Any value.
      */
     function isFunction(value: any): boolean;
 
     /**
-     * Returns true if the given value is a Primitive. Otherwise, returns false.
-     *
-     * Returns: {Boolean} Is the specified value is Primitive.
+     * Returns `true` if the given `value` is a `Primitive`. Otherwise, returns `false`.
      *
      * @param value Any value.
      */
     function isPrimitive(value: any): boolean;
 
     /**
-     * Returns true if the given value is a RegExp. Otherwise, returns false.
-     *
-     * Returns: {Boolean} Is the specified value is RegExp.
+     * Returns `true` if the given `value` is a `RegExp`. Otherwise, returns `false`.
      *
      * @param value Any value.
      */
     function isRegExp(value: any): boolean;
 
     /**
-     * Returns true if the given value is a Buffer. Otherwise, returns false.
-     *
-     * Returns: {Boolean} Is the specified value is Buffer.
+     * Returns `true` if the given `value` is a `Buffer`. Otherwise, returns `false`.
      *
      * @param value Any value.
      */
     function isBuffer(value: any): boolean;
 
     /**
-     * Returns true if the given value is a Array. Otherwise, returns false.
-     *
-     * Returns: {Boolean} Is the specified value is Array.
+     * Returns `true` if the given `value` is a `Array`. Otherwise, returns `false`.
      *
      * @param value Any value.
      */
     function isArray(value: any): boolean;
+
+    /**
+     * Returns `true` if the given `value` is a `Date` object. Otherwise, returns `false`.
+     * @param value Any value.
+     */
+    function isDate(value: any): boolean;
+
+    /**
+     * Returns `true` if the given `value` is a `Error` object. Otherwise, returns `false`.
+     * @param value Any value.
+     */
+    function isError(value: any): boolean;
+
+    /**
+     * Returns `true` if the given `value` is a `Symbol`. Otherwise, returns `false`.
+     * @param value Any value.
+     */
+    function isSymbol(value: any): boolean;
+
+    /**
+     * Returns `true` if the given `value` is a `Promise` object. Otherwise, returns `false`.
+     * @param value Any value.
+     */
+    function isPromise(value: any): boolean;
 
     /**
      * The util.inspect() method returns a string representation of object that is intended for debugging.

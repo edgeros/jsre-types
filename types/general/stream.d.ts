@@ -28,6 +28,7 @@ declare module "stream" {
 
     interface WritableOptions {
       highWaterMark?: number;
+      encoding?: string;
       emitClose?: boolean;
       autoDestroy?: boolean;
       alertWaterMark?: number;
@@ -91,14 +92,28 @@ declare module "stream" {
       isPaused(): boolean;
       pause(): this;
       pipe(destination: Writable, options?: ReadableOptions): Writable;
-      read(size?: number): Buffer | null;
+      read(size?: number): Buffer | null | string;
       resume(): this;
+      /**
+       * The `readable.setEncoding()` method sets the character encoding for data read from the `Readable` stream.
+       * By default, no encoding is assigned and stream data will be returned as `Buffer` objects.
+       * Setting an encoding causes the stream data to be returned as strings of the specified encoding rather than as `Buffer` objects.
+       * For instance, calling `readable.setEncoding('utf8')` will cause the output data to be interpreted as `UTF-8` data,
+       * and passed as strings. Calling `readable.setEncoding('hex')` will cause the data to be encoded in hexadecimal string format.
+       * @param encoding The encoding to use.
+       */
+      setEncoding(encoding: string): this;
       unpipe(destination?: Writable): this;
       destroyed: boolean;
       /**
        * {Boolean} Is true if it is safe to call readable.read(), which means the stream has not been destroyed or emitted 'error' or 'end'.
        */
       readable: boolean;
+
+      /**
+       * Getter for the property encoding of a given Readable stream. The encoding property can be set using the `readable.setEncoding()` method.
+       */
+      readonly readableEncoding: null | string;
       /**
        * {Boolean} Becomes true when 'end' event is emitted.
        */
@@ -116,7 +131,9 @@ declare module "stream" {
        */
       readonly readableLength: number;
 
-      on(event: readEventTypes, listener: (chunk?: any) => void): this;
+      on(event: 'close' | 'end' | 'pause' | 'readable' | 'resume', listener: () => void): this;
+      on(event: 'data', listener: (chunk: Buffer | string) => void): this;
+      on(event: 'error', listener: (chunk: Error) => void): this;
 
       constructor(opts?: ReadableOptions);
       _construct(callback: (error?: Error | null) => void): void;
@@ -125,9 +142,10 @@ declare module "stream" {
       /**
        *
        * @param chunk Chunk of data to push into the read queue.
+       * @param Encoding of string chunks. Must be a valid `Buffer` encoding, such as 'utf8' or 'ascii'.
        * return true if additional chunks of data may continue to be pushed; false otherwise.
        */
-      push(chunk: Buffer): boolean;
+      push(chunk: Buffer | string | null, encoding?: string): boolean;
     }
 
     interface DuplexOptions extends ReadableOptions, WritableOptions {
