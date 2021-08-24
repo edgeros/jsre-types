@@ -15,6 +15,7 @@ declare module 'url' {
     search: string;
     fragment: string;
     hash: string;
+    slashes: boolean;
   }
 
   interface formatOptions {
@@ -31,9 +32,13 @@ declare module 'url' {
        * The URL.parse() method takes a URL string, parses it, and returns a URL object.
        * @param urlString The URL string to parse.
        * @param parseQueryString If true, the query property will always be set to an object returned by the querystring module's parse() method.
-       *                         If false, the query property on the returned URL object will be an unparsed, undecoded string. default: false.
+       * If false, the query property on the returned URL object will be an unparsed, undecoded string. default: false.
+       * @param slashesDenoteHost If `true`, the first token after the literal string `//`
+       * and preceding the next `/` will be interpreted as the `host`.
+       * For instance, given `//foo/bar`, the result would be `{host: 'foo', pathname: '/bar'}`
+       * rather than `{pathname: '//foo/bar'}`. default: false.
        */
-      static parse(urlString: string, parseQueryString?: boolean): URLOptions;
+      static parse(urlString: string, parseQueryString?: boolean, slashesDenoteHost?: boolean): URLOptions;
 
       /**
        * Create a customizable serialization of a URL String representation of a URL object.

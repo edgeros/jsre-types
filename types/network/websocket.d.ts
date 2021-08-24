@@ -12,7 +12,9 @@ declare module "websocket" {
   interface ClientOptions {
     saddr: object;
     domain: socket.AF_INET | socket.AF_INET6;
+    path: string;
     async: boolean;
+    protocal: string;
   }
 
   class WsServer {
@@ -107,7 +109,7 @@ declare module "websocket" {
     send(chunk: string | Buffer | number | boolean | object): void;
 
     on(event: "open" | "close", listener: () => void): this;
-    on(event: "message", listener: (msg: string | Buffer) => void): this;
+    on(event: "message" | "ping", listener: (msg: string | Buffer) => void): this;
   }
 
   namespace websocket {

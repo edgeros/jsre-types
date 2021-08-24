@@ -96,7 +96,7 @@ declare module "crypto" {
        *
        * @param data Updates the object with the data. If there is already data in the object, concatenates them.
        */
-      update(data: string | Buffer): void;
+      update(data: string | Buffer): object;
 
       /**
        * Returns an encoded hash of the input data as a string or Buffer.
@@ -125,7 +125,7 @@ declare module "crypto" {
 
     class Hmac extends stream.Transform {
       private constructor();
-      update(data: BinaryLike): Hmac;
+      update(data: BinaryLike): this;
       digest(encoding: HmacEncoding): BufferString;
       digestFile(file: string, encoding?: HmacEncoding): BufferString;
       restart(): void;
@@ -137,7 +137,7 @@ declare module "crypto" {
        *
        * @param data Updates the object with the data. If there is already data in the object, concatenates them.
        */
-      update(data: string | Buffer): void;
+      update(data: string | Buffer): this;
 
       /**
        * Verifies the signature against the publicKey using the data added with verify.update().
@@ -205,7 +205,7 @@ declare module "crypto" {
     }
 
     class Sign extends stream.Writable {
-      update(data: BufferString): void;
+      update(data: BufferString): this;
       sign(privateKey: BufferString | KeyObject, passwd?: string, outputEncoding?: string): BufferString;
       signFile(file: string, publicKey: BufferString | KeyObject): BufferString;
       restart(): void;
@@ -243,6 +243,8 @@ declare module "crypto" {
      * Returns: {Array} A supported hash algorithm list array.
      */
     function getHashes(): object[];
+
+    function getCiphers(): any[];
 
     /**
      * Create a hash algorithm object. Current support hash algorithms include: 'md5', 'ripemd160', 'sha1', 'sha256', 'sha384', 'sha512'.

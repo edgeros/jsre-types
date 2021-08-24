@@ -19,7 +19,7 @@ declare module "zip" {
        *
        * @param zipFile Zip file path.
        * @param mode Open mode. default: 'r'.
-       * @param level The level of compression used when creating the zip file. Must in 0 - 9.
+       * @param level The level of compression used when creating the zip file. Must in 0 ~ 9.
        */
       constructor(zipFile: string, mode?: string, level?: number);
 
