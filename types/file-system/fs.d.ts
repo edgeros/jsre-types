@@ -364,6 +364,16 @@ declare module "fs" {
      * @param volume Disk volume.
      */
     function format(volume: string): boolean;
+    /**
+     * Get a temporary file name, developer can use this file name to create a temporary file,
+     * and need to manually delete it after use.
+     */
+    function tmpname(): string;
+    /**
+     * Create a temporary file for reading and writing, when the file is closed,
+     * the system will automatically delete this file.
+     */
+    function tmpfile(): object;
     function createReadStream(path: string, options?: ReadStreamOptions): ReadStream;
     function createWriteStream(path: string, options?: WriteStreamOptions): WriteStream;
     class File {

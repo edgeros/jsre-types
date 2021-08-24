@@ -294,6 +294,11 @@ declare module "sys" {
       maxFds(): number;
 
       /**
+       * Get the operating system temporary folder, typical path is `'/tmp/'`.
+       */
+      tmpdir(): string;
+
+      /**
        * Get the maximum number of task can create in current process.
        *
        * Returns: {Integer} The maximum number of task can create in current process.
