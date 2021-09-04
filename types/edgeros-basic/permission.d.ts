@@ -18,6 +18,13 @@ declare module "permission" {
     mqtt?: {publish: boolean; subscribe: boolean}; // {object} MQTT Client sub object.
     mediacenter?: {readable: boolean; writable: boolean; removable: boolean};
     phone?: {camera: boolean, contacts: boolean, microphone: boolean, geolocation: boolean};
+    vehicle?: {
+      media: boolean, // Audio-visual entertainment system.
+      geolocation: boolean, // Vehicle geolocation.
+      diagnostics: boolean, // Vehicle diagnostics infomation.
+      cockpit: boolean, // Cockpit controls, such as air conditioning, car windows.
+      drive: boolean, // Driving and autonomous driving related functions.
+    };
     device?: any[];
   }
   namespace intenal {

@@ -39,9 +39,8 @@ declare module "buzzer" {
       beep(param: BuzzerParam): boolean;
       /**
        * Clear the buzzer command queue and stop beeping.
-       * @param param BuzzerParam
        */
-      flush(param?: BuzzerParam): void;
+      flush(): void;
     }
   }
   export = buzzer.Buzzer;

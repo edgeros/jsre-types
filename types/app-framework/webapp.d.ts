@@ -28,6 +28,7 @@ declare module "webapp" {
 
   namespace webapp {
     interface WebAppInstance {
+      locals: object;
       /**
        * Get whether the server object is the master server.
        */
@@ -167,6 +168,8 @@ declare module "webapp" {
        * @param name setting name.
        */
       enabled(name: string): boolean;
+
+      engine(ext: string, callback: (...args: any) => void): void;
 
       /**
        * Assigns setting name to value. You may store any value that you want, but certain names can be used to configure the behavior of the server.
