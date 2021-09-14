@@ -5,7 +5,7 @@ This is TypeScript declarations of EdgerOS JavaScript Runtime environment.
 
 Unlike Node.js, EdgerOS JSRE is built on top of SylixOS® kernel and light weight
 JavaScript engine that is more memory efficient. Thanks to the self-owned OS
-kenerl, EdgerOS JSRE support both synchronous and asynchrous programming
+kernel, EdgerOS JSRE support both synchronous and asynchrous programming
 mode and many other powerful utilities that may ease your development.
 
 For more information please check [EdgerOS API](https://www.edgeros.com/edgeros/api/).
