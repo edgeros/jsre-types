@@ -107,11 +107,10 @@ declare module "iosched" {
 
     /**
      * Same as `iosched.forever()`.
-     * @param check If `check.quit` true, this function will return in the next event detection cycle. default: false.
+     * @param check Whether to exit the event loop check. default: loop forever.
      * @param timeout Each event detection wait timeout in milliseconds. default: undefined means wait forever.
      */
-    function forever(timeout: number): number[];
-    function forever(check: object, timeout: number): number[];
+    function forever(check?: object | (() => void), timeout?: number): number[];
   }
   export = iosched;
 }

@@ -48,6 +48,7 @@ declare module "websocket" {
   class WsServerChannel {
     path: string;
     headers: any[];
+    eos: object; // EdgerOS account information.
 
     /**
      * Broadcast data to all websocket clients.
@@ -62,7 +63,7 @@ declare module "websocket" {
      * @param code The error code.
      * @param reason The close reason.
      */
-    close(code: number, reason: string): void;
+    close(code: number, reason?: string): void;
 
     on(event: "open" | "close", listener: () => void): this;
     on(event: "message", listener: (msg: string | Buffer) => void): this;

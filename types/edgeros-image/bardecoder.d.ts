@@ -59,7 +59,7 @@ declare module "bardecoder" {
      *
      * @param fast Whether fast decode mode. default: false.
      * @param rotate Whether try rotate image. default: false.
-     * @param format Decoder format. default: auto recognition.
+     * @param format Decoder format. default: undefined means auto recognition.
      */
     function defaultOpt(fast?: boolean, rotate?: boolean, format?: string): DefaultOptions;
 
