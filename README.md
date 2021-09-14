@@ -1,7 +1,22 @@
-edgeros/jsre types
+EdgerOS JSRE Type Definitions
 ---
 
-This is the type declaration file provided for the erp project. Edgeros has its own javascript runtime. Because there is no running environment locally, we need to integrate the types file into the erp development environment through the cli tool.
+This is TypeScript declarations of EdgerOS JavaScript Runtime environment.
 
-### About version
-The types major version will keep in sync with the EdgerOS JSRE. So when EdgerOS JSRE version is 1.14.x, types version is locked at 1.14, but the revision number is not necessarily the same.
+Unlike Node.js, EdgerOS JSRE is built on top of SylixOS® kernel and light weight
+JavaScript engine that is more memory efficient. Thanks to the self-owned OS
+kenerl, EdgerOS JSRE support both synchronous and asynchrous programming
+mode and many other powerful utilities that may ease your development.
+
+For more information please check [EdgerOS API](https://www.edgeros.com/edgeros/api/).
+
+## About version
+
+This package's *major* and *minor* version number will keep in sync with EdgerOS
+JSRE, while the *patch* number is subject to change. For example, when current
+EdgerOS JSRE release is 1.14.0, this package version could be 1.14.x.
+
+## Contribute
+
+It's appreciated if you can contribute to this project by reporting bugs, and PR
+is also welcomed.
