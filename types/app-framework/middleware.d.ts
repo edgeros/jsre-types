@@ -74,19 +74,18 @@ declare module "middleware" {
     }
 
     interface ServeStaticOptions {
-      acceptRanges?: boolean; // Boolean true	Accept-Ranges
-      cacheControl?: boolean; // Boolean true	Cache-Control
-      dotfiles?: string; // string	-	-
-      etag?: boolean; // Boolean	true	ETag
-      extensions?: boolean; // Boolean / Array	false	-
-      fallthrough?: boolean; // Boolean	true	-
-      immutable?: boolean; // Boolean	false	Cache-Control
-      index?: string[]; // Array	['index.html']	-
-      lastModified?: boolean; // Boolean	true	Last-Modified
-      maxAge?: string | number; // number / string	2592000000	Max-Age
-      redirect?: boolean; // Boolean	true	-
-      setHeaders?: CommonFunction; // Function	-	-
-      highWaterMark?: number; // Integer	-	-
+      acceptRanges?: boolean; // Boolean true Accept-Ranges
+      cacheControl?: boolean; // Boolean true Cache-Control
+      dotfiles?: string; // string
+      etag?: boolean; // Boolean true ETag
+      extensions?: boolean; // Boolean / Array false -
+      fallthrough?: boolean; // Boolean true -
+      immutable?: boolean; // Boolean false Cache-Control
+      index?: string[]; // Array ['index.html'] -
+      lastModified?: boolean; // Boolean true Last-Modified
+      maxAge?: string | number; // number / string 2592000000 Max-Age
+      setHeaders?: CommonFunction; // Function - -
+      highWaterMark?: number; // Integer - -
     }
 
     function serveStatic(root: string, options?: ServeStaticOptions): void;

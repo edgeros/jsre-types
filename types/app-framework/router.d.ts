@@ -8,29 +8,38 @@ declare module "edgeros:router" {
 }
 
 declare module "router" {
+  import { Request, Response } from "edgeros:core";
+  interface CreateOptions {
+    caseSensitive: boolean;
+    mergeParams: boolean;
+    strict: boolean;
+  }
+
+  type MethodPath = string | RegExp | string[] | RegExp[];
+  type RouteHandleFunction = (req: Request, res: Response) => void;
   namespace router {
     class Router {
-      static create(): Router;
+      static create(options: CreateOptions): Router;
 
-      get(handle: (...arg: any) => void): void;
-      get(path: string | RegExp, handle?: (...arg: any) => void): void;
+      get(handle: RouteHandleFunction): void;
+      get(path: MethodPath, handle?: RouteHandleFunction): void;
 
-      put(handle: (...arg: any) => void): void;
-      put(path: string | RegExp, handle?: (...arg: any) => void): void;
+      put(handle: RouteHandleFunction): void;
+      put(path: MethodPath, handle?: RouteHandleFunction): void;
 
-      post(handle: (...arg: any) => void): void;
-      post(path: string | RegExp, handle?: (...arg: any) => void): void;
+      post(handle: RouteHandleFunction): void;
+      post(path: MethodPath, handle?: RouteHandleFunction): void;
 
-      delete(handle: (...arg: any) => void): void;
-      delete(path: string | RegExp, handle?: (...arg: any) => void): void;
+      delete(handle: RouteHandleFunction): void;
+      delete(path: MethodPath, handle?: RouteHandleFunction): void;
 
-      all(handle: (...arg: any) => void): void;
-      all(path: string | RegExp, handle?: (...arg: any) => void): void;
+      all(handle: RouteHandleFunction): void;
+      all(path: MethodPath, handle?: RouteHandleFunction): void;
 
       route(path?: string): void;
 
-      use(handle: (...arg: any) => void): void;
-      use(path: string | RegExp, handle?: (...arg: any) => void | object): void;
+      use(handle: RouteHandleFunction): void;
+      use(path: MethodPath, handle?: RouteHandleFunction | object): void;
     }
   }
   export = router.Router;

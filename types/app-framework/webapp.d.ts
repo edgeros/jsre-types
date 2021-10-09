@@ -5,6 +5,7 @@ declare module 'edgeros:webapp' {
 
 declare module "webapp" {
   import Router = require('edgeros:router');
+  import { Request, Response } from "edgeros:core";
   interface SockAddr {
     domain: number;
     addr: string;
@@ -25,6 +26,9 @@ declare module "webapp" {
   }
 
   type HandleFunction = (...args: any) => void;
+  type MethodPath = string | RegExp | string[] | RegExp[];
+
+  type AppHandleFunction = (req: Request, res: Response) => void;
 
   namespace webapp {
     interface WebAppInstance {
@@ -51,8 +55,13 @@ declare module "webapp" {
 
       /**
        * Stop app server.
+       * @param stopAll always true for `MASTER` mode, close all task servers.
+       * For `SUB` mode:
+       * true - stop all task servers;
+       * false - stop this sub server. default: false.
+       * @param cb Callback when `stop` event emit.
        */
-      stop(): void;
+      stop(stopAll?: boolean, cb?: HandleFunction): void;
 
       /**
        * When the server starts with the `MASTER` module, `app.port()` gets the port of the server, otherwise it returns `undefined`.
@@ -71,8 +80,8 @@ declare module "webapp" {
        * @param handle handle
        * @param handles The request handle function.
        */
-      get(path: string | RegExp, handle: HandleFunction, ...handles: HandleFunction[]): void;
-      get(handle: HandleFunction, ...handles: HandleFunction[]): void;
+      get(path: MethodPath, handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
+      get(handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
       /**
        *  Returns {any} return value of setting name.
        *
@@ -92,8 +101,8 @@ declare module "webapp" {
        * @param handle The request handle function.
        * @param handles handles
        */
-      put(path: string | RegExp, handle: HandleFunction, ...handles: HandleFunction[]): void;
-      put(handle: HandleFunction, ...handles: HandleFunction[]): void;
+      put(path: MethodPath, handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
+      put(handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
 
       /**
        * Routes an HTTP request, where METHOD is the HTTP method of the request,
@@ -107,8 +116,8 @@ declare module "webapp" {
        * @param handle The request handle function.
        * @param handles handles
        */
-      post(path: string | RegExp, handle: HandleFunction, ...handles: HandleFunction[]): void;
-      post(handle: HandleFunction, ...handles: HandleFunction[]): void;
+      post(path: MethodPath, handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
+      post(handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
 
       /**
        * Routes an HTTP request, where METHOD is the HTTP method of the request,
@@ -122,8 +131,8 @@ declare module "webapp" {
        * @param handle handle
        * @param handles The request handle function.
        */
-      delete(path: string | RegExp, handle: HandleFunction, ...handles: HandleFunction[]): void;
-      delete(handle: HandleFunction, ...handles: HandleFunction[]): void;
+      delete(path: MethodPath, handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
+      delete(handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
 
       /**
        * Routes an HTTP request, where METHOD is the HTTP method of the request,
@@ -137,8 +146,8 @@ declare module "webapp" {
        * @param handle handle
        * @param handles The request handle function.
        */
-      all(path: string | RegExp, handle: HandleFunction, ...handles: HandleFunction[]): void;
-      all(handle: HandleFunction, ...handles: HandleFunction[]): void;
+      all(path: MethodPath, handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
+      all(handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
 
       /**
        * Sets the Boolean setting name to false, where name is one of the properties from the app settings, see set(name[, value]).
@@ -192,7 +201,7 @@ declare module "webapp" {
        *
        * @param path route path.
        */
-      route(path: string | RegExp): object;
+      route(path: MethodPath): object;
 
       /**
        * Mounts the specified middleware function or functions at the specified path:
@@ -204,8 +213,8 @@ declare module "webapp" {
        * @param handle handle
        * @param handles A middleware function or router object.
        */
-      use(path: string | RegExp, handle: HandleFunction, ...handles: HandleFunction[]): void;
-      use(handle: HandleFunction, ...handles: HandleFunction[]): void;
+      use(path: MethodPath, handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
+      use(handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
     }
     interface WebAppStatic {
       groupName: GroupName;
@@ -222,7 +231,8 @@ declare module "webapp" {
        * @param saddr Server socket address. If the port of saddr is set to 0, the server port will be assigned automatically, and that can be get by app.port().
        * @param tlsOpt TLS securely connections options. default: undefined, means use TCP connection.
        */
-      create(group: string, subs?: number, taskFile?: string, saddr?: SockAddr, tlsOpt?: object): WebAppInstance;
+      create(group: string, subs: number, saddr: SockAddr, tlsOpt?: object): WebAppInstance;
+      create(group: string, subs: number, taskFile: string, saddr: SockAddr, tlsOpt?: object): WebAppInstance;
 
       createApp(subs?: number): WebAppInstance;
 

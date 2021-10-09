@@ -5,6 +5,8 @@ declare module 'edgeros:http' {
 
 declare module "http" {
   import { Buffer } from 'buffer';
+  import socket = require('edgeros:socket');
+  import { Writable } from 'edgeros:stream';
 
   interface HttpClientRequestOptions {
     /*
@@ -25,6 +27,16 @@ declare module "http" {
     host?: string; // The domain name or IP address of the server to which the request is sent. default: url host.
     post?: string | Buffer | object; // The request post data, default: undefined.
     async?: boolean; // true - return `Promise` object; false - return `HttpClient` object, default: false.
+  }
+
+  interface AddressInfo {
+    domain: socket.AF_INET | socket.AF_INET6;
+    addr: string;
+    port: number;
+  }
+
+  interface PipeOptions {
+    end?: boolean; // End the writer when the reader ends. default: true.
   }
 
   namespace http {
@@ -170,6 +182,26 @@ declare module "http" {
       url: string;
 
       /**
+       * HTTP request host (without port)
+       */
+      host: string;
+
+      /**
+       * Contains a string corresponding to the HTTP method of the request.
+       * It is expressed in uppercase and is case sensitive.
+       * The method support:
+       * DELETE, GET, HEAD, POST, PUT, CONNECT, OPTIONS, TRACE, COPY, LOCK,
+       * MKCOL, MOVE, PROPFIND, PROPPATCH, SEARCH, UNLOCK, BIND, REBIND,
+       * UNBIND, ACL, REPORT, MKACTIVITY, CHECKOUT, MERGE, MSEARCH, NOTIFY
+       */
+      method: string;
+
+      /**
+       * HTTP response status.
+       */
+      statusCode: number;
+
+      /**
        * HTTP response status message. See input.statusCode.
        */
       statusMessage: string;
@@ -178,6 +210,12 @@ declare module "http" {
        * HTTP headers.
        */
       headers: object;
+
+      /**
+       * Header value.
+       * @param key Header key.
+       */
+      header(key: string): string;
 
       /**
        * If HTTP header X-Requested-With exist.
@@ -204,6 +242,46 @@ declare module "http" {
        * the input data is aborted. The ‘aborted` event is fired when this operation is active.
        */
       abort(): void;
+
+      /**
+       * Get the IP address of the remote client.
+       */
+      ip: string;
+
+      /**
+       * Get the address of the remote client
+       */
+      peerName(): AddressInfo;
+
+      /**
+       * Returns my connect address.
+       */
+      sockName(): object;
+
+      /**
+       * When this method closes the `readable` stream,
+       * it also closes the underlying socket connection.
+       * @param error which will be passed as payload in `'error'` event.
+       */
+      destroy(error: Error): this;
+
+      /**
+       * Pipe data from `input` to `writable` stream object.
+       * @param destination The destination for writing data.
+       * @param options Pipe options.
+       */
+      pipe(destination: Writable, options?: PipeOptions): Writable;
+
+      /**
+       * Detaches a Writable stream previously attached using the `stream.pipe()` method.
+       * @param destination Optional specific stream to unpipe.
+       */
+      unpipe(destination?: Writable): this;
+
+      /**
+       * Get whether the current network connection is connected.
+       */
+      connected(): boolean;
     }
   /**
    * This `HttpClient` object (request object) is created internally and retured from `http.request()`.
@@ -247,7 +325,8 @@ declare module "http" {
        * @param [tlsOpt] TLS securely connections options. default: undefined, means use TCP connection.
        * @returns  returns httpServer.
        */
-      static createServer(group: string, handle: (...args: any) => void, subs: number, subMode?: string, saddr?: object, tlsOpt?: object): HttpServer;
+      static createServer(group: string, handle: (...args: any) => void, subs: number, saddr: object, tlsOpt?: object): HttpServer;
+      static createServer(group: string, handle: (...args: any) => void, subs: number, subMode: string, saddr: object, tlsOpt?: object): HttpServer;
 
       /**
        * Use this method to create a sub-server when the sub-server is not the same module as the master-server.
@@ -295,9 +374,14 @@ declare module "http" {
       /**
        * Stop http server.
        *
+       * @param stopAll always true for `MASTER` mode, close all task servers.
+       * For `SUB` mode:
+       * true - stop all task servers;
+       * false - stop this sub server. default: false.
+       * @param cb Callback when `stop` event emit.
        * @returns this.
        */
-      stop(): this;
+      stop(stopAll?: boolean, cb?: (...args: any) => void): this;
 
       /**
        * When the server starts with the `MASTER` module, `server.port()` gets the port of the server, otherwise it returns `undefined`.
