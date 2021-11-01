@@ -19,7 +19,6 @@ declare module "coap" {
   }
 
   type CoapSerRequest = coap.CoapPackage;
-  type CoapSerResponse = coap.CoapPackage;
 
   class CoapClient {
     close(): void; // Close coap client
@@ -70,6 +69,23 @@ declare module "coap" {
    * @returns Returns coapServer.
    */
   function createServer(saddr: object, opts?: CoapServerOptions, dtlsOpt?: object): CoapServer;
+
+  interface CoapSerResponse extends coap.CoapPackage {
+    /**
+     * Send data to client. In normal mode, this interface is the same as response.end
+     * used to respond to client requests and complete the response. In observe mode,
+     * the user can use this interface to notify the client until the response is ended
+     * with response.end or reset by the client or server.
+     * @param chunk Coap payload data.
+     * @param opts? send options.
+     */
+    send(chunk: string | Buffer | object, opts?: { confirm: boolean, code: string, options: any }): void;
+    /**
+     * Send data to client and end response.
+     * @param chunk  Coap payload data.
+     */
+    end(chunk?: string | Buffer | object): void;
+  }
 
   class CoapServer {
     start(): void;
