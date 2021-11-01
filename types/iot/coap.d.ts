@@ -60,16 +60,6 @@ declare module "coap" {
     periodTimeout?: number; // The response timeout. If the server not response in 'periodTimeout' times, the request will timeout. default: 60.
   }
 
-  /**
-   * This method creates a CoapServer.
-   *
-   * @param saddr Server udp socket address.
-   * @param [opts] Details in CoapServerOptions.
-   * @param [dtlsOpt] DTLS securely connections options. default: undefined, means use UDP connection.
-   * @returns Returns coapServer.
-   */
-  function createServer(saddr: object, opts?: CoapServerOptions, dtlsOpt?: object): CoapServer;
-
   interface CoapSerResponse extends coap.CoapPackage {
     /**
      * Send data to client. In normal mode, this interface is the same as response.end
@@ -190,39 +180,50 @@ declare module "coap" {
        */
       isConfirm(): boolean;
     }
-  /**
-   * This CoapClient object (request object) is created internally and returned from coap.request().
-   *
-   * @param url Coap url.
-   * @param callback Request handler. The same as clinet.begin envent callback.
-   * @param [opts] Details in CoapRequestOptions
-   * @param [dtlsOpt] DTLS securely connections options. default: undefined, means use UDP connection.
-   * @returns The coap client request object.
-   */
-  function request(url: string, callback: (client: CoapClient) => void, opts?: CoapRequestOptions, dtlsOpt?: object): CoapClient;
+    /**
+     * This CoapClient object (request object) is created internally and returned from coap.request().
+     *
+     * @param url Coap url.
+     * @param callback Request handler. The same as clinet.begin envent callback.
+     * @param [opts] Details in CoapRequestOptions
+     * @param [dtlsOpt] DTLS securely connections options. default: undefined, means use UDP connection.
+     * @returns The coap client request object.
+     */
+    function request(url: string, callback: (client: CoapClient) => void, opts?: CoapRequestOptions, dtlsOpt?: object): CoapClient;
 
-  /**
-   * This CoapClient object (request object) is created internally and returned from coap.get().
-   * Accepts the same options as coap.request(), with the method always set to GET.
-   * Since most requests are GET requests, http provides this convenience method.
-   * The only difference between this method and http.request() is that it sets the method to GET and call request.end() automatically.
-   *
-   * @param url Coap url.
-   * @param callback Request handler. The same as client.begin event callback.
-   * @param [opts] Details in CoapRequestOptions
-   * @param [dtlsOpt] DTLS securely connections options. default: undefined, means use UDP connection.
-   * @returns Returns coapClient.
-   */
-  function get(url: string, callback: (client: CoapClient) => void, opts?: CoapRequestOptions, dtlsOpt?: object): CoapClient;
+    /**
+     * This CoapClient object (request object) is created internally and returned from coap.get().
+     * Accepts the same options as coap.request(), with the method always set to GET.
+     * Since most requests are GET requests, http provides this convenience method.
+     * The only difference between this method and http.request() is that it sets the method to GET and call request.end() automatically.
+     *
+     * @param url Coap url.
+     * @param callback Request handler. The same as client.begin event callback.
+     * @param [opts] Details in CoapRequestOptions
+     * @param [dtlsOpt] DTLS securely connections options. default: undefined, means use UDP connection.
+     * @returns Returns coapClient.
+     */
+    function get(url: string, callback: (client: CoapClient) => void, opts?: CoapRequestOptions, dtlsOpt?: object): CoapClient;
 
-  /**
-   * Get the current process CoAP work mode.
-   *
-   * @returns Coap work mode.
-   *          'on' CoAP is enabled.
-   *          'off' CoAP is not enabled.
-   */
-  function mode(): string;
+    /**
+     * Get the current process CoAP work mode.
+     *
+     * @returns Coap work mode.
+     *          'on' CoAP is enabled.
+     *          'off' CoAP is not enabled.
+     */
+    function mode(): string;
+
+    /**
+     * This method creates a CoapServer.
+     *
+     * @param saddr Server udp socket address.
+     * @param [opts] Details in CoapServerOptions.
+     * @param [dtlsOpt] DTLS securely connections options. default: undefined, means use UDP connection.
+     * @returns Returns coapServer.
+     */
+    function createServer(saddr: object, opts?: CoapServerOptions, dtlsOpt?: object): CoapServer;
   }
+
   export = coap;
 }
