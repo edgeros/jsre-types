@@ -152,7 +152,7 @@
 
 /*----------------------------------------------*
  *                                              *
- *          EDGEROS EXTENSION basic             *
+ *          EDGEROS EXTENSION Basic             *
  *                                              *
  *----------------------------------------------*/
 /// <reference path="./edgeros-basic/master.d.ts" />
@@ -163,26 +163,33 @@
 
 /*----------------------------------------------*
  *                                              *
- *          EDGEROS EXTENSION image             *
+ *          EDGEROS EXTENSION Image             *
  *                                              *
  *----------------------------------------------*/
 /// <reference path="./edgeros-image/barencoder.d.ts" />
 /// <reference path="./edgeros-image/bardecoder.d.ts" />
 /// <reference path="./edgeros-image/imagecodec.d.ts" />
-/// <reference path="./edgeros-image/thumbnail.d.ts" />
 
 /*----------------------------------------------*
- *                                              *
- *      EDGEROS EXTENSION multi media           *
- *                                              *
- *----------------------------------------------*/
+*                                              *
+*      EDGEROS EXTENSION Multi Media           *
+*                                              *
+*----------------------------------------------*/
 /// <reference path="./edgeros-multi-media/mediadecoder.d.ts" />
 /// <reference path="./edgeros-multi-media/videooverlay.d.ts" />
 /// <reference path="./edgeros-multi-media/webmedia.d.ts" />
 
 /*----------------------------------------------*
+*                                              *
+*      EDGEROS EXTENSION Multi Album           *
+*                                              *
+*----------------------------------------------*/
+/// <reference path="./edgeros-multi-album/thumbnail.d.ts" />
+/// <reference path="./edgeros-multi-album/mediacenter.d.ts" />
+
+/*----------------------------------------------*
  *                                              *
- *        EDGEROS EXTENSION ai engine           *
+ *        EDGEROS EXTENSION AI Engine           *
  *                                              *
  *----------------------------------------------*/
 /// <reference path="./edgeros-ai-engine/facenn.d.ts" />
@@ -192,7 +199,19 @@
 
 /*----------------------------------------------*
  *                                              *
- *       EDGEROS EXTENSION iot device           *
+ *       EDGEROS EXTENSION IoT Device           *
  *                                              *
  *----------------------------------------------*/
 /// <reference path="./edgeros-iot-device/lora.d.ts" />
+
+/*----------------------------------------------*
+ *                                              *
+ *       EDGEROS EXTENSION Asynchronous         *
+ *                                              *
+ *----------------------------------------------*/
+/// <reference path="./asynchronous/account.d.ts" />
+/// <reference path="./asynchronous/advnwc.d.ts" />
+/// <reference path="./asynchronous/device.d.ts" />
+/// <reference path="./asynchronous/master.d.ts" />
+/// <reference path="./asynchronous/mediacenter.d.ts" />
+/// <reference path="./asynchronous/permission.d.ts" />

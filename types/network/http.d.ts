@@ -231,7 +231,8 @@ declare module "http" {
       body: object | Buffer | string;
 
       /**
-       * If enableCache(true) is set, the input data will be stored in input.body in Buffer type when input receives data.
+       * If `enableCache()` is set, input data will be stored in `input.body` in `Buffer` type.
+       * If `enableCache()` is not set or input data is empty, then `input.body` remains `{}` .
        *
        * @param cache Enable cache or not, default: true.
        */

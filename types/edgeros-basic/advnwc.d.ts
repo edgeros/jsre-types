@@ -24,15 +24,16 @@ declare module "advnwc" {
 
   namespace advnwc {
     /**
-     * If the current device is a router, you can get the network interfaces included in the LAN and WAN through this method.
-     * If this machine is not a router, the callback will receive an error information.
+     * Get the current machine's LAN or WAN network interface list,
+     * if the current machine is not a router, when getting the WAN list,
+     * the `callback` function will get an error.
      *
      * @param lan LAN (true) or WAN (false) network interface.
      * @param callback Callback function.
      */
     function netifs(
        lan: boolean,
-       callback: (error: Error, list: string[]) => void
+       callback: (error: Error, list: string[] | object) => void
     ): void;
 
     /**
@@ -75,12 +76,14 @@ declare module "advnwc" {
      */
     function qosDelete(
        ifname: string,
-       index: number,
+       index?: number,
        callback?: (error: Error) => void
     ): void;
 
     /**
-     * get list by index
+     * Get the list of specified QoS rules,
+     * If `ifname` and `index` are both `undefined`, get all QoS rule entries.
+     * If you specify an `index`, return a single rule object.
      *
      * @param ifname Which network interface.
      * @param index Rule index.
@@ -89,7 +92,7 @@ declare module "advnwc" {
     function qosList(
        ifname: string,
        index: number,
-       callback?: (error: Error, rules: Rule[]) => void
+       callback: (error: Error, rules: Rule[] | Rule) => void
     ): void;
 
     /**
@@ -131,12 +134,14 @@ declare module "advnwc" {
      */
     function npfDelete(
        ifname: string,
-       index: number,
+       index?: number,
        callback?: (error: Error) => void
     ): void;
 
     /**
-     * get list by index
+     * Get the list of specified NPF rules,
+     * If `ifname` and `index` are both `undefined`, get all NPF rule entries.
+     * If you specify an `index`, return a single rule object.
      *
      * @param ifname Which network interface.
      * @param index Rule index.
@@ -145,7 +150,7 @@ declare module "advnwc" {
     function npfList(
        ifname: string,
        index: number,
-       callback?: (error: Error, rules: Rule[]) => void
+       callback: (error: Error, rules: Rule[] | Rule) => void
     ): void;
 
     /**
@@ -153,7 +158,7 @@ declare module "advnwc" {
      * When the speed exceeds the speed limit, these packets will be buffered.
      * The bufSize parameter determines the buffer size of the buffer.
      *
-     * @param rule Rule name.
+     * @param rule Rule name: 'IP', 'TCP' or 'UDP'.
      * @param ifname Which network interface.
      * @param upLimit Uplink speed limit (>=10000Bps).
      * @param downLimit  Downlink speed limit (>=10000Bps).
@@ -161,7 +166,7 @@ declare module "advnwc" {
      * @param ipEnd End IP address.
      * @param portStart Starting TCP or UDP port.
      * @param portEnd END TCP or UDP port.
-     * @parambufSize Buffer size bytes (32KB ~ 256KB).
+     * @parambufSize Buffer size bytes (32KB ~ 256KB). default: 64KB.
      * @param callback Callback function.
      */
     function flowAdd(
@@ -188,12 +193,14 @@ declare module "advnwc" {
      */
     function flowDelete(
        ifname: string,
-       index: number,
+       index?: number,
        callback?: (error: Error) => void
     ): void;
 
     /**
-     * get list by index
+     * Get the list of specified flow control rules,
+     * If `ifname` and `index` are both `undefined`, get all flow control rule entries.
+     * If you specify an `index`, return a single rule object.
      *
      * @param ifname Which network interface.
      * @param index Rule index.
@@ -202,7 +209,7 @@ declare module "advnwc" {
     function flowList(
        ifname: string,
        index: number,
-       callback?: (error: Error, rules: Rule[]) => void
+       callback: (error: Error, rules: Rule[] | Rule) => void
     ): void;
   }
   export = advnwc;

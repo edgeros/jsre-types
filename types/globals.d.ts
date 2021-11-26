@@ -155,8 +155,8 @@ declare class Buffer {
 
   /**
    * Returns the capacity of the buffer in bytes.
-   * Note: when the buffer is converted to another type (e.g. string)
-   * the length of the converted value might be different from this value.
+   * Note: when the buffer is converted to another type (e.g. `String`) the length of the converted value
+   * might be different from this value.
    */
   length: number;
 

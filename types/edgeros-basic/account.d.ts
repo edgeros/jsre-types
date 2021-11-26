@@ -29,7 +29,7 @@ declare module 'account' {
       update(callback: (event: 'add' | 'delete' | 'update', acoid: string) => void): void;
 
       /**
-       * Get or set machine name.
+       * Get or set current machine name.
        * @param mname New machine name.
        * @param callback Callback function
        */

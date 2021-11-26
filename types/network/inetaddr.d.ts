@@ -77,6 +77,63 @@ declare module "inetaddr" {
      * @returns Subnet address.
      */
     function subnet(addr: string, netmask: string): string;
+
+    /**
+     * Get broadcast address by IP address and netmask.
+     * This function is added in EdgerOS 1.6.0 and later versions.
+     * @param addr IP addresss.
+     * @param netmask Netmask.
+     * @return Broadcast address.
+     */
+    function broadcast(addr: string, netmask: string): string;
+
+    /**
+     * Convert string IP address to network byte order address.
+     * EdgerOS 1.6.0 and later versions support.
+     * @param addr IP address string.
+     * @return IP address in network byte order.
+     */
+    function aton(addr: string): number | number[];
+
+    /**
+     * Convert network byte order address to string IP address.
+     * EdgerOS 1.6.0 and later versions support.
+     * @param addr IP address in network byte order.
+     * @return IP address string.
+     */
+    function ntoa(addr: string): string;
+
+    /**
+     * Host to network sequence 32-bit integer conversion.
+     * EdgerOS 1.6.0 and later versions support.
+     * @param addr 32-bit integer number.
+     * @return 32-bit integer number.
+     */
+    function htonl(addr: number): number;
+
+    /**
+     * Host to network sequence 16-bit integer conversion.
+     * EdgerOS 1.6.0 and later versions support.
+     * @param port 16-bit integer number.
+     * @return 16-bit integer number.
+     */
+    function htons(port: number): number;
+
+    /**
+     * Network sequence to host 32-bit integer conversion. same as `inetaddr.htonl()`
+     * EdgerOS 1.6.0 and later versions support.
+     * @param addr 32-bit integer number.
+     * @return 32-bit integer number.
+     */
+    function ntohl(addr: number): number;
+
+    /**
+     * Network sequence to host 16-bit integer conversion. same as `inetaddr.htons()`
+     * EdgerOS 1.6.0 and later versions support.
+     * @param port 16-bit integer number.
+     * @return 16-bit integer number.
+     */
+    function ntohs(port: number): number;
   }
   export = inetaddr;
 }

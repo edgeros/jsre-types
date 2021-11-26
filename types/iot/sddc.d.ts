@@ -30,7 +30,7 @@ declare module "sddc" {
 
   namespace sddc {
     class Sddc {
-      constructor(ifname: string);
+      constructor(ifname: string | any[]);
 
       /**
        * Set the current device information. When other devices request information about this device, this device will provide this information.
@@ -58,11 +58,7 @@ declare module "sddc" {
       start(): void;
       close(): void;
 
-      /**
-       * Send a discover packet to discover surrounding or specified devices.
-       * @param dest Destination IP address. default: local broadcast.
-       */
-      discover(dest?: string): void;
+      discover(dest?: string | any[]): void;
 
       /**
        * Invite a previously discovered device to the network.

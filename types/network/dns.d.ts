@@ -57,9 +57,9 @@ declare module "dns" {
     /**
      * Flush all DNS cache. If the `hostname` argument is specified, only the DNS cache of the specified `hostname` will be flushed.
      *
-     * @param hostname Hostname.
+     * @param hostname Hostname. default: all hostname cache flush.
      */
-    function cacheFlush(hostname: string): void;
+    function cacheFlush(hostname?: string): void;
   }
   export = dns;
 }

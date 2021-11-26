@@ -77,7 +77,7 @@ declare module 'device' {
       constructor();
 
       /**
-       * List all device count currently discovered by the system.
+       * Get all device count currently discovered by the system.
        * When `join` is `true`, only get device count that have been discovered and joined.
        *
        * @param join Whether to list only devices that have joined the network.
@@ -114,8 +114,16 @@ declare module 'device' {
       static info(devid: string, callback: (error: Error, info: DeviceInfo) => void): void;
 
       /**
+       * Get a list of all devices in the system that have been aliased, regardless of whether the device is online.
+       *
+       * @param callback Callback function.
+       */
+      static named(callback: (error: Error, list: DeviceSimpleInfo[]) => void): void;
+
+      /**
        * The system device management App can use this method to alias the device,
        * allowing the EdgerOS device to invite this device to join the network.
+       * If the `alias` parameter is `undefined`, it means deleting the alias of this device.
        *
        * @param devid Device ID.
        * @param alias Alias name.
@@ -123,13 +131,6 @@ declare module 'device' {
        * @param [token] If it is an encrypted communication device, an encrypted token can be set.
        */
       static alias(devid: string, alias: string, callback?: (error: Error) => void, token?: string): void;
-
-      /**
-       * Get a list of all devices in the system that have been aliased, regardless of whether the device is online.
-       *
-       * @param callback Callback function.
-       */
-      static named(callback: (error: Error, list: DeviceSimpleInfo[]) => void): void;
 
       /**
        * The system device management App can use this method to search for peripheral devices now, or search for specified remote devices.
@@ -167,7 +168,8 @@ declare module 'device' {
       /**
        * Request control of specified device.
        * First you need to use permission.device() to check if you have permission to access this device.
-       * When this device is an exclusive device and is being used by other app, you cannot get the operation right.
+       * When this device is an exclusive device and is being used by other app,
+       * you cannot get the operation permission.
        *
        * @param devid Device ID.
        * @param callback Indicate an error information when an error occurs.
@@ -179,8 +181,10 @@ declare module 'device' {
        * When the operation of the device is completed, the device should be released immediately.
        *
        * @param [callback] Callback function.
+       * @param removeAllListeners Whether to remove the previously installed event listener after the release is successful.
+       * This argument is added in EdgerOS 1.6.0 and later versions.
        */
-      release(callback?: (error: Error) => void): void;
+      release(callback?: (error: Error) => void, removeAllListeners?: boolean): void;
 
       /**
        * Sometimes we need to use some special protocols to access the device, such as CoAP, etc.
@@ -199,8 +203,9 @@ declare module 'device' {
        * @param [callback] Callback function.
        * @param [retries] Number of automatic retries. default: 2.
        * @param [urgent] Whether it is an urgent message. default: false.
+       * @param [mark] Whether to mark the current app tag in the data packet. default: true.
        */
-      send(msg: object, callback?: (error: Error) => void, retries?: number, urgent?: boolean): void;
+      send(msg: object, callback?: (error: Error) => void, retries?: number, urgent?: boolean, mark?: boolean): void;
 
       on(event: 'message', callback: (msg: any) => void): void;
       on(event: 'lost', callback: () => void): void;

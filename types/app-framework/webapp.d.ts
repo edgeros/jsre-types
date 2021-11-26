@@ -30,6 +30,13 @@ declare module "webapp" {
 
   type AppHandleFunction = (req: Request, res: Response) => void;
 
+  type ReadyHandler = (totalSubs: number, openedSubs: number) => void;
+
+  // TODO: reason estack
+  type FinalHandler = (req: Request, res: Response, status: number, reason: any, estack: any) => void;
+
+  type TaskHandler = (arg: object, i: number) => void;
+
   namespace webapp {
     interface WebAppInstance {
       locals: object;
@@ -215,6 +222,11 @@ declare module "webapp" {
        */
       use(path: MethodPath, handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
       use(handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
+
+      on(event: 'start' | 'stop', handler: () => void): void;
+      on(event: 'ready', handler: ReadyHandler): void;
+      on(event: 'final', handler: FinalHandler): void;
+      on(event: 'task', handler: TaskHandler): void;
     }
     interface WebAppStatic {
       groupName: GroupName;
