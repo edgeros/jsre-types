@@ -4,9 +4,9 @@ declare module 'edgeros:tcp' {
 }
 
 declare module "tcp" {
-  import { Buffer } from 'buffer';
+  import socket = require('edgeros:socket');
   interface SockAddr {
-    domain: number;
+    domain: socket.AF_INET | socket.AF_INET6 | tcp.AF_INET | tcp.AF_INET6;
     addr: string;
     port: number;
   }
@@ -269,6 +269,10 @@ declare module "tcp" {
   }
 
   namespace tcp {
+    type AF_INET = 2;
+    type AF_INET6 = 10;
+    const AF_INET: AF_INET;
+    const AF_INET6: AF_INET6;
     /**
      * Create a TCP server and bind to the specified address.
      *
@@ -299,7 +303,7 @@ declare module "tcp" {
      * @param callback Connected callback.
      *                  tcp {object} Tcp object.
      */
-    function createClient(sockaddr: SockAddr, callback: (tcp: object) => void): Tcp;
+    function createClient(sockaddr: SockAddr, callback: (tcp: object, remote: object) => void): Tcp;
 
     /**
      * Create a tcp object with socket file descriptor, mainly used to multitasking TCP server.

@@ -4,10 +4,10 @@ declare module 'edgeros:tls' {
 }
 
 declare module "tls" {
-  import { Buffer } from 'buffer';
+  import socket = require('edgeros:socket');
 
   interface SockAddr {
-    domain: number;
+    domain: socket.AF_INET | socket.AF_INET6 | tls.AF_INET | tls.AF_INET6;
     addr: string;
     port: number;
   }
@@ -237,6 +237,10 @@ declare module "tls" {
   }
 
   namespace tls {
+    type AF_INET = 2;
+    type AF_INET6 = 10;
+    const AF_INET: AF_INET;
+    const AF_INET6: AF_INET6;
     /**
      * Create a Tls server and bind to the specified address.
      *
@@ -259,7 +263,7 @@ declare module "tls" {
      * @param timeout Wait timeout in milliseconds. default: undefined means timeout with default connect timeout setting.
      */
     function createClient(opt: TlsClientOptions, sockaddr: SockAddr, timeout?: number): Tls;
-    function createClient(opt: TlsClientOptions, sockaddr: SockAddr, callback: (tls: object) => void): Tls;
+    function createClient(opt: TlsClientOptions, sockaddr: SockAddr, callback: (tls: object, remote: object) => void): Tls;
 
     /**
      * Create a Tls object with socket file descriptor, mainly used to multitasking Tls server.

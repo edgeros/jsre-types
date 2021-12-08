@@ -97,6 +97,7 @@
 /// <reference path="./database/leveldb.d.ts" />
 /// <reference path="./database/sqlite3.d.ts" />
 /// <reference path="./database/redis.d.ts" />
+/// <reference path="./database/mysql.d.ts" />
 
 /*----------------------------------------------*
  *                                              *

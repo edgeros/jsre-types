@@ -47,8 +47,10 @@ declare module "socket" {
     const IPPROTO_TCP: number;
     const IPPROTO_UDP: number;
 
-    type AF_INET = '1';
-    type AF_INET6 = '2';
+    type AF_INET = 2;
+    type AF_INET6 = 10;
+    const AF_INET: AF_INET;
+    const AF_INET6: AF_INET6;
     /**
      * Create a socket, the domain can be socket.AF_INET or socket.AF_INET6. type can be:
      *

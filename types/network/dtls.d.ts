@@ -4,10 +4,9 @@ declare module 'edgeros:dtls' {
 }
 
 declare module "dtls" {
-  import { Buffer } from 'buffer';
-
+  import socket = require('edgeros:socket');
   interface SockAddr {
-    domain: number; // Address domain: `socket.AF_INET` or `socket.AF_INET6`.
+    domain: socket.AF_INET | socket.AF_INET6 | dtls.AF_INET | dtls.AF_INET6; // Address domain: `socket.AF_INET` or `socket.AF_INET6`.
     addr: string; // Address.
     port: string; // Port.
   }
@@ -196,6 +195,10 @@ declare module "dtls" {
   }
 
   namespace dtls {
+    type AF_INET = 2;
+    type AF_INET6 = 10;
+    const AF_INET: AF_INET;
+    const AF_INET6: AF_INET6;
     /**
      * Create a Datagram TLS server and bind to the specified address.
      *
@@ -216,7 +219,7 @@ declare module "dtls" {
      * @param timeout Wait timeout in milliseconds. default: undefined means timeout with default connect timeout setting.
      */
     function createClient(opt: DtlsClientOptions, sockaddr: SockAddr, timeout?: number): Dtls;
-    function createClient(opt: DtlsClientOptions, sockaddr: SockAddr, callback: (dtls: Dtls) => void): Dtls;
+    function createClient(opt: DtlsClientOptions, sockaddr: SockAddr, callback: (dtls: Dtls, remote: object) => void): Dtls;
 
     /**
      * Create a dtls object with socket file descriptor, mainly used to multitasking Datagram TLS server. Use synchronous mode.

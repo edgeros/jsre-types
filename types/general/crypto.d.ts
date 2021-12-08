@@ -8,6 +8,9 @@ declare module "crypto" {
   import * as stream from 'edgeros:stream';
 
   namespace crypto {
+    let RSA_PKCS_V15: number;
+    let RSA_PKCS_V21: number;
+
     type BinaryLike = string | EdgerOS.ArrayBufferView;
 
     type BufferString = string | Buffer;
@@ -74,6 +77,11 @@ declare module "crypto" {
       passphrase?: string | Buffer;
     }
 
+    interface KeyOptionsOpt {
+      padding: number;
+      hash: string;
+    }
+
     class KeyObject {
       private constructor();
       asymmetricKeyType?: KeyType;
@@ -88,6 +96,7 @@ declare module "crypto" {
       encrypt(str: string): Buffer;
       encrypt(buff: Buffer, offset?: number, length?: number): Buffer;
       decrypt(buff: Buffer, offset?: number, length?: number): Buffer;
+      options(opt: KeyOptionsOpt): void;
     }
 
     class Hash {

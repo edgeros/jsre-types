@@ -25,11 +25,14 @@ declare module "stream" {
 
     interface WritableOptions {
       highWaterMark?: number;
-      encoding?: string;
+      decodeStrings?: boolean;
+      // encoding?: string;
+      defaultEncoding?: 'utf8' | 'utf-8' | 'hex' | 'base64' | 'ascii';
       emitClose?: boolean;
       autoDestroy?: boolean;
       alertWaterMark?: number;
       autoAlert?: boolean;
+      objectMode?: boolean;
       construct?(): void;
       write?(): void;
       destroy?(): void;
@@ -43,6 +46,8 @@ declare module "stream" {
       readonly writableFinished: boolean;
       readonly writableHighWaterMark: number;
       readonly writableLength: number;
+      readonly writableNeedDrain: boolean;
+      readonly writableObjectMode: boolean;
 
       constructor(opts?: WritableOptions);
       off(event: string | string[], listener: (...args: any[]) => void): this;
@@ -56,6 +61,8 @@ declare module "stream" {
 
       write(chunk: any, callback?: (error: Error | null | undefined) => void): boolean;
       write(chunk: any, encoding: BufferEncoding, callback?: (error: Error | null | undefined) => void): boolean;
+
+      setDefaultEncoding(encoding: 'utf8' | 'utf-8' | 'hex' | 'base64' | 'ascii'): this;
 
       _construct(callback: (error?: Error | null) => void): void;
       _write(chunk: string | Buffer, encoding: string, callback: (error?: Error | null) => void): void;
@@ -104,6 +111,8 @@ declare module "stream" {
 
     interface ReadableOptions {
       highWaterMark?: number;
+      encoding?: string;
+      objectMode?: boolean;
       emitClose?: boolean;
       autoDestroy?: boolean;
       alertWaterMark?: number;
@@ -180,7 +189,7 @@ declare module "stream" {
        * @param Encoding of string chunks. Must be a valid `Buffer` encoding, such as 'utf8' or 'ascii'.
        * return true if additional chunks of data may continue to be pushed; false otherwise.
        */
-      push(chunk: Buffer | string | null, encoding?: string): boolean;
+      push(chunk: any, encoding?: string): boolean;
       /**
        * Event emitter
        * The defined events on documents including:
@@ -225,6 +234,8 @@ declare module "stream" {
 
     interface DuplexOptions extends ReadableOptions, WritableOptions {
       allowHalfOpen?: boolean;
+      readableObjectMode?: boolean;
+      writableObjectMode?: boolean;
       readableHighWaterMark?: number;
       writableHighWaterMark?: number;
     }
@@ -232,6 +243,9 @@ declare module "stream" {
     // Note: Duplex extends both Readable and Writable.
     class Duplex extends Readable implements Writable {
       constructor(opts?: DuplexOptions);
+      writableNeedDrain: boolean;
+      writableObjectMode: boolean;
+      setDefaultEncoding(encoding: 'ascii' | 'utf-8' | 'base64' | 'hex' | 'utf8'): this;
 
       readonly writable: boolean;
       readonly writableEnded: boolean;
