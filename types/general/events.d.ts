@@ -4,19 +4,6 @@ declare module 'edgeros:events' {
 }
 
 declare module "events" {
-  interface EventEmitterOptions {
-    /**
-     * Enables automatic capturing of promise rejection.
-     */
-    captureRejections?: boolean;
-  }
-  interface NodeEventTarget {
-    once(event: string | symbol, listener: (...args: any[]) => void): this;
-  }
-
-  interface DOMEventTarget {
-    addEventListener(event: string, listener: (...args: any[]) => void, opts?: { once: boolean }): any;
-  }
   class EventEmitter {
     constructor();
 
@@ -103,7 +90,7 @@ declare module "events" {
      *
      * @returns An array of all listened events.
      */
-    eventNames(): EdgerOS.EventEmitter[];
+    eventNames(): string[];
 
     /**
      * Returns a copy of the listener array for the event named `event`.
@@ -111,7 +98,7 @@ declare module "events" {
      * @param event The name of the event.
      * @returns An array of all listened function on this event.
      */
-    listeners(event: string): EdgerOS.EventEmitter[];
+    listeners(event: string): any[];
 
     /**
      * Returns the number of listeners for the event named `event`.
@@ -158,7 +145,7 @@ declare module "events" {
         once(event: string, listener: (...args: any[]) => void): this;
         removeListener(event: string, listener: (...args: any[]) => void): this;
         removeAllListeners(event?: string): this;
-        eventNames(): string[];
+        eventNames(): Array<string | symbol>;
         listeners(event: string): ListenerFunction[];
         listenerCount(event: string): number;
       }
