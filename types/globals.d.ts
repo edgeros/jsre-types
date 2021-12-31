@@ -24,6 +24,21 @@ declare const module: {
   };
 };
 
+declare function setTimeout(callback: (...args: any[]) => void, ms?: number, ...args: any[]): EdgerOS.Timeout;
+declare namespace setTimeout {
+    function __promisify__(ms: number): Promise<void>;
+    function __promisify__<T>(ms: number, value: T): Promise<T>;
+}
+declare function clearTimeout(timeoutId: EdgerOS.Timeout): void;
+declare function setInterval(callback: (...args: any[]) => void, ms?: number, ...args: any[]): EdgerOS.Timeout;
+declare function clearInterval(intervalId: EdgerOS.Timeout): void;
+declare function setImmediate(callback: (...args: any[]) => void, ...args: any[]): EdgerOS.Immediate;
+declare namespace setImmediate {
+    function __promisify__(): Promise<void>;
+    function __promisify__<T>(value: T): Promise<T>;
+}
+declare function clearImmediate(immediateId: EdgerOS.Immediate): void;
+
 // Buffer class
 type BufferEncoding = "ascii" | "utf-8" | "base64" | "hex";
 

@@ -64,8 +64,8 @@ declare module "core" {
 
     json(obj: Record<string, any>, status?: number): object | undefined; // TODO: *{WebResponse}* This `WebResponse` object: success. `undefined`: fail.
 
-    render(name: string, overload?: ResRenderOptions | ((args: ResRenderCallback) => void)): void;
-    render(name: string, options?: ResRenderOptions, callback?: (args: ResRenderCallback) => void): void;
+    render(view: string, options?: object, callback?: (err: Error, html: string) => void): void;
+    render(view: string, callback?: (err: Error, html: string) => void): void;
 
     cookie(name: string, value: string | Record<string, any>, options?: ResCookieOptions): void;
 
