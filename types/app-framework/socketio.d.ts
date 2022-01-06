@@ -329,6 +329,6 @@ declare module "socket.io" {
     request: object;
   }
 
-  function io(server: HttpServer | typeof WebApp, options?: IoOptions): Server;
+  function io(server: typeof WebApp.createApp | HttpServer | object, options?: IoOptions): Server;
   export = io;
 }

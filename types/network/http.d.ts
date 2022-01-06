@@ -7,6 +7,7 @@ declare module "http" {
   import { Buffer } from 'buffer';
   import socket = require('edgeros:socket');
   import { Writable } from 'edgeros:stream';
+  import EventEmitter = require("edgeros:events");
 
   interface HttpClientRequestOptions {
     /*
@@ -284,31 +285,31 @@ declare module "http" {
        */
       connected(): boolean;
     }
-  /**
-   * This `HttpClient` object (request object) is created internally and retured from `http.request()`.
-   * The response object will passed to the callback function.
-   *
-   * @param url Http url.
-   * @param callback Request handler.
-   * @param [options] Options.
-   * @param [tlsOpt] TLS securely connections options. default: undefined, means use TCP connection.
-   * @returns true - return `Promise` object; false - return `HttpClient` object, default: false.
-   */
-  function request(url: string, callback: (res: HttpClientResponse) => void, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<any>;
+    /**
+     * This `HttpClient` object (request object) is created internally and retured from `http.request()`.
+     * The response object will passed to the callback function.
+     *
+     * @param url Http url.
+     * @param callback Request handler.
+     * @param [options] Options.
+     * @param [tlsOpt] TLS securely connections options. default: undefined, means use TCP connection.
+     * @returns true - return `Promise` object; false - return `HttpClient` object, default: false.
+     */
+    function request(url: string, callback: (res: HttpClientResponse) => void, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<any>;
 
-  /**
-   * Accepts the same options as `http.request()`, with the method always set to `GET`.
-   * Since most requests are `GET` requests without bodies, http provides this convenience method.
-   * The only difference between this method and `http.request()` is that it sets the method to `GET` and calls `request.end()` automatically.
-   *
-   * @param url Http url.
-   * @param callback Callback function.
-   * @param [options] Options.
-   * @param [tlsOpt] TLS securely connections options. default: undefined, means use TCP.
-   * @returns The http client request object or promise object. depend on `async` option.
-   */
-  function get(url: string, callback: (res: HttpClientResponse) => void, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<any>;
-    class HttpServer {
+    /**
+     * Accepts the same options as `http.request()`, with the method always set to `GET`.
+     * Since most requests are `GET` requests without bodies, http provides this convenience method.
+     * The only difference between this method and `http.request()` is that it sets the method to `GET` and calls `request.end()` automatically.
+     *
+     * @param url Http url.
+     * @param callback Callback function.
+     * @param [options] Options.
+     * @param [tlsOpt] TLS securely connections options. default: undefined, means use TCP.
+     * @returns The http client request object or promise object. depend on `async` option.
+     */
+    function get(url: string, callback: (res: HttpClientResponse) => void, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<any>;
+    class HttpServer extends EventEmitter {
       constructor();
 
       /**
@@ -395,7 +396,7 @@ declare module "http" {
       on(event: "request", listener: (req: HttpServerRequest, res: HttpServerResponse) => void): this;
     }
 
-    class HttpClient {
+    class HttpClient extends EventEmitter {
       constructor(callback: (...args: any) => void, saddr: { res: HttpClientResponse }, tlsOpt?: object);
 
       /**

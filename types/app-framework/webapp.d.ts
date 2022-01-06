@@ -6,6 +6,7 @@ declare module 'edgeros:webapp' {
 declare module "webapp" {
   import Router = require('edgeros:router');
   import { Request, Response } from "edgeros:core";
+  import EventEmitter = require("edgeros:events");
   interface SockAddr {
     domain: number;
     addr: string;
@@ -38,7 +39,8 @@ declare module "webapp" {
   type TaskHandler = (arg: object, i: number) => void;
 
   namespace webapp {
-    interface WebAppInstance {
+    interface WebAppInstance extends EventEmitter {
+      groupName: GroupName;
       locals: object;
       /**
        * Get whether the server object is the master server.
@@ -58,7 +60,7 @@ declare module "webapp" {
       /**
        * Start app server. The app's setting must be done before this operator.
        */
-      start(): void;
+      start(): this;
 
       /**
        * Stop app server.
@@ -68,7 +70,7 @@ declare module "webapp" {
        * false - stop this sub server. default: false.
        * @param cb Callback when `stop` event emit.
        */
-      stop(stopAll?: boolean, cb?: HandleFunction): void;
+      stop(stopAll?: boolean, cb?: HandleFunction): this;
 
       /**
        * When the server starts with the `MASTER` module, `app.port()` gets the port of the server, otherwise it returns `undefined`.
@@ -223,13 +225,12 @@ declare module "webapp" {
       use(path: MethodPath, handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
       use(handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
 
-      on(event: 'start' | 'stop', handler: () => void): void;
-      on(event: 'ready', handler: ReadyHandler): void;
-      on(event: 'final', handler: FinalHandler): void;
-      on(event: 'task', handler: TaskHandler): void;
+      on(event: 'start' | 'stop', handler: () => void): this;
+      on(event: 'ready', handler: ReadyHandler): this;
+      on(event: 'final', handler: FinalHandler): this;
+      on(event: 'task', handler: TaskHandler): this;
     }
     interface WebAppStatic {
-      groupName: GroupName;
       /**
        * This method creates a master-server. When the master-server starts,
        * it can create a specified number(subs) of sub-servers (subs), refer to WebApp mult-task.

@@ -4,7 +4,7 @@ declare module 'edgeros:mysql' {
 }
 
 declare module "mysql" {
-  import { EventEmitter } from "edgeros:stream";
+  import EventEmitter = require("edgeros:events");
   type DataTypes = 'DECIMAL'
   | 'TINY'
   | 'SHORT'
