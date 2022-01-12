@@ -158,7 +158,7 @@ declare module "sqlite3" {
       prepare(sql: string, ...bind: any): Stmt;
       prepare(sql: string, query?: (...args: any) => void, arg?: any): Stmt;
 
-      [Symbol.iterator](): Iterator<any>;
+      [Symbol.iterator](sql: string, ...bind: any): Iterator<any>;
     }
   }
   export = sqlite3.Sqlite3;
