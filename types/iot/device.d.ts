@@ -68,7 +68,7 @@ declare module 'device' {
      */
     toJSON(): string;
 
-    on(event: 'connect'|'timeout'|'drain'|'close', callback: () => void): void;
+    on(event: 'connect'|'timeout'|'drain'|'close'|'finish', callback: () => void): void;
     on(event: 'error', callback: (error: Error) => void): void;
     on(event: 'data', callback: (chunk: string|Buffer) => void): void;
   }
