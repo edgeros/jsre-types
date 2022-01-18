@@ -208,7 +208,7 @@ declare module "mysql" {
   namespace mysql {
     function createConnection(config: ConnectionOptions | string): Connection;
     function createPool(config: PoolConfig | ConnectionOptions | string): Pool;
-    function createPoolCluster(config: PoolClusterConfig): PoolCluster;
+    function createPoolCluster(config: PoolClusterConfig | PoolConfig | ConnectionOptions): PoolCluster;
     function escape(value: any, stringifyObjects?: boolean, timeZone?: string): string;
     function escapeId(value: any, forbidQualified?: boolean): string;
     function format(sql: string, values: any[], stringifyObjects?: boolean, timeZone?: string): string;
