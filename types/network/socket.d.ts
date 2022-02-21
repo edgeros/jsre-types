@@ -436,6 +436,9 @@ declare module "socket" {
      * @param enable Whether to enable multicast loop.
      */
     function setMulticastLoop(sockFd: number, enable: boolean): boolean;
+
+    function sockaddr(domain?: string, port?: number, scope?: number): SockAddr;
+    function sockaddr6(domain?: string, port?: number, scope?: number): SockAddr;
   }
   export = socket;
 }
