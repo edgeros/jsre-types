@@ -127,7 +127,7 @@ declare module "websocket" {
      *                  WebApp object, the same to HttpServer.
      * @param tlsOpt TLS securely connections options. default: undefined, means use TCP onnection.
      */
-    function createServer(path: string, saddr: HttpServer | typeof WebApp | object, tlsOpt: object): WsServer;
+    function createServer(path: string, saddr?: HttpServer | typeof WebApp | object, tlsOpt?: object): WsServer;
 
     function createClient(url: string, options?: ClientOptions, tlsOpt?: object): WsClient;
   }
