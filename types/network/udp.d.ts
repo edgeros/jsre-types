@@ -252,6 +252,8 @@ declare module "udp" {
      * @param sockFd Socket file descriptor, MUST Udp socket.
      */
     function createByFd(sockFd: number): Udp;
+
+    function sockaddr(host?: number | string, port?: number): SockAddr;
   }
   export = udp;
 }
