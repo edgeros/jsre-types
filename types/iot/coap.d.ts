@@ -9,11 +9,11 @@ declare module "coap" {
 
   interface CoapRequestOptions {
     method?: string; // Coap method, default: POST.
-    path: string; // The request uri path, default: url parsed path.
-    timeout: number; // The request timeout. If the request times out, CoapClent will close.
-    confirm: boolean; // The request send is confirm or no.
-    options: object; // Coap options.
-    token: Buffer; // Coap token used to identification resources.
+    path?: string; // The request uri path, default: url parsed path.
+    timeout?: number; // The request timeout. If the request times out, CoapClent will close.
+    confirm?: boolean; // The request send is confirm or no.
+    options?: object; // Coap options.
+    token?: Buffer; // Coap token used to identification resources.
     observe?: boolean; // Observe mode request. default: false.
     payload?: string | Buffer; // The request payload data, default: undefined.
   }
