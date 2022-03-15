@@ -109,9 +109,10 @@ declare module "mqtt" {
      * @param tlsOpt TLS securely connections options. default: undefined, means use TCP connection.
      * @param callback Connected callback function.
      *                      client {object} Client object.
+     *                      remote  {object} Remote address.
      * @param bufSize Buffer size (512 ~ 4096). default: 2048.
      */
-    function open(saddr: object, tlsOpt: object, callback: (...args: any) => void, bufSize?: number): Mqtt;
+    function open(saddr: object, tlsOpt: object, callback: (client: Mqtt, remote: object) => void, bufSize?: number): Mqtt;
 
     /**
      * Get the current process MQTT working mode
