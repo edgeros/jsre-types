@@ -77,7 +77,7 @@ declare module "process" {
     /**
      * kill process
      * @param pid Process ID.
-     * @param sigNo POSIX signal number. default: process.SIGKILL.
+     * @param sigNo POSIX signal number. default: process.SIGINT.
      * returns Whether the signal is sent successfully.
      */
     function kill(pid: number, sigNo?: number): boolean;

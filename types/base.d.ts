@@ -216,3 +216,10 @@
 /// <reference path="./asynchronous/master.d.ts" />
 /// <reference path="./asynchronous/mediacenter.d.ts" />
 /// <reference path="./asynchronous/permission.d.ts" />
+
+/*----------------------------------------------*
+ *                                              *
+ *       EDGEROS EXTENSION Asynchronous         *
+ *                                              *
+ *----------------------------------------------*/
+/// <reference path="./vsoa/vsoa.d.ts" />

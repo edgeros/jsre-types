@@ -60,6 +60,8 @@ declare module "dns" {
      * @param hostname Hostname. default: all hostname cache flush.
      */
     function cacheFlush(hostname?: string): void;
+
+    function server(servers?: any[]): any[];
   }
   export = dns;
 }
