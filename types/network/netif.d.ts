@@ -193,6 +193,7 @@ declare module "netif" {
        * Returns: {Boolean} Whether the operation was successful.
        */
       down(): boolean;
+      dhcp(dhcp?: boolean, dhcp6?: boolean): this;
 
       /**
        * Set or get the TCP window size of the specified network interface.
