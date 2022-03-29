@@ -40,8 +40,20 @@ declare module "http" {
     end?: boolean; // End the writer when the reader ends. default: true.
   }
 
+  interface FetchtOptions {
+    domain?: socket.AF_INET | socket.AF_INET6;
+    saddr: object;
+    method?: string;
+    path?: string;
+    timeout?: number;
+    headers?: object;
+    host?: string;
+    post?: string | Buffer | object;
+    tlsOpt?: object;
+  }
+
   namespace http {
-    class HttpClientResponse {
+    class HttpClientResponse extends HttpInput {
       constructor()
       on(event: "data", callback: (buf: Buffer) => void): this;
       on(event: "end", callback: () => void): this;
@@ -49,6 +61,13 @@ declare module "http" {
       statusCode: number;
       headers: object;
       enableCache(): void;
+    }
+
+    class FetchReponse extends HttpClientResponse {
+      buffer(): Promise<Buffer | null>;
+      text(): Promise<string>;
+      json(): Promise<object | null>;
+      pipeTo(writStream: Writable): this;
     }
     class HttpServerRequest extends HttpInput {
       constructor();
@@ -309,6 +328,7 @@ declare module "http" {
      * @returns The http client request object or promise object. depend on `async` option.
      */
     function get(url: string, callback: (res: HttpClientResponse) => void, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<any>;
+    function fetch(url: string, options?: FetchtOptions): Promise<HttpClientResponse>;
     class HttpServer extends EventEmitter {
       constructor();
 
