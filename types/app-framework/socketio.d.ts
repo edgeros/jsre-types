@@ -4,6 +4,7 @@ declare module 'edgeros:socket.io' {
 }
 
 declare module "socket.io" {
+  import EventEmitter = require("edgeros:events");
   import { HttpServer } from "edgeros:http";
   import WebApp = require("edgeros:webapp");
 
@@ -32,7 +33,7 @@ declare module "socket.io" {
 
   type CallbackFunction = (...args: any) => void;
 
-  interface Server {
+  interface Server extends EventEmitter {
     sockets: Namespace;
     engine: object;
 
