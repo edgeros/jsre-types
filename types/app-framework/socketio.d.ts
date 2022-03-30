@@ -8,7 +8,7 @@ declare module "socket.io" {
   import WebApp = require("edgeros:webapp");
 
   interface IoOptions {
-    path: string;
+    path?: string;
     serveClient?: boolean;
     adapter?: any;
     origins?: string;
