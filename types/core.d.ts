@@ -86,4 +86,23 @@ declare module "core" {
     on(event: 'end' | 'finish' | 'close', cb: () => void): void;
     on(event: 'error', cb: (error: Error) => void): void;
   }
+
+  interface StructureMember {
+    key: string;
+    type: 'bool' | 'int8_t' | 'int16_t' | 'int32_t' | 'uint8_t' | 'uint16_t' | 'uint32_t' | 'int' | 'long' | 'float' | 'double' | 'char *';
+    req?: boolean;
+    min?: number;
+    max?: number;
+    near?: boolean;
+    array?: number;
+    mlen?: number;
+  }
+
+  interface Jstruct {
+    name: string;
+    struct: {
+      name: string;
+      member: StructureMember[];
+    };
+  }
 }

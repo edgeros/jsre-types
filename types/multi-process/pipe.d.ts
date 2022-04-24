@@ -71,6 +71,7 @@ declare module "pipe" {
        * @param timeout Wait timeout in milliseconds. default: undefined means wait forever.
        */
       write(buffer: Buffer, offset?: number, length?: number, timeout?: number): number;
+      autonomy(on: boolean): boolean;
     }
   }
   export = pipe.Pipe;

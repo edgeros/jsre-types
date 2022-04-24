@@ -39,7 +39,7 @@ declare module "fs" {
     start?: number; // Start of file, default: 0
     end?: number; // End of file, default: infinity
     autoClose?: boolean; // default: true
-    emitClose?: boolean; // default: false
+    emitClose?: boolean; // default: true
     highWaterMark?: number; // default: 64k
     maxChunkSize?: number; // JSRE expansion, default: half of highWaterMark.
   }
@@ -49,7 +49,7 @@ declare module "fs" {
     mode?: number; // default: 0o666
     start?: number; // default: 0
     autoClose?: boolean; // default: true
-    emitClose?: boolean; // default: false
+    emitClose?: boolean; // default: true
   }
   type readEventTypes = "close" | "open" | "ready" | "data" | "end" | "error" | "pause" | "readable" | "resume";
   type writEventTypes = "close" | "open" | "ready" | "drain" | "error" | "finish" | "pipe" | "unpipe";

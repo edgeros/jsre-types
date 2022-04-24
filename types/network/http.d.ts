@@ -6,7 +6,7 @@ declare module 'edgeros:http' {
 declare module "http" {
   import { Buffer } from 'buffer';
   import socket = require('edgeros:socket');
-  import { Writable } from 'edgeros:stream';
+  import { Readable, Writable } from 'edgeros:stream';
   import EventEmitter = require("edgeros:events");
 
   interface HttpClientRequestOptions {
@@ -24,7 +24,7 @@ declare module "http" {
     method?: string; // Http method, default: GET.
     path?: string; // The request uri path, default: url parsed path.
     timeout?: number; // The request timeout. If the request times out, `HttpClient` will close.
-    headers?: object; // Http headers.
+    headers?: object; // header key must be lowercase.
     host?: string; // The domain name or IP address of the server to which the request is sent. default: url host.
     post?: string | Buffer | object; // The request post data, default: undefined.
     async?: boolean; // true - return `Promise` object; false - return `HttpClient` object, default: false.
@@ -41,14 +41,11 @@ declare module "http" {
   }
 
   interface FetchtOptions {
-    domain?: socket.AF_INET | socket.AF_INET6;
-    saddr: object;
     method?: string;
-    path?: string;
     timeout?: number;
-    headers?: object;
-    host?: string;
-    post?: string | Buffer | object;
+    headers?: object; // Http headers. header key must be lowercase.
+    redirect?: 'follow' | 'error' | 'manual';
+    body?: string | Buffer | object | Readable;
     tlsOpt?: object;
   }
 
@@ -314,6 +311,7 @@ declare module "http" {
      * @param [tlsOpt] TLS securely connections options. default: undefined, means use TCP connection.
      * @returns true - return `Promise` object; false - return `HttpClient` object, default: false.
      */
+    function request(url: string, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<any>;
     function request(url: string, callback: (res: HttpClientResponse) => void, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<any>;
 
     /**
@@ -327,6 +325,7 @@ declare module "http" {
      * @param [tlsOpt] TLS securely connections options. default: undefined, means use TCP.
      * @returns The http client request object or promise object. depend on `async` option.
      */
+    function get(url: string, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<any>;
     function get(url: string, callback: (res: HttpClientResponse) => void, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<any>;
     function fetch(url: string, options?: FetchtOptions): Promise<HttpClientResponse>;
     class HttpServer extends EventEmitter {

@@ -20,6 +20,11 @@ declare module "monitor" {
     };
   }
 
+  interface CpuUse {
+    usage: Usage[];
+    cores: number[];
+  }
+
   namespace monitor {
     class Monitor {
       /**
@@ -36,16 +41,8 @@ declare module "monitor" {
        *
        * @param time Measurement time in milliseconds. default: 1000.
        */
-      cpuUsage(time?: number): Usage[];
-
-      /**
-       * Use the asynchronous mode to measure the CPU usage. The callback parameter is an array of measurement results.
-       *
-       * @param time Measurement time in milliseconds. default: 1000.
-       * @param callback Callback function at the end of measurement.
-       *                  usage {Array} Measurement result.
-       */
-      cpuUsage(time: number, callback: (usage: any[]) => void): void;
+      cpuUsage(time?: number): CpuUse;
+      cpuUsage(time: number, callback: (cpu: Usage[], cores: number[]) => void): void;
 
       /**
        * Get memory usage and return an array, each member of the array is an object, this object contains the following members:
