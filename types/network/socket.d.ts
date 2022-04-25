@@ -437,8 +437,8 @@ declare module "socket" {
      */
     function setMulticastLoop(sockFd: number, enable: boolean): boolean;
 
-    function sockaddr(domain?: string, port?: number, scope?: number): SockAddr;
-    function sockaddr6(domain?: string, port?: number, scope?: number): SockAddr;
+    function sockaddr(addr?: string, port?: number): SockAddr;
+    function sockaddr6(addr?: string, port?: number, scope?: number): SockAddr;
   }
   export = socket;
 }
