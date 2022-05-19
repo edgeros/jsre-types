@@ -158,6 +158,7 @@ declare module "netif" {
        * Returns: {Boolean} Whether the network interface is enabled.
        */
       isLinkup(): boolean;
+      isAutocfg(): boolean;
 
       /**
        * Set the specified network interface IP address.
@@ -194,6 +195,7 @@ declare module "netif" {
        */
       down(): boolean;
       dhcp(dhcp?: boolean, dhcp6?: boolean): this;
+      autocfg(enable: boolean): boolean;
 
       /**
        * Set or get the TCP window size of the specified network interface.

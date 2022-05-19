@@ -107,8 +107,9 @@ declare module "vsoa" {
     function fetch(url: string, timeout?: number): Promise<{payload?: Payload, tunid?: number}>;
 
     class Server extends EventEmitter {
-      constructor(opt: ServerOpt, saddr: Saddr, tlsOpt?: object);
+      constructor(opt: ServerOpt);
       close(): void;
+      start(saddr: Saddr, tlsOpt?: object): void;
       count(): number;
       address(): object; // socket address.
       onclient: (cli: RemoteClient, connect: boolean) => void;
@@ -130,8 +131,8 @@ declare module "vsoa" {
       subscribe(url: string, callback?: (error: Error) => void | number): void;
       subscribe(url: string, callback?: (error: Error) => void, timeout?: number): void;
       unsubscribe(url?: string, callback?: (error: Error) => void, timeout?: number): void;
-      call(url: string, opt: {method?: MethodValue}, callback?: (error: Error, payload?: Payload, tunid?: number) => void, timeout?: number): void;
-      call(url: string, opt: {method?: MethodValue}, payload?: Payload, callback?: (error: Error, payload?: Payload, tunid?: number) => void, timeout?: number): void;
+      call(url: string, opt?: {method?: MethodValue}, callback?: (error: Error, payload?: Payload, tunid?: number) => void, timeout?: number): void;
+      call(url: string, opt?: {method?: MethodValue}, payload?: Payload, callback?: (error: Error, payload?: Payload, tunid?: number) => void, timeout?: number): void;
       fetch(url: string, opt?: {method?: MethodValue}, payload?: Payload | number): Promise<{payload?: Payload, tunid?: number}>;
       fetch(url: string, opt?: {method?: MethodValue}, payload?: Payload, timeout?: number): Promise<{payload?: Payload, tunid?: number}>;
       fetch(url: string, timeout?: number): Promise<{payload?: Payload, tunid?: number}>;

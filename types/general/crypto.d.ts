@@ -433,6 +433,10 @@ declare module "crypto" {
      * @param size Random data length limit. default:buffer.length.
      */
     function randomFill(buff: Buffer, offset?: number, size?: number): Buffer;
+    function randomInt(min: number, max?: number): number;
+    function randomInt(min: number, max: number, callback: (error: Error, n: number) => void): void;
+    function randomInt(max: number, callback: (error: Error, n: number) => void): void;
+    function randomUUID(): string;
 
     /**
      * Get the total number of current credit certificates in the system

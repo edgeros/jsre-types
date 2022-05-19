@@ -24,6 +24,14 @@ declare module "router/natctl" {
     icmp: boolean;
   }
 
+  interface TrafficInfo {
+    ipaddr: string;
+    orate: number;
+    irate: number;
+    ototal: number;
+    itotal: number;
+  }
+
   namespace natctl {
     const TCP: number;
     const UDP: number;
@@ -40,6 +48,10 @@ declare module "router/natctl" {
     function fragment(): FragmentResult;
     function fragment(opt: object): boolean;
     function sessions(): SessionResult[];
+    function trafficStart(): void;
+    function trafficStop(): void;
+    function trafficIsStart(): boolean;
+    function traffic(): TrafficInfo[];
   }
   export = natctl;
 }
