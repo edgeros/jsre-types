@@ -27,6 +27,7 @@ declare module 'account' {
        * @param callback Callback function.
        */
       update(callback: (event: 'add' | 'delete' | 'update', acoid: string) => void): void;
+      gpdate(callback: (event: 'add' | 'delete' | 'update', group: string, previous?: string) => void): void;
 
       /**
        * Get or set current machine name.
@@ -41,6 +42,7 @@ declare module 'account' {
        * @param simple Whether only need acoid information. default: false.
        */
       list(callback: (error: Error, list: any[]) => void, simple?: boolean): string[];
+      groups(callback: (error: Error, list: any[]) => void): void;
 
       /**
        * Update or add an account information to the current device.
