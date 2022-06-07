@@ -213,6 +213,11 @@ declare module "socket.io" {
     handshake: handshakeInfo;
 
     /**
+     * Get remote address.
+     */
+    remoteAddress: string;
+
+    /**
      * Registers a middleware, which is a function that gets executed for every incoming Packet
      * and receives as parameter the packet and a function to optionally defer execution to the next registered middleware.
      *
