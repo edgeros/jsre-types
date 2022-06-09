@@ -152,6 +152,7 @@ declare module "vsoa" {
       onquery: (name: string, domain: number | undefined, callback: (res: Table | undefined) => void) => void;
       start(): void;
       stop(): void;
+      close(): void;
     }
   }
   export = vsoa;
