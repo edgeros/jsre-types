@@ -11,14 +11,16 @@ declare module "permission" {
     notify?: boolean; // {Boolean} Whether this app allows push messages.
     advnwc?: boolean; // {Boolean} Whether this app allows advanced network control.
     network?: boolean; // {Boolean} Whether this app allows network communication.
+    display?: boolean; // Whether this app allows use display output.
     rtsp?: boolean; // {Boolean} Whether this app allows RTSP network such as: Webcam, Network microphone.
     lora?: boolean; // {Boolean} Whether this app allows send or receive data via LoRaWAN network.
     coap?: boolean; // {Boolean} Whether this app allows CoAP IoT network protocol.
     wallpaper?: boolean; // Whether this app allows set wallpaper.
     account?: boolean; // Whether to allow get the user list and group list.
+    printer?: boolean; // Whether this app allows to use printer.
     mqtt?: {publish: boolean; subscribe: boolean}; // {object} MQTT Client sub object.
     mediacenter?: {readable: boolean; writable: boolean; removable: boolean};
-    phone?: {camera: boolean, contacts: boolean, microphone: boolean, geolocation: boolean};
+    phone?: {camera: boolean, contacts: boolean, microphone: boolean, geolocation: boolean, browser: boolean};
     vehicle?: {
       media: boolean, // Audio-visual entertainment system.
       geolocation: boolean, // Vehicle geolocation.

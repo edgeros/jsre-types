@@ -11,14 +11,16 @@ declare module 'async/permission' {
     notify?: boolean;
     advnwc?: boolean;
     network?: boolean;
+    display?: boolean;
     rtsp?: boolean;
     lora?: boolean;
     coap?: boolean;
     wallpaper?: boolean;
     account?: boolean;
+    printer?: boolean;
     mqtt?: {publish: boolean; subscribe: boolean};
     mediacenter?: {readable: boolean; writable: boolean; removable: boolean};
-    phone?: {camera: boolean, contacts: boolean, microphone: boolean, geolocation: boolean};
+    phone?: {camera: boolean, contacts: boolean, microphone: boolean, geolocation: boolean, browser: boolean};
     vehicle?: {
       media: boolean,
       geolocation: boolean,

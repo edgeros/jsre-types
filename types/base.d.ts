@@ -39,6 +39,7 @@
 /// <reference path="./local-device/gpio.d.ts" />
 /// <reference path="./local-device/tty.d.ts" />
 /// <reference path="./local-device/thermal.d.ts" />
+/// <reference path="./local-device/display.d.ts" />
 /// <reference path="./local-device/hotplug.d.ts" />
 
 /*----------------------------------------------*

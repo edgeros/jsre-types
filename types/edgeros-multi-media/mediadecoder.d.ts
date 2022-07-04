@@ -15,9 +15,9 @@ declare module "mediadecoder" {
 
   interface PreviewVideoFormat extends RemuxFormat {
     disable?: boolean; // {Boolean} Does disable preview?
-    fb?: number; // {Integer} The number of framebuffer device, 0 means /dev/fb0.
+    fb?: number; // {Integer} The number of framebuffer device, 0 means channel 0.
     fps?: number; // {Integer} Preview video frame rate.
-    fullscreen?: boolean;
+    // fullscreen?: boolean;
   }
 
   interface AudioFormat extends RemuxFormat {
