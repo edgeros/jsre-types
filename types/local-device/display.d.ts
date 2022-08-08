@@ -21,6 +21,7 @@ declare module "display" {
       close(): void; // Close the display object, this object is no longer available after it is closed.
       info(): DisplayInformation; // Get display interface information.
       busy(): boolean; // Quickly get whether the current display interface is occupied.
+      owner(): number; // Get which process the display is being used by.
 
       static on(event: 'status', handler: (channel: number, linked: boolean) => void): void;
       static on(event: 'using', handler: (channel: number) => void): void;
