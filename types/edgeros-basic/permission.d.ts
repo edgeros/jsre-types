@@ -20,7 +20,6 @@ declare module "permission" {
     printer?: boolean; // Whether this app allows to use printer.
     mqtt?: {publish: boolean; subscribe: boolean}; // {object} MQTT Client sub object.
     mediacenter?: {readable: boolean; writable: boolean; removable: boolean};
-    phone?: {camera: boolean, contacts: boolean, microphone: boolean, geolocation: boolean, browser: boolean};
     vehicle?: {
       media: boolean, // Audio-visual entertainment system.
       geolocation: boolean, // Vehicle geolocation.

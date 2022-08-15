@@ -20,7 +20,6 @@ declare module 'async/permission' {
     printer?: boolean;
     mqtt?: {publish: boolean; subscribe: boolean};
     mediacenter?: {readable: boolean; writable: boolean; removable: boolean};
-    phone?: {camera: boolean, contacts: boolean, microphone: boolean, geolocation: boolean, browser: boolean};
     vehicle?: {
       media: boolean,
       geolocation: boolean,
