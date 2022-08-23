@@ -4,52 +4,24 @@ declare module 'edgeros:buffer' {
 
 declare module 'buffer' {
   import { BinaryLike } from "edgeros:crypto";
-  export const INSPECT_MAX_BYTES: number;
-  export const kMaxLength: number;
-  export const kStringMaxLength: number;
-  export const constants: {
-    MAX_LENGTH: number;
-    MAX_STRING_LENGTH: number;
-  };
-  const BuffType: typeof Buffer;
+  // export const INSPECT_MAX_BYTES: number;
+  // export const kMaxLength: number;
+  // export const kStringMaxLength: number;
+  // export const constants: {
+  //   MAX_LENGTH: number;
+  //   MAX_STRING_LENGTH: number;
+  // };
+  // const BuffType: typeof Buffer;
 
-  export type TranscodeEncoding = "ascii" | "utf8" | "utf16le" | "ucs2" | "latin1" | "binary";
+  export type BufferEncoding = "ascii" | "utf-8" | "base64" | "hex";
 
-  export function transcode(source: Uint8Array, fromEnc: TranscodeEncoding, toEnc: TranscodeEncoding): Buffer;
+  // export function transcode(source: Uint8Array, fromEnc: TranscodeEncoding, toEnc: TranscodeEncoding): Buffer;
 
-  export const SlowBuffer: {
-    new(size: number): Buffer;
-    prototype: Buffer;
-  };
+  // export const SlowBuffer: {
+  //   new(size: number): Buffer;
+  //   prototype: Buffer;
+  // };
   export { Buffer };
-
-  export interface BlobOptions {
-    /**
-     * default: 'utf8'.
-     */
-    encoding?: BufferEncoding | undefined;
-    /**
-     * The Blob content-type. The intent is for `type` to convey
-     * the MIME media type of the data, however no validation of the type format
-     * is performed.
-     */
-    type?: string | undefined;
-  }
-
-  export class Blob {
-    readonly size: number;
-    readonly type: string;
-
-    constructor(source: Array<BinaryLike | Blob>, options?: BlobOptions);
-
-    arrayBuffer(): Promise<ArrayBuffer>;
-
-    slice(start?: number, end?: number, type?: string): Blob;
-
-    text(): Promise<string>;
-
-    stream(): unknown;
-  }
 
   export import atob = globalThis.atob;
   export import btoa = globalThis.btoa;
@@ -58,6 +30,8 @@ declare module 'buffer' {
     type WithImplicitCoercion<T> = T | { valueOf(): T };
 
     interface BufferConstructor {
+      MAX_LENGTH: number;
+      MAX_STRING_LENGTH: number;
       /**
        * Creates a new buffer of size bytes and initialize its data with random.
        * size Size of the new buffer.
