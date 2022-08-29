@@ -85,6 +85,7 @@
 /// <reference path="./file-system/ini.d.ts" />
 /// <reference path="./file-system/html.d.ts" />
 /// <reference path="./file-system/zip.d.ts" />
+/// <reference path="./file-system/zlib.d.ts" />
 
 /*----------------------------------------------*
  *                                              *
