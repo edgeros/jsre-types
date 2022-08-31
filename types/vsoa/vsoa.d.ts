@@ -72,8 +72,9 @@ declare module "vsoa" {
 
   type PriorityLevel = 0 | 1 | 2 | 3 | 4 | 5;
 
-  interface RemoteClient {
+  interface RemoteClient extends EventEmitter {
     close(): void;
+    isSubscribed(url: string): boolean;
     address(): SockAddr;
     reply(code: number, seqno: number, payload?: Payload | number): void;
     reply(code: number, seqno: number, payload?: Payload, tunid?: number): void;
@@ -81,6 +82,8 @@ declare module "vsoa" {
     setKeepAlive(idle: number): void;
     priority(prio: PriorityLevel): void;
     sendTimeout(timeout?: number): void;
+    on(event: 'subscribe', listener: (url: string | string[]) => void): this;
+    on(event: 'unsubscribe', listener: (url: string | string[] | null) => void): this;
   }
 
   interface ClientOpt {
@@ -114,8 +117,10 @@ declare module "vsoa" {
       address(): object; // socket address.
       onclient: (cli: RemoteClient, connect: boolean) => void;
       ondata: (cli: RemoteClient, url: string, payload: Payload) => void;
-      publish(url: string, payload?: Payload): void;
+      publish(url: string, payload?: Payload | boolean): void;
+      publish(url: string, payload: Payload, quick: boolean): void;
       syncer(cli: Client, request: RPCRequest, payload: Payload, target: object, setter?: (param: object | string, payload: Payload) => void): number;
+      isSubscribed(url: string): boolean;
       createStream(timeout?: number): ServerDuplex;
 
       on(event: string, listener: (cli: RemoteClient, request: { url: string, seqno: number, method: MethodValue }, payload?: { param?: object | string, data?: Buffer}) => void): this;
@@ -128,9 +133,8 @@ declare module "vsoa" {
       connect(saddr: SockAddr | string, callback?: (error: Error, info: object | string) => void, tlsOpt?: object, timeout?: number): void;
       close(): void;
       ping(callback: (error: Error) => void, timeout?: number): void;
-      subscribe(url: string, callback?: (error: Error) => void | number): void;
-      subscribe(url: string, callback?: (error: Error) => void, timeout?: number): void;
-      unsubscribe(url?: string, callback?: (error: Error) => void, timeout?: number): void;
+      subscribe(url: string | string[], callback?: (error: Error) => void, timeout?: number): void;
+      unsubscribe(url?: string | string[] | null, callback?: (error: Error) => void, timeout?: number): void;
       call(url: string, opt?: {method?: MethodValue}, callback?: (error: Error, payload?: Payload, tunid?: number) => void, timeout?: number): void;
       call(url: string, opt?: {method?: MethodValue}, payload?: Payload, callback?: (error: Error, payload?: Payload, tunid?: number) => void, timeout?: number): void;
       fetch(url: string, opt?: {method?: MethodValue}, payload?: Payload | number): Promise<{payload?: Payload, tunid?: number}>;
@@ -141,7 +145,8 @@ declare module "vsoa" {
 
       on(event: 'message', listener: (url: string, payload?: Payload) => void): this;
       on(event: 'datagram', listener: (url: string, payload: Payload) => void): this;
-      on(event: 'subscribe' | 'unsubscribe', listener: (url: string) => void): this;
+      on(event: 'subscribe', listener: (url: string | string[]) => void): this;
+      on(event: 'unsubscribe', listener: (url: string | string[] | null) => void): this;
       on(event: 'connect', listener: (info: object | string) => void): this;
       on(event: 'error', listener: (error: Error) => void): this;
     }
