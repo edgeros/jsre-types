@@ -6,13 +6,6 @@ declare module "edgeros:vsoa" {
 declare module "vsoa" {
   import stream = require("stream");
   import EventEmitter = require("edgeros:events");
-  import socket = require('edgeros:socket');
-
-  interface SockAddr {
-    domain: number; // Refer to tcp or socket module.
-    addr: string;
-    port: number;
-  }
 
   class ServerDuplex extends stream.Duplex {
     close(): void;
@@ -27,81 +20,80 @@ declare module "vsoa" {
     on(event: 'timeout' | 'connect', listener: () => void): this;
   }
 
-  interface ServerOpt {
-    info: object | string;
-    passwd?: string;
-  }
-
-  interface Saddr {
-    domain: number;
-    addr: string;
-    port: number;
-    dev?: string;
-    backlog?: number;
-  }
-
-  interface RPCRequest {
-    url: string;
-    seqno: number;
-    method: number;
-  }
-
-  interface Payload {
-    param?: object | string;
-    data?: Buffer;
-    offset?: number;
-    length?: number;
-  }
-
-  interface Method {
-    GET: 0;
-    SET: 1;
-  }
-
-  interface Code {
-    SUCCESS: 0;
-    PASSWORD: 1;
-    ARGUMENTS: 2;
-    INVALID_URL: 3;
-    NO_RESPONDING: 4;
-    NO_PERMISSIONS: 5;
-    NO_MEMORY: 6;
-  }
-
-  type MethodValue = Method[keyof Method];
-
-  type PriorityLevel = 0 | 1 | 2 | 3 | 4 | 5;
-
-  interface RemoteClient extends EventEmitter {
-    close(): void;
-    isSubscribed(url: string): boolean;
-    address(): SockAddr;
-    reply(code: number, seqno: number, payload?: Payload | number): void;
-    reply(code: number, seqno: number, payload?: Payload, tunid?: number): void;
-    datagram(url: string, payload: Payload): void;
-    setKeepAlive(idle: number): void;
-    priority(prio: PriorityLevel): void;
-    sendTimeout(timeout?: number): void;
-    on(event: 'subscribe', listener: (url: string | string[]) => void): this;
-    on(event: 'unsubscribe', listener: (url: string | string[] | null) => void): this;
-  }
-
-  interface ClientOpt {
-    passwd?: string;
-    pingInterval?: number;
-    pingTimeout?: number;
-    pingLost?: number;
-  }
-
-  interface Table {
-    name: string;
-    domain: number;
-    addr: string;
-    port: number;
-    security: boolean;
-  }
-
   namespace vsoa {
+    interface SockAddr {
+      domain: number; // Refer to tcp or socket module.
+      addr: string;
+      port: number;
+    }
+    interface ServerOpt {
+      info: object | string;
+      passwd?: string;
+    }
+
+    interface Saddr {
+      domain: number;
+      addr: string;
+      port: number;
+      dev?: string;
+      backlog?: number;
+    }
+
+    interface RPCRequest {
+      url: string;
+      seqno: number;
+      method: number;
+    }
+
+    interface Payload {
+      param?: object | string;
+      data?: Buffer;
+      offset?: number;
+      length?: number;
+    }
+
+    interface Method {
+      GET: 0;
+      SET: 1;
+    }
+    interface Code {
+      SUCCESS: 0;
+      PASSWORD: 1;
+      ARGUMENTS: 2;
+      INVALID_URL: 3;
+      NO_RESPONDING: 4;
+      NO_PERMISSIONS: 5;
+      NO_MEMORY: 6;
+    }
+    type MethodValue = Method[keyof Method];
+    interface RemoteClient extends EventEmitter {
+      close(): void;
+      isSubscribed(url: string): boolean;
+      address(): SockAddr;
+      reply(code: number, seqno: number, payload?: Payload | number): void;
+      reply(code: number, seqno: number, payload?: Payload, tunid?: number): void;
+      datagram(url: string, payload: Payload): void;
+      setKeepAlive(idle: number): void;
+      priority(prio: PriorityLevel): void;
+      sendTimeout(timeout?: number): void;
+      on(event: 'subscribe', listener: (url: string | string[]) => void): this;
+      on(event: 'unsubscribe', listener: (url: string | string[] | null) => void): this;
+    }
+    interface ClientOpt {
+      passwd?: string;
+      pingInterval?: number;
+      pingTimeout?: number;
+      pingLost?: number;
+    }
+    interface Table {
+      name: string;
+      domain: number;
+      addr: string;
+      port: number;
+      security: boolean;
+    }
+    type PriorityLevel = 0 | 1 | 2 | 3 | 4 | 5;
+
     const method: Method;
     const code: Code;
     function lookup(name: string, callback: (error: Error, saddr: SockAddr) => void, domain?: number): void;
