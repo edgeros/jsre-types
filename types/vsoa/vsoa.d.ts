@@ -52,6 +52,12 @@ declare module "vsoa" {
       length?: number;
     }
 
+    interface RPCFetchRes {
+      payload?: Payload;
+      tunid?: number;
+      info?: object | string;
+    }
+
     interface Method {
       GET: 0;
       SET: 1;
@@ -97,9 +103,9 @@ declare module "vsoa" {
     const method: Method;
     const code: Code;
     function lookup(name: string, callback: (error: Error, saddr: SockAddr) => void, domain?: number): void;
-    function fetch(url: string, opt?: {method?: MethodValue}, payload?: Payload | number): Promise<{payload?: Payload, tunid?: number}>;
-    function fetch(url: string, opt?: {method?: MethodValue}, payload?: Payload, timeout?: number): Promise<{payload?: Payload, tunid?: number}>;
-    function fetch(url: string, timeout?: number): Promise<{payload?: Payload, tunid?: number}>;
+    function fetch(url: string, opt?: {method?: MethodValue, passwd?: string, tlsOpt?: object}, payload?: Payload | number): Promise<RPCFetchRes>;
+    function fetch(url: string, opt?: {method?: MethodValue, passwd?: string, tlsOpt?: object}, payload?: Payload, timeout?: number): Promise<RPCFetchRes>;
+    function fetch(url: string, timeout?: number): Promise<RPCFetchRes>;
 
     class Server extends EventEmitter {
       constructor(opt: ServerOpt);
