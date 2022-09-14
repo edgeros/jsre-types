@@ -259,7 +259,7 @@ declare module "webapp" {
        */
       createSub(group: string): WebAppInstance;
 
-      Router: Router;
+      Router: typeof Router;
 
       /**
        * Start app server. The app's setting must be done before this operator.

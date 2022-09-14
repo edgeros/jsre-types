@@ -19,7 +19,7 @@ declare module "router" {
   type RouteHandleFunction = (req: Request, res: Response) => void;
   namespace router {
     class Router {
-      static create(options: CreateOptions): Router;
+      static create(options?: CreateOptions): Router;
 
       get(handle: RouteHandleFunction): void;
       get(path: MethodPath, handle?: RouteHandleFunction): void;
