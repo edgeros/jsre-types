@@ -224,6 +224,8 @@ declare module "webapp" {
        */
       use(path: MethodPath, handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
       use(handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
+      use(path: MethodPath, handle: Router): void;
+      use(handle: Router): void;
 
       on(event: 'start' | 'stop', handler: () => void): this;
       on(event: 'ready', handler: ReadyHandler): this;

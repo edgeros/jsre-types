@@ -60,6 +60,7 @@ declare module "core" {
 
     sendFile(path: string, options?: {root: string}): boolean;
 
+    status(code: number): this;
     sendStatus(statusCode: number, reason?: string): object | undefined; // TODO: *{WebResponse}* This `WebResponse` object: success. `undefined`: fail.
 
     json(obj: Record<string, any>, status?: number): object | undefined; // TODO: *{WebResponse}* This `WebResponse` object: success. `undefined`: fail.
