@@ -17,6 +17,7 @@ declare module "vsoa" {
   class ClientDuplex extends stream.Duplex {
     close(): void;
 
+    on(event: string, listener: (chunk?: any) => void): this;
     on(event: 'timeout' | 'connect', listener: () => void): this;
   }
 
@@ -27,7 +28,9 @@ declare module "vsoa" {
       port: number;
     }
     interface ServerOpt {
-      info: object | string;
+      info: {
+        name: string;
+      };
       passwd?: string;
     }
 
@@ -46,14 +49,14 @@ declare module "vsoa" {
     }
 
     interface Payload {
-      param?: object | string;
+      param?: Record<string, any> | string;
       data?: Buffer;
       offset?: number;
       length?: number;
     }
 
     interface RPCFetchRes {
-      payload?: Payload;
+      payload?: Record<string, any>;
       tunid?: number;
       info?: object | string;
     }
@@ -76,9 +79,9 @@ declare module "vsoa" {
       close(): void;
       isSubscribed(url: string): boolean;
       address(): SockAddr;
-      reply(code: number, seqno: number, payload?: Payload | number): void;
+      reply(code: number, seqno: number, tunid: number): void;
       reply(code: number, seqno: number, payload?: Payload, tunid?: number): void;
-      datagram(url: string, payload: Payload): void;
+      datagram(url: string, payload: Payload, quick?: boolean): void;
       setKeepAlive(idle: number): void;
       priority(prio: PriorityLevel): void;
       sendTimeout(timeout?: number): void;
@@ -90,6 +93,9 @@ declare module "vsoa" {
       pingInterval?: number;
       pingTimeout?: number;
       pingLost?: number;
+    }
+    interface ProxyOpt extends ClientOpt {
+      timeout: number;
     }
     interface Table {
       name: string;
@@ -103,8 +109,8 @@ declare module "vsoa" {
     const method: Method;
     const code: Code;
     function lookup(name: string, callback: (error: Error, saddr: SockAddr) => void, domain?: number): void;
-    function fetch(url: string, opt?: {method?: MethodValue, passwd?: string, tlsOpt?: object}, payload?: Payload | number): Promise<RPCFetchRes>;
-    function fetch(url: string, opt?: {method?: MethodValue, passwd?: string, tlsOpt?: object}, payload?: Payload, timeout?: number): Promise<RPCFetchRes>;
+    function fetch(url: string, opt: {method?: MethodValue, passwd?: string, tlsOpt?: object}, payload?: Record<string, any>, timeout?: number): Promise<RPCFetchRes>;
+    function fetch(url: string, opt: {method?: MethodValue, passwd?: string, tlsOpt?: object}, payload: Record<string, any>, timeout?: number): Promise<RPCFetchRes>;
     function fetch(url: string, timeout?: number): Promise<RPCFetchRes>;
 
     class Server extends EventEmitter {
@@ -114,10 +120,16 @@ declare module "vsoa" {
       count(): number;
       address(): object; // socket address.
       onclient: (cli: RemoteClient, connect: boolean) => void;
-      ondata: (cli: RemoteClient, url: string, payload: Payload) => void;
+      ondata: (cli: RemoteClient, url: string, payload: { params?: Record<string, any>, data?: Buffer }, quick: boolean) => void;
       publish(url: string, payload?: Payload | boolean): void;
-      publish(url: string, payload: Payload, quick: boolean): void;
-      syncer(cli: Client, request: RPCRequest, payload: Payload, target: object, setter?: (param: object | string, payload: Payload) => void): number;
+      publish(url: string, payload: Payload, quick?: boolean): void;
+      syncer<T extends Record<string, any> | string>(
+        cli: Client,
+        request: RPCRequest,
+        payload: { params?: T, data?: Buffer },
+        target: Record<string, any>,
+        setter?: (param: T, payload: { params?: T, data?: Buffer }) => number
+      ): void;
       isSubscribed(url: string): boolean;
       createStream(timeout?: number): ServerDuplex;
 
@@ -133,20 +145,45 @@ declare module "vsoa" {
       ping(callback: (error: Error) => void, timeout?: number): void;
       subscribe(url: string | string[], callback?: (error: Error) => void, timeout?: number): void;
       unsubscribe(url?: string | string[] | null, callback?: (error: Error) => void, timeout?: number): void;
-      call(url: string, opt?: {method?: MethodValue}, callback?: (error: Error, payload?: Payload, tunid?: number) => void, timeout?: number): void;
-      call(url: string, opt?: {method?: MethodValue}, payload?: Payload, callback?: (error: Error, payload?: Payload, tunid?: number) => void, timeout?: number): void;
-      fetch(url: string, opt?: {method?: MethodValue}, payload?: Payload | number): Promise<{payload?: Payload, tunid?: number}>;
-      fetch(url: string, opt?: {method?: MethodValue}, payload?: Payload, timeout?: number): Promise<{payload?: Payload, tunid?: number}>;
-      fetch(url: string, timeout?: number): Promise<{payload?: Payload, tunid?: number}>;
-      datagram(url: string, payload: Payload): void;
+      call(
+        url: string,
+        callback?: (error: Error, payload?: Payload, tunid?: number) => void,
+        timeout?: number
+      ): void;
+      call(
+        url: string,
+        opt: {method?: MethodValue},
+        payload?: Payload,
+        callback?: (error: Error, payload?: Record<string, any>, tunid?: number) => void,
+        timeout?: number
+      ): void;
+      call(
+        url: string,
+        opt: {method?: MethodValue},
+        payload: Payload,
+        callback?: (error: Error, payload?: Record<string, any>, tunid?: number) => void,
+        timeout?: number
+      ): void;
+      fetch(url: string, opt: {method?: MethodValue}, payload?: Record<string, any>, timeout?: number): Promise<{ payload?: Record<string, any>, tunid?: number}>;
+      fetch(url: string, opt?: {method?: MethodValue}, payload?: Record<string, any>, timeout?: number): Promise<{ payload?: Record<string, any>, tunid?: number}>;
+      fetch(url: string, timeout?: number): Promise<{ payload?: Record<string, any>, tunid?: number}>;
+      datagram(url: string, payload: Record<string, any>, quick: boolean): void;
       createStream(tunid: number, timeout?: number): ClientDuplex;
 
-      on(event: 'message', listener: (url: string, payload?: Payload) => void): this;
-      on(event: 'datagram', listener: (url: string, payload: Payload) => void): this;
+      on(event: 'message', listener: (url: string, payload?: Record<string, any> | boolean) => void): this;
+      on(event: 'message' | 'datagram', listener: (url: string, payload: Record<string, any>, quick: boolean) => void): this;
       on(event: 'subscribe', listener: (url: string | string[]) => void): this;
       on(event: 'unsubscribe', listener: (url: string | string[] | null) => void): this;
       on(event: 'connect', listener: (info: object | string) => void): this;
       on(event: 'error', listener: (error: Error) => void): this;
+    }
+
+    class Proxy {
+      constructor(opt?: ServerOpt);
+      close(): void;
+      start(saddr: Saddr, tlsOpt?: Record<string, any>): void;
+      add(prefix: string, opt: ProxyOpt, saddr: Saddr | string, tlsOpt?: Record<string, any>): void;
+      delete(prefix: string): void;
     }
 
     class Position {

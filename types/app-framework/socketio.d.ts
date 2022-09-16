@@ -1,23 +1,11 @@
 declare module 'edgeros:socket.io' {
-  import Server = require('socket.io');
-  export = Server;
+  export * from 'socket.io';
 }
 
 declare module "socket.io" {
   import EventEmitter = require("edgeros:events");
   import { HttpServer } from "edgeros:http";
   import WebApp = require("edgeros:webapp");
-
-  interface IoOptions {
-    path?: string;
-    serveClient?: boolean;
-    adapter?: any;
-    origins?: string;
-    parser?: any;
-    pingTimeout?: number;
-    pingInterval?: number;
-    transports?: string[];
-  }
 
   interface handshakeInfo {
     eos: object;
@@ -335,6 +323,15 @@ declare module "socket.io" {
     request: object;
   }
 
-  function io(server: typeof WebApp.createApp | HttpServer | object, options?: IoOptions): Server;
-  export = io;
+  interface IoOptions {
+    path?: string;
+    serveClient?: boolean;
+    adapter?: any;
+    origins?: string;
+    parser?: any;
+    pingTimeout?: number;
+    pingInterval?: number;
+    transports?: string[];
+  }
+  export default function io(server: typeof WebApp.createApp | HttpServer | object, options?: IoOptions): Server;
 }
