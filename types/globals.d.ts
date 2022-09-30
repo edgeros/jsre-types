@@ -10,6 +10,8 @@ declare var exports: any;
 declare var console: Console;
 declare var sys: Sys;
 
+declare var ARGUMENT: string | Record<string, any>;
+
 declare const module: {
   id: string;
   tag: string;
