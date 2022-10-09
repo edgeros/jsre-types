@@ -29,7 +29,11 @@ declare module "webapp" {
   type HandleFunction = (...args: any) => void;
   type MethodPath = string | RegExp | string[] | RegExp[];
 
-  type AppHandleFunction = (req: Request, res: Response) => void;
+  interface NextFunction {
+    (err?: any): void;
+    (deferToNext: 'router' | 'route'): void;
+  }
+  type AppHandleFunction = (req?: Request, res?: Response, next?: NextFunction) => void;
 
   type ReadyHandler = (totalSubs: number, openedSubs: number) => void;
 

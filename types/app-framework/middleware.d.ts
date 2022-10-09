@@ -4,6 +4,7 @@ declare module 'edgeros:middleware' {
 }
 
 declare module "middleware" {
+  import { Request, Response } from "core";
   type CommonFunction = (...args: any) => void;
 
   namespace middleware {
@@ -123,43 +124,39 @@ declare module "middleware" {
       }
     }
 
+    interface MorganOptions {
+      immediate?: object; // {Boolean} Write log line on request instead of response. default: false
+      skip?: object; // {Function} Function to determine if logging is skipped,
+      stream?: object; // {object} Output stream for writing log lines, default: stdout stream.
+    }
+    function morgan(format?: string | CommonFunction, options?: MorganOptions): any;
     namespace morgan {
-      function morgan(format?: string | CommonFunction, options?: MorganOptions): any;
-      namespace morgan {
-        function token(name: string, fn: (req: object, res: object) => void): any;
-      }
-
-      interface MorganOptions {
-        immediate?: object; // {Boolean} Write log line on request instead of response. default: false
-        skip?: object; // {Function} Function to determine if logging is skipped,
-        stream?: object; // {object} Output stream for writing log lines, default: stdout stream.
-      }
+      function token(name: string, fn: (req: object, res: object) => void): any;
     }
 
-    namespace Busboy {
-      interface BusboyConfig {
-        headers?: object;
-        highWaterMark?: number;
-        fileHwm?: number;
-        defCharset?: string;
-        preservePath?: boolean;
-        limits?: {
-          fieldNameSize?: number;
-          fieldSize?: number;
-          fields?: number;
-          fileSize?: number;
-          files?: number;
-          parts?: number;
-          headerPairs?: number;
-        };
-      }
-      class Busboy {
-        constructor(config: BusboyConfig);
-        on(event: "file", listener: (fieldname: string, stream: object, filename: string, transferEncoding: string, mimeType: string) => void): void;
-        on(event: "field" | "finish" | "partsLimit" | "filesLimit" | "fieldsLimit", listener: (...args: any) => void): void;
-      }
+    interface BusboyConfig {
+      headers?: object;
+      highWaterMark?: number;
+      fileHwm?: number;
+      defCharset?: string;
+      preservePath?: boolean;
+      limits?: {
+        fieldNameSize?: number;
+        fieldSize?: number;
+        fields?: number;
+        fileSize?: number;
+        files?: number;
+        parts?: number;
+        headerPairs?: number;
+      };
+    }
+    class Busboy {
+      constructor(config: BusboyConfig);
+      on(event: "file", listener: (fieldname: string, stream: object, filename: string, transferEncoding: string, mimeType: string) => void): void;
+      on(event: "field" | "finish" | "partsLimit" | "filesLimit" | "fieldsLimit", listener: (...args: any) => void): void;
     }
 
+    function multer(opts: multer.Options): multer.Multer;
     namespace multer {
       interface MulterLimits {
         fieldNameSize?: number; // Max field name size	100 bytes
@@ -170,24 +167,92 @@ declare module "middleware" {
         parts?: number; // For multipart forms, the max number of parts (fields + files)	Infinity
         headerPairs?: number; // For multipart forms, the max number of header key=>value pairs to parse	2000
       }
-      type MulterOpts = {
-        [key in "storage" | "dest"]: string | CommonFunction;
-      } & {
-        fileFilter?: (req: string, file: File, cb: CommonFunction) => void; // {Function} Function to control which files are accepted.
-        limits?: MulterLimits; // {object} Limits of the uploaded data.
-        preservePath?: string; // {Boolean} Keep the full path of files instead of just the base name.
-      };
 
-      function multer(opts: MulterOpts): Upload;
-      function diskStorage(opts: { destination: string, filename: (req: object, file: object, cb?: CommonFunction) => void }): void;
-      function memoryStorage(): object;
+      interface FileFilterCallback {
+        (error: Error): void;
+        (error: null, acceptFile: boolean): void;
+      }
+      interface Options {
+        storage?: StorageEngine | undefined;
+        dest?: string | undefined;
+        limits?: MulterLimits;
+        preservePath?: string;
+        fileFilter?(
+          req: Request,
+          file: File,
+          callback: FileFilterCallback,
+        ): void;
+      }
 
-      class Upload {
-        single(fieldname: string): void;
-        array(fieldname: string, maxCount?: number): void;
-        fields(fields: any[]): void;
-        none(): void;
-        any(): void;
+      interface StorageEngine {
+        _handleFile(
+          req: Request,
+          file: File,
+          callback: (error?: any, info?: Partial<File>) => void
+        ): void;
+        _removeFile(
+          req: Request,
+          file: File,
+          callback: (error: Error | null) => void
+        ): void;
+      }
+
+      interface DiskStorageOptions {
+        destination?: string | ((
+          req: Request,
+          file: File,
+          callback: (error: Error | null, destination: string) => void
+        ) => void) | undefined;
+        filename?(
+          req: Request,
+          file: File,
+          callback: (error: Error | null, filename: string) => void
+        ): void;
+      }
+
+      function diskStorage(opts: DiskStorageOptions): StorageEngine;
+      function memoryStorage(): StorageEngine;
+
+      interface NextFunction {
+        (err?: any): void;
+        (deferToNext: 'router' | 'route'): void;
+      }
+
+      interface RequestHandler {
+        (
+          req: Request,
+          res: Response,
+          next: NextFunction,
+        ): void;
+      }
+
+      interface Multer {
+        single(fieldname: string): RequestHandler;
+        array(fieldname: string, maxCount?: number): RequestHandler;
+        fields(fields: any[]): RequestHandler;
+        none(): RequestHandler;
+        any(): RequestHandler;
+      }
+
+      type ErrorCode =
+        | 'LIMIT_PART_COUNT'
+        | 'LIMIT_FILE_SIZE'
+        | 'LIMIT_FILE_COUNT'
+        | 'LIMIT_FIELD_KEY'
+        | 'LIMIT_FIELD_VALUE'
+        | 'LIMIT_FIELD_COUNT'
+        | 'LIMIT_UNEXPECTED_FILE';
+
+      class MulterError extends Error {
+        constructor(code: ErrorCode, field?: string);
+        /** Name of the MulterError constructor. */
+        name: string;
+        /** Identifying error code. */
+        code: ErrorCode;
+        /** Descriptive error message. */
+        message: string;
+        /** Name of the multipart form field associated with this error. */
+        field?: string | undefined;
       }
 
       interface File {
