@@ -16,7 +16,8 @@ declare module "router/arp" {
 		interface ARP {
 			add(ifname: string, ipaddr: string, mac: string, isStatic?: boolean, strict?: boolean): boolean;
 			delete(ipaddr: string, ifname?: string, force?: boolean): boolean;
-			get(ifname?: string): ARPObject[];
+			request(ifname: string, ipaddr: string | string[]): void;
+			get(ifname?: string | string[]): ARPObject[];
 		}
 	}
 	let arp: routerarp.ARP;

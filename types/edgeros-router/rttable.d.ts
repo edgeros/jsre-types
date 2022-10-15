@@ -23,7 +23,7 @@ declare module "router/rttable" {
       RTF_DYNAMIC: number; // This route is a dynamic route.
 
       list(domain: number): RttableRouting[];
-      add(domain: number, flags: number, dest: string, genmask: string, gateway: string, ifname?: string, metric?: number): boolean;
+      change(domain: number, flags: number, dest: string, genmask: string, gateway: string, ifname?: string, metric?: number): boolean;
       delete(domain: number, flags: number, dest: string, genmask?: string, gateway?: string, ifname?: string): boolean;
       default(domain: number, gateway: string, ifname?: string, metric?: number): boolean;
     }

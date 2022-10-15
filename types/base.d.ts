@@ -58,6 +58,7 @@
 /// <reference path="./network/net.d.ts" />
 /// <reference path="./network/dgram.d.ts" />
 /// <reference path="./network/querystring.d.ts" />
+/// <reference path="./network/ping.d.ts" />
 /// <reference path="./network/http.d.ts" />
 /// <reference path="./network/http_proxy.d.ts" />
 /// <reference path="./network/http_util.d.ts" />
@@ -83,6 +84,7 @@
  *----------------------------------------------*/
 /// <reference path="./file-system/fs.d.ts" />
 /// <reference path="./file-system/ini.d.ts" />
+/// <reference path="./file-system/yaml.d.ts" />
 /// <reference path="./file-system/html.d.ts" />
 /// <reference path="./file-system/zip.d.ts" />
 /// <reference path="./file-system/zlib.d.ts" />
@@ -163,6 +165,7 @@
 /// <reference path="./edgeros-basic/permission.d.ts" />
 /// <reference path="./edgeros-basic/advnwc.d.ts" />
 /// <reference path="./edgeros-basic/account.d.ts" />
+/// <reference path="./edgeros-basic/printer.d.ts" />
 
 /*----------------------------------------------*
  *                                              *
@@ -218,6 +221,7 @@
 /// <reference path="./asynchronous/master.d.ts" />
 /// <reference path="./asynchronous/mediacenter.d.ts" />
 /// <reference path="./asynchronous/permission.d.ts" />
+/// <reference path="./asynchronous/printer.d.ts" />
 
 /*----------------------------------------------*
  *                                              *

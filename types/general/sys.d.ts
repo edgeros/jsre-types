@@ -192,14 +192,14 @@ declare module "sys" {
        *
        * Returns: {Integer} Total size of disk in MBytes.
        */
-      diskTotal(): number;
+      diskTotal(aux?: boolean): number;
 
       /**
        * Get free size of disk in MBytes.
        *
        * Returns: {Integer} Free size of disk in MBytes.
        */
-      diskFree(): number;
+      diskFree(aux?: boolean): number;
 
       diskInfo(blkdev: string): DeviceInformation;
 

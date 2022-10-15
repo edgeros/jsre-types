@@ -10,7 +10,13 @@ declare module 'device' {
   }
 
   interface CoAPInfo {
+    desc: string;
     port: number; // CoAP server port.
+  }
+
+  interface VSOAInfo {
+    desc: string;
+    port: number;
   }
 
   interface DeviceInfo {
@@ -26,7 +32,8 @@ declare module 'device' {
       version: number[]; // Device software version, optional.
     };
     server: {
-      coap: CoAPInfo[]
+      coap: CoAPInfo[];
+      vsoa: VSOAInfo[];
     };
     addr: string; // If it is a network device, it indicates the IP address of the target device.
     /*

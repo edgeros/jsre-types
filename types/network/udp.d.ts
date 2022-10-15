@@ -16,6 +16,7 @@ declare module "udp" {
      * The Udp object socket file descriptor. The iosched module can use this descriptor for event detection.
      */
     sockFd: number;
+    connect(sockaddr: Record<string, any>): boolean; // sockaddr TODO: Remote address.
 
     /**
      * The Udp.send() function shall initiate transmission of a message from the specified socket to its peer.

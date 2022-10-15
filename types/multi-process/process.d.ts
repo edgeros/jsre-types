@@ -10,6 +10,10 @@ declare module "process" {
   }
 
   namespace process {
+    interface SpawnOpt {
+      path: string; // Executable file path that new require process execution.
+      stack: number; // SylixOS process main thread stack size.
+    }
     /**
      * Get the current process ID number.
      *
@@ -59,13 +63,13 @@ declare module "process" {
      *
      * Returns: {Integer} The new process ID, less than or equal to 0, indicates that the spawn failed.
      *
-     * @param execFile Files that new require process execution.
+     * @param path Files that new require process execution.
      * @param argArray Parameter string array. default: no parameter.
      * @param envArray Array of environment variables. default: inherit the current environment variable.
      * @param workDir New process working path. default: inherit the current working path.
      * @param stdFiles std files
      */
-    function spawn(execFile: string, argArray?: string[], envArray?: string[], workDir?: string, stdFiles?: any[]): number;
+    function spawn(path: string | SpawnOpt, argArray?: string[], envArray?: string[], workDir?: string, stdFiles?: any[]): number;
 
     /**
      * Determine if the specified process is a child process.
@@ -153,7 +157,7 @@ declare module "process" {
     function environ(array?: boolean): object | string[];
 
     function on(event: "will", handler: () => void): void;
-    function on(event: "child", handler: (child: any) => void): void;
+    function on(event: "child" | "detach", handler: (child: any) => void): void;
     function on(event: "lowmem", handler: (free: number) => void): void;
   }
   export = process;
