@@ -166,6 +166,7 @@
 /// <reference path="./edgeros-basic/advnwc.d.ts" />
 /// <reference path="./edgeros-basic/account.d.ts" />
 /// <reference path="./edgeros-basic/printer.d.ts" />
+/// <reference path="./edgeros-basic/cloudhost.d.ts" />
 
 /*----------------------------------------------*
  *                                              *

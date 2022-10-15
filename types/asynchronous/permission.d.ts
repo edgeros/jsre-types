@@ -18,6 +18,7 @@ declare module 'async/permission' {
     wallpaper?: boolean;
     account?: boolean;
     printer?: boolean;
+    auxstorage?: boolean;
     mqtt?: {publish: boolean; subscribe: boolean};
     mediacenter?: {readable: boolean; writable: boolean; removable: boolean};
     vehicle?: {

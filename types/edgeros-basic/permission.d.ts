@@ -18,6 +18,7 @@ declare module "permission" {
     wallpaper?: boolean; // Whether this app allows set wallpaper.
     account?: boolean; // Whether to allow get the user list and group list.
     printer?: boolean; // Whether this app allows to use printer.
+    auxstorage?: boolean; // Whether this app allows to use auxiliary storage.
     mqtt?: {publish: boolean; subscribe: boolean}; // {object} MQTT Client sub object.
     mediacenter?: {readable: boolean; writable: boolean; removable: boolean};
     vehicle?: {
