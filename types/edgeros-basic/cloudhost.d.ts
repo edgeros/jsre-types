@@ -9,6 +9,7 @@ declare module "cloudhost/connector" {
 
   type CommonCallback = (error: Error) => void;
   class Connector extends EventEmitter {
+    static support(): boolean;
     connect(host: string, port: number, channel: number, opt?: Partial<ConnectOpt> | CommonCallback): void;
     connect(host: string, port: number, channel: number, opt: Partial<ConnectOpt>, callback?: CommonCallback): void;
     disconnect(callback?: CommonCallback): void;
