@@ -83,6 +83,7 @@
  *                                              *
  *----------------------------------------------*/
 /// <reference path="./file-system/fs.d.ts" />
+/// <reference path="./file-system/fdisk.d.ts" />
 /// <reference path="./file-system/ini.d.ts" />
 /// <reference path="./file-system/yaml.d.ts" />
 /// <reference path="./file-system/html.d.ts" />

@@ -311,8 +311,8 @@ declare module "http" {
      * @param [tlsOpt] TLS securely connections options. default: undefined, means use TCP connection.
      * @returns true - return `Promise` object; false - return `HttpClient` object, default: false.
      */
-    function request(url: string, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<any>;
-    function request(url: string, callback: (res: HttpClientResponse) => void, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<any>;
+    function request(url: string, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<HttpClient>;
+    function request(url: string, callback: (res: HttpClientResponse) => void, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<HttpClient>;
 
     /**
      * Accepts the same options as `http.request()`, with the method always set to `GET`.
@@ -325,8 +325,8 @@ declare module "http" {
      * @param [tlsOpt] TLS securely connections options. default: undefined, means use TCP.
      * @returns The http client request object or promise object. depend on `async` option.
      */
-    function get(url: string, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<any>;
-    function get(url: string, callback: (res: HttpClientResponse) => void, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<any>;
+    function get(url: string, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<HttpClient>;
+    function get(url: string, callback: (res: HttpClientResponse) => void, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<HttpClient>;
     function fetch(url: string, options?: FetchtOptions): Promise<HttpClientResponse>;
     class HttpServer extends EventEmitter {
       constructor();

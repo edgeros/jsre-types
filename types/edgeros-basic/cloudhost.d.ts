@@ -25,7 +25,19 @@ declare module "cloudhost/connector" {
       key: string;
       passwd: string;
     }
+    interface Login {
+      user?: string;
+      passwd: string;
+      domain: string;
+    }
+    type TQuality = "low" | "medium" | "high";
+    interface Quality {
+      graph: TQuality;
+      network: TQuality;
+    }
     interface ConnectOpt {
+      login: Login;
+      quality: Quality;
       security: Partial<Certificate>;
       printer: boolean;
       auxstorage: boolean;

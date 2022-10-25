@@ -13,7 +13,7 @@ declare module 'buffer' {
   // };
   // const BuffType: typeof Buffer;
 
-  export type BufferEncoding = "ascii" | "utf-8" | "base64" | "hex";
+  export type BufferEncoding = "ascii" | "utf-8" | "base64" | "hex" | "binary";
 
   // export function transcode(source: Uint8Array, fromEnc: TranscodeEncoding, toEnc: TranscodeEncoding): Buffer;
 
@@ -209,8 +209,8 @@ declare module 'buffer' {
        */
       copy(target: Uint8Array, targetStart?: number, sourceStart?: number, sourceEnd?: number): number;
       /**
-       * This function returns with a newly created buffer which contains the bytes of the buf buffer between start and end.
-       * The slice() method returns a shallow copy of a portion of a TypedArray into a new TypedArray object.
+       * This function returns with a newly created buffer which contains the bytes of the `buf` buffer between `start` and `end`.
+       * The `slice()` method returns a **shallow copy** (memory reference) of a portion of a `TypedArray` into a new `TypedArray` object.
        * @param start Start position. default: 0.
        * @param end End position (not includes). default: buf.length.
        */

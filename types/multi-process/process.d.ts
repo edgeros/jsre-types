@@ -50,13 +50,13 @@ declare module "process" {
     function monoTime(): number;
 
     /**
-     * Make the specified child process an orphan process, suppress parent-child relationship.
+     * Make the specified process an orphan process, suppress parent-child relationship.
      *
      * Returns: {Boolean} Whether the operation was successful.
      *
-     * @param childPid Child process ID.
+     * @param pid Process ID.
      */
-    function detach(childPid?: number): boolean;
+    function detach(pid?: number): boolean;
 
     /**
      * Create a new process to run the specified executable file.

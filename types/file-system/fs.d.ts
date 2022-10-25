@@ -144,8 +144,8 @@ declare module "fs" {
     function readString(path: string): string;
 
     /**
-     * Write a string to a file use 'utf-8' encode. If there is no file exist in the specified path,
-     * a new file will be created(mode: 0666). After write complete, truncates the file to the number of bytes written.
+     * Write a `string` to a file use 'utf-8' encode. If there is no file exist in the specified path,
+     * a new file will be created. After write complete, truncates the file to the number of bytes written.
      *
      * Returns: {Boolean} Whether all data is successfully written.
      *
@@ -158,6 +158,8 @@ declare module "fs" {
      */
     function writeFile(path: string, string: string, mode?: number): boolean;
     function writeFile(path: string, buffer: Buffer, offset?: number, length?: number, mode?: number): boolean;
+
+    function appendFile(path: string, buffer: Buffer, offset?: number, length?: number, mode?: number): void;
 
     /**
      * Application often need to save configuration objects, `fs.load()` provides a simple processing method to load configuration in JSON format.
@@ -325,6 +327,8 @@ declare module "fs" {
      */
     function dumpdir(path: string): direntInfo[];
 
+    function mkdtemp(prefix: string | Buffer, options?: { encoding?: string}): string;
+
     /**
      * Get the absolute path corresponding to the specified relative path.
      * @param path Relative path
@@ -361,9 +365,11 @@ declare module "fs" {
      *
      * Returns: {Boolean} Whether format is successful.
      *
-     * @param volume Disk volume.
+     * @param volume File system volume.
      */
     function format(volume: string): boolean;
+
+    function isFormatted(volume: string): boolean;
     /**
      * Get a temporary file name, developer can use this file name to create a temporary file,
      * and need to manually delete it after use.
@@ -373,7 +379,8 @@ declare module "fs" {
      * Create a temporary file for reading and writing, when the file is closed,
      * the system will automatically delete this file.
      */
-    function tmpfile(): object;
+    function tmpfile(): File;
+    function umount(volume: string): boolean;
     function createReadStream(path: string, options?: ReadStreamOptions): ReadStream;
     function createWriteStream(path: string, options?: WriteStreamOptions): WriteStream;
     class File {

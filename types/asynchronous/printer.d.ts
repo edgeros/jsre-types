@@ -1,4 +1,4 @@
-declare module 'edgeros:async/printter' {
+declare module 'edgeros:async/printer' {
   import Printer = require('async/printer');
   export = Printer;
 }

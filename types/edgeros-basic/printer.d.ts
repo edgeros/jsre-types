@@ -48,6 +48,9 @@ declare module "printer" {
     static cancel(name: string, id?: number | CommonCallback): void;
     static cancel(name: string, id: number, callback?: CommonCallback): void;
     static dones(name: string, callback: (error: Error, jobs: Jobs[]) => void): void;
+    static rmdones(name: string, id?: number, callback?: CommonCallback): void;
+    static rmdones(name: string, callback?: CommonCallback): void;
+    static testpage(name: string, callback: CommonCallback): void;
     name: string;
     print(output: Buffer | Readable, format: string, info: string, callback: (error: Error, id: number) => void): void;
     print(output: Buffer | Readable, format: string, info: string, opt: Partial<PrintOpt>, callback: (error: Error, id: number) => void): void;
