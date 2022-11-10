@@ -1,6 +1,6 @@
 {
   "name": "@edgeros/jsre-types",
-  "version": "1.8.20",
+  "version": "1.9.0",
   "description": "EdgerOS JSRE TypeScript declarations",
   "types": "./types/index.d.ts",
   "scripts": {

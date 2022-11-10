@@ -71,6 +71,12 @@ declare module "iosched" {
     function remove(ioevent: object[]): void;
 
     /**
+     * Gets whether the specified `IoEvent` object is listening. This method is available in EdgerOS 1.9.0 and later.
+     * @param ioevent `IoEvent` object.
+     */
+    function listening(ioevent: Record<string, any>): boolean;
+
+    /**
      * The iosched.fds() parameter and the return value are both a two-dimensional array: [[], [], []]
      * The first sub array represents read detection file descriptors,
      * the second sub array represents write detection file descriptors,
