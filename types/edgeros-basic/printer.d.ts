@@ -19,11 +19,11 @@ declare module "printer" {
       state: PrinterState;
     }
     interface PrintOpt {
-      color: 'color' | 'grayscale';
-      copies: number;
+      color: 'color' | 'grayscale'; // default: color
+      copies: number; // Number of copies (1 ~ 20). default: 1
       range: {
-        start: number;
-        end: number;
+        start: number; // Start page number. default: 1
+        end: number; // End page number. default: last page number
       };
     }
     interface Jobs {

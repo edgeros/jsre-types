@@ -374,12 +374,12 @@ declare module "fs" {
      * Get a temporary file name, developer can use this file name to create a temporary file,
      * and need to manually delete it after use.
      */
-    function tmpname(): string;
+    function tmpname(prefix?: string, ext?: string): string;
     /**
      * Create a temporary file for reading and writing, when the file is closed,
      * the system will automatically delete this file.
      */
-    function tmpfile(): File;
+    function tmpfile(prefix?: string, ext?: string): File;
     function umount(volume: string): boolean;
     function createReadStream(path: string, options?: ReadStreamOptions): ReadStream;
     function createWriteStream(path: string, options?: WriteStreamOptions): WriteStream;

@@ -10,37 +10,54 @@ declare module "cloudhost/connector" {
   type CommonCallback = (error: Error) => void;
   class Connector extends EventEmitter {
     static support(): boolean;
+    /**
+     * Create a remote host connection and project the remote host screen
+     * and audio to the local display channel. The `opt.printer`
+     * and `opt.auxstorage` option allows the remote host to use the local storage and printer device,
+     * but current App must have the relevant permissions (`printer` and `auxstorage`).
+     * @param host Cloud host IP address or URL.
+     * @param port Cloud host port. Typically `3389`.
+     * @param channel Display channel.
+     * @param opt Connection options.
+     */
     connect(host: string, port: number, channel: number, opt?: Partial<ConnectOpt> | CommonCallback): void;
     connect(host: string, port: number, channel: number, opt: Partial<ConnectOpt>, callback?: CommonCallback): void;
+    /**
+     * If the cloud hosting provider develops the App, it is recommended to use mutual authentication,
+     * and the client certificate scope is the scope of use and purchase.
+     * @param callback Callback function.
+     */
     disconnect(callback?: CommonCallback): void;
+    /**
+     * Whether the current object establishes a connection with the cloud host.
+     */
     isConnected(): boolean;
 
     on(event: 'connect' | 'disconnect', handler: () => void): this;
     on(event: 'error', handler: CommonCallback): this;
   }
   namespace Connector {
-    interface Certificate {
-      ca: string;
-      cert: string;
-      key: string;
-      passwd: string;
+    interface Security {
+      rejectUnauthorized: boolean; // Whether the server certificate should be verified against the list of supplied CAs. default: false.
+      cert: string; // Trusted CA certificates chain. default: undefined.
+      server: string; // Set the server host name (usually is the server domain name) to verify received server certificate. default: automatically obtain.
     }
     interface Login {
-      user?: string;
-      passwd: string;
-      domain: string;
+      user?: string; // User name.
+      passwd: string; // Password. default: no password.
+      domain: string; // The domain name that the user is in on a Windows(R) system. default: no domain name.
     }
     type TQuality = "low" | "medium" | "high";
     interface Quality {
-      graph: TQuality;
-      network: TQuality;
+      graph: TQuality; // Graphics quality: 'low', 'medium' or 'high'. default: auto select.
+      network: TQuality; // Network quality: 'low', 'medium' or 'high'. default: auto select.
     }
     interface ConnectOpt {
-      login: Login;
-      quality: Quality;
-      security: Partial<Certificate>;
-      printer: boolean;
-      auxstorage: boolean;
+      login: Login; // Login option.
+      quality: Quality; // Quality option. default: auto detect.
+      security: Partial<Security>; // Security connection options.
+      printer: boolean; // Whether to map local printers to cloud hosts.
+      auxstorage: boolean; // Whether to map auxiliary storage to the cloud host.
     }
   }
   export = Connector;

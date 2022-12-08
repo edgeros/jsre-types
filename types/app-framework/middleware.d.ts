@@ -5,6 +5,7 @@ declare module 'edgeros:middleware' {
 
 declare module "middleware" {
   import { Request, Response } from "core";
+  import EventEmitter = require('edgeros:events');
   type CommonFunction = (...args: any) => void;
 
   namespace middleware {
@@ -156,6 +157,17 @@ declare module "middleware" {
       on(event: "field" | "finish" | "partsLimit" | "filesLimit" | "fieldsLimit", listener: (...args: any) => void): void;
     }
 
+    interface NextFunction {
+      (err?: any): void;
+      (deferToNext: 'router' | 'route'): void;
+    }
+    interface RequestHandler {
+      (
+        req: Request,
+        res: Response,
+        next: NextFunction,
+      ): void;
+    }
     function multer(opts: multer.Options): multer.Multer;
     namespace multer {
       interface MulterLimits {
@@ -213,19 +225,6 @@ declare module "middleware" {
       function diskStorage(opts: DiskStorageOptions): StorageEngine;
       function memoryStorage(): StorageEngine;
 
-      interface NextFunction {
-        (err?: any): void;
-        (deferToNext: 'router' | 'route'): void;
-      }
-
-      interface RequestHandler {
-        (
-          req: Request,
-          res: Response,
-          next: NextFunction,
-        ): void;
-      }
-
       interface Multer {
         single(fieldname: string): RequestHandler;
         array(fieldname: string, maxCount?: number): RequestHandler;
@@ -265,6 +264,445 @@ declare module "middleware" {
         filename?: string; // The name of the file within the destination	DiskStorage
         path?: string; // The full path to the uploaded file	DiskStorage
         buffer?: string; // A Buffer of the entire file
+      }
+    }
+
+    interface WebDAVServerOpt {
+      requireAuthentification: boolean; // Define if your require to be authenticated.
+      httpAuthentication: typeof webdav.HTTPBasicAuthentication; // Define the object which will provide the authentication method (HTTP : Basic, Digest, custom, etc)
+      privilegeManager: webdav.SimplePathPrivilegeManager; // Allow to check the privileges of the user (grant or restrict access).
+      rootFileSystem: webdav.VirtualFileSystem; // The root resource to use as /.
+      lockTimeout: number; // Define the lock timeout (in seconds). default: 3600.
+      strictMode: boolean; // Define if the server must blindly follow the WebDAV RFC.
+      enableLocationTag: boolean; // Enable the tag <DAV:location> in the response of the PROPFIND requests.
+      maxRequestDepth: number; // Define the maximum value the Depth header can have in a request.
+      headers: Record<string, string | string[]>; // Define custom headers to provide for every response.
+    }
+
+    type FileSystem = webdav.PhysicalFileSystem | webdav.VirtualFileSystem;
+    class LockScope {
+      constructor(value: string);
+      toString(): string;
+      isSame(scope: LockScope): boolean;
+      static Shared: LockScope;
+      static Exclusive: LockScope;
+    }
+    class LockKind {
+      timeout: number;
+      scope: LockScope;
+      type: string;
+      constructor(scope: LockScope, type: string, timeoutSeconds?: number);
+      isSimilar(lockKind: LockKind): boolean;
+    }
+    class Lock {
+      constructor(lockKind: LockKind, user: SimpleUser, owner: SimpleUser, depth?: number);
+      lockKind: LockKind;
+      uuid: string; // Unique identification of lock.
+      userUid: string; // User id.
+      depth: number; // Depth of lock for fs-tree. default to -1 mean undefined.
+      expirationDate: number; // Lock expiration date times(ms: UNIX timestamp).
+
+      static generateUUID(expirationDate: number): string;
+      isSame(lock: Lock): boolean;
+      expired(): boolean;
+      refresh(timeoutSeconds?: number): void;
+    }
+
+    interface SimpleUser {
+      username: string;
+      password: string;
+      isAdministrator: boolean;
+      isDefaultUser: boolean;
+      uid: string;
+    }
+
+    class RequestContextHeaders {
+      constructor(headers: Record<string, string>);
+      find(name: string, defaultValue?: string): string;
+      findBestAccept(defaultType?: string): string;
+    }
+    class RequestContext {
+      constructor(server: webdav.WebDAVServer, uri: string, headers: Record<string, string>, rootPath?: string);
+      requested: {
+        uri: string;
+        path: webdav.Path;
+      };
+      rootPath: webdav.Path;
+      server: webdav.WebDAVServer;
+      user: SimpleUser;
+    }
+
+    class HTTPRequestContext extends RequestContext {
+      constructor(server: webdav.WebDAVServer, request: Request, response: Response, exit: () => void, rootPath?: string);
+      request: Request;
+      response: Response;
+      setCode: (code: number, messsage?: string) => void;
+      exit: () => void;
+    }
+
+    class ExternalRequestContext extends RequestContext {
+      static create(server: webdav.WebDAVServer): ExternalRequestContext;
+    }
+
+    class ResourceType {
+      constructor(isFile: boolean, isDirectory: boolean);
+      static File: ResourceType;
+      static Directory: ResourceType;
+      static Hybrid: ResourceType;
+      static NoResource: ResourceType;
+    }
+    namespace webdav {
+      class WebDAVServer extends EventEmitter {
+        constructor(options: Partial<WebDAVServerOpt>);
+
+        /**
+         * Get the root file system which maped '/'.
+         * Returns: The root file system.
+         */
+        rootFileSystem(): any;
+
+        /**
+         * Map/mount a file system to a path.
+         * @param path Path where to mount the file system.
+         * @param fs File system to mount.
+         * @param override Define if the mounting can override a previous mounted file system, default to false.
+         * @param callback Callback function.
+         */
+        setFileSystem(path: string, fs: FileSystem, override?: boolean, callback?: (success: boolean) => void): void;
+        setFileSystem(path: string, fs: FileSystem, callback?: (success: boolean) => void): void;
+
+        /**
+         * Remove a file system. Note that you can remove a file system by its path or by its reference.
+         * @param path Path of the file system or file system to remove.
+         * @param checkByReference Define if the file systems must be matched by reference or by its serializer's UID, default to true.
+         * @param callback Callbak function
+         */
+        removeFileSystem(path: string | FileSystem, checkByReference?: boolean, callback?: (nbRemoved: boolean) => void): void;
+        removeFileSystem(path: string | FileSystem, callback?: (nbRemoved: boolean) => void): void;
+
+        /**
+         * Get the mount path of a file system.
+         * @param fs File system.Define if the file systems must be matched by reference or by its serializer's UID, default to true.
+         * @param checkByReference Define if the file systems must be matched by reference or by its serializer's UID, default to true.
+         * @param callback Callback function
+         */
+        getFileSystemPath(fs: FileSystem, checkByReference?: boolean, callback?: (path: Path | null) => void): void;
+        getFileSystemPath(fs: FileSystem, callback: (path: Path | null) => void): void;
+
+        /**
+         * Get synchronously the file system managing the provided path.
+         * @param path Requested path
+         * @param callback
+         *          fileSystem The file system.
+         *          rootPath The mount path of the file system.
+         *          subPath The sub path from the mount path to the requested path.
+         */
+        getFileSystem(path: Path, callback?: (fileSystem: FileSystem, rootPath: Path, subPath: Path) => void): void;
+
+        /**
+         * Get the list of file systems mounted on or under the parentPath.
+         * @param path Path from which list sub file systems.
+         * @param callback Callback function
+         */
+        getChildFileSystems(path: Path, callback?: (children: Array<{ fs: FileSystem, path: Path }>) => void): void;
+
+        /**
+         * Events are triggered when a resource is accessed or modified. The server handles the events.
+         * @param event Name of the event.
+         * @param listener Listener function
+         */
+        on(
+          event: 'create' | 'before-create',
+          listener: (
+            ctx: RequestContext,
+            fs: FileSystem,
+            path: Path,
+            data: {
+              type: ResourceType,
+              createIntermediates: boolean
+            }
+          ) => void
+        ): this;
+        on(
+          event: 'delete' | 'before-delete',
+          listener: (
+            ctx: RequestContext,
+            fs: FileSystem,
+            path: Path,
+            data: {
+              depth: number
+            }
+          ) => void
+        ): this;
+        on(
+          event: 'delete' | 'before-delete',
+          listener: (
+            ctx: RequestContext,
+            fs: FileSystem,
+            path: Path,
+            data: {
+              depth: number
+            }
+          ) => void
+        ): this;
+        on(
+          event: 'copy',
+          listener: (
+            ctx: RequestContext,
+            fs: FileSystem,
+            path: Path,
+            data: {
+              pathTo: Path,
+              overwrite: boolean,
+              overrided: boolean,
+              depth: number
+            }
+          ) => void
+        ): this;
+        on(
+          event: 'before-copy',
+          listener: (
+            ctx: RequestContext,
+            fs: FileSystem,
+            path: Path,
+            data: {
+              pathTo: Path,
+              overwrite: boolean,
+              depth: number
+            }
+          ) => void
+        ): this;
+        on(
+          event: 'move',
+          listener: (
+            ctx: RequestContext,
+            fs: FileSystem,
+            path: Path,
+            data: {
+              pathFrom: Path,
+              pathTo: Path,
+              overwrite: boolean,
+              overrided: boolean
+            }
+          ) => void
+        ): this;
+        on(
+          event: 'before-move',
+          listener: (
+            ctx: RequestContext,
+            fs: FileSystem,
+            path: Path,
+            data: {
+              pathFrom: Path,
+              pathTo: Path,
+              overwrite: boolean
+            }
+          ) => void
+        ): this;
+        on(
+          event: 'rename',
+          listener: (
+            ctx: RequestContext,
+            fs: FileSystem,
+            path: Path,
+            data: {
+              newName: string,
+              overrided: boolean
+            }
+          ) => void
+        ): this;
+        on(
+          event: 'before-rename',
+          listener: (
+            ctx: RequestContext,
+            fs: FileSystem,
+            path: Path,
+            data: {
+              newName: string
+            }
+          ) => void
+        ): this;
+        on(
+          event: 'before-rename',
+          listener: (
+            ctx: RequestContext,
+            fs: FileSystem,
+            path: Path,
+            data: {
+              newName: string
+            }
+          ) => void
+        ): this;
+        on(
+          event: 'lock-set' | 'before-lock-set',
+          listener: (
+            ctx: RequestContext,
+            fs: FileSystem,
+            path: Path,
+            data: {
+              lock: Lock
+            }
+          ) => void
+        ): this;
+        on(
+          event: 'lock-remove',
+          listener: (
+            ctx: RequestContext,
+            fs: FileSystem,
+            path: Path,
+            data: {
+              uuid: string,
+              removed: boolean
+            }
+          ) => void
+        ): this;
+        on(
+          event: 'before-lock-remove',
+          listener: (
+            ctx: RequestContext,
+            fs: FileSystem,
+            path: Path,
+            data: {
+              uuid: string
+            }
+          ) => void
+        ): this;
+        on(
+          event: 'lock-refresh',
+          listener: (
+            ctx: RequestContext,
+            fs: FileSystem,
+            path: Path,
+            data: {
+              uuid: string,
+              timeout: number,
+              lock: Lock
+            }
+          ) => void
+        ): this;
+        on(
+          event: 'before-lock-refresh',
+          listener: (
+            ctx: RequestContext,
+            fs: FileSystem,
+            path: Path,
+            data: {
+              uuid: string,
+              timeout: number
+            }
+          ) => void
+        ): this;
+
+        /**
+         * Remove a listener. Clear all the listeners of an event if listener not support.
+         * @param event Name of the event.
+         * @param listener Listener of the event.
+         */
+        removeEvent(event: string, listener?: () => void): this;
+
+        /**
+         * Action to execute before an operation is executed when a HTTP request is received.
+         * @param manager Manager
+         */
+        beforeRequest(manager: (ctx: HTTPRequestContext, next: NextFunction) => void): void;
+        /**
+         * Action to execute after an operation is executed when a HTTP request is received.
+         * @param manager Manager
+         */
+        afterRequest(manager: (ctx: HTTPRequestContext, next: NextFunction) => void): void;
+
+        createExternalContext(): ExternalRequestContext;
+      }
+
+      class SimpleUserManage {
+        /**
+         * Add a user by account.
+         * @param name User name.
+         * @param password User password
+         * @param isAdmin Is administrator or not, default to false. Administrator have all permissions.
+         */
+        addUser(name: string, password: string, isAdmin?: boolean): SimpleUser;
+
+        /**
+         * Get all user objects included default user.
+         * @param callback Callback function
+         */
+        getUsers(callback: (error: Error, users: SimpleUser[]) => void): void;
+
+        /**
+         * Get default user.
+         * @param callback Callback function
+         */
+        getDefaultUser(callback: (user: SimpleUser) => void): void;
+
+        /**
+         * Get user by name.
+         * @param name User name.
+         * @param callback Callback function
+         */
+        getUserByName(name: string, callback: (error: Error, user: SimpleUser) => void): void;
+
+        /**
+         * Get user by name and password.
+         * @param name User name.
+         * @param password User password.
+         * @param callback Callback function
+         */
+        getUserByNamePassword(name: string, password: string, callback: (error: Error, user: SimpleUser) => void): void;
+      }
+
+      class SimplePathPrivilegeManager {
+        /**
+         * Set rights to path of user.
+         * @param user User object.
+         * @param path Path string.
+         * @param rights Rights to path.
+         */
+        setRights(user: SimpleUser, path: string, rights: string[]): void;
+
+        getRights(user: SimpleUser, path: string): string[];
+      }
+
+      // TODO: implements the Basic
+      class HTTPBasicAuthentication {
+        constructor(userManager: SimpleUserManage, realm?: string);
+      }
+
+      // TODO: implements the Digest
+      class HTTPDigestAuthentication {
+        constructor(userManager: SimpleUserManage, realm?: string);
+      }
+
+      /**
+       * The method wiil create a router handler to webapp.
+       * The request which start with path will be handle by server instance.
+       * Otherwise, server will call next() to route the request to the next router for processing.
+       * @param path Route path.
+       * @param server WebDAVServer instance.
+       */
+      function route(path: string, server: WebDAVServer): RequestHandler;
+
+      class PhysicalFileSystem {
+        constructor(rootPath: string);
+      }
+      class VirtualFileSystem { }
+
+      class Path {
+        constructor(path: string | string[] | Path);
+        static isPath(path: Path): boolean; // Check if the given object is webdav path or not.
+        paths: string[]; // Parts of path.
+        decode(): void; // Use decodeURIComponent to decode each path string.
+        isRoot(): boolean; // Check the path is root or not.
+        fileName(): string; // Get path file name.
+        rootName(): string; // Get path root name.
+        parentName(): string; // Get path parent name.
+        getParent(): Path; // Get parent path.
+        hasParent(): boolean; // If path has parent or not.
+        removeRoot(): string; // Remove root and return it.
+        removeFile(): string; // Remove file name return it.
+        getChildPath(childPath: string | Path): Path; // Create a child path.
+        clone(): Path; // Clone path object.
+        toString(endsWithSlash?: boolean): string; // Get path string.
       }
     }
   }
