@@ -269,7 +269,7 @@ declare module "middleware" {
 
     interface WebDAVServerOpt {
       requireAuthentification: boolean; // Define if your require to be authenticated.
-      httpAuthentication: typeof webdav.HTTPBasicAuthentication; // Define the object which will provide the authentication method (HTTP : Basic, Digest, custom, etc)
+      httpAuthentication: webdav.HTTPDigestAuthentication; // Define the object which will provide the authentication method (HTTP : Basic, Digest, custom, etc)
       privilegeManager: webdav.SimplePathPrivilegeManager; // Allow to check the privileges of the user (grant or restrict access).
       rootFileSystem: webdav.VirtualFileSystem; // The root resource to use as /.
       lockTimeout: number; // Define the lock timeout (in seconds). default: 3600.
@@ -614,7 +614,7 @@ declare module "middleware" {
         createExternalContext(): ExternalRequestContext;
       }
 
-      class SimpleUserManage {
+      class SimpleUserManager {
         /**
          * Add a user by account.
          * @param name User name.
@@ -665,12 +665,12 @@ declare module "middleware" {
 
       // TODO: implements the Basic
       class HTTPBasicAuthentication {
-        constructor(userManager: SimpleUserManage, realm?: string);
+        constructor(userManager: SimpleUserManager, realm?: string);
       }
 
       // TODO: implements the Digest
       class HTTPDigestAuthentication {
-        constructor(userManager: SimpleUserManage, realm?: string);
+        constructor(userManager: SimpleUserManager, realm?: string);
       }
 
       /**
