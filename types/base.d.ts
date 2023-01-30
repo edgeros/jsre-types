@@ -38,6 +38,7 @@
 /// <reference path="./local-device/canbus.d.ts" />
 /// <reference path="./local-device/gpio.d.ts" />
 /// <reference path="./local-device/tty.d.ts" />
+/// <reference path="./local-device/cpufan.d.ts" />
 /// <reference path="./local-device/thermal.d.ts" />
 /// <reference path="./local-device/display.d.ts" />
 /// <reference path="./local-device/hotplug.d.ts" />
@@ -168,6 +169,7 @@
 /// <reference path="./edgeros-basic/account.d.ts" />
 /// <reference path="./edgeros-basic/printer.d.ts" />
 /// <reference path="./edgeros-basic/cloudhost.d.ts" />
+/// <reference path="./edgeros-basic/kidvpn.d.ts" />
 
 /*----------------------------------------------*
  *                                              *
@@ -224,6 +226,8 @@
 /// <reference path="./asynchronous/mediacenter.d.ts" />
 /// <reference path="./asynchronous/permission.d.ts" />
 /// <reference path="./asynchronous/printer.d.ts" />
+/// <reference path="./asynchronous/kidvpn.d.ts" />
+/// <reference path="./asynchronous/timer.d.ts" />
 
 /*----------------------------------------------*
  *                                              *

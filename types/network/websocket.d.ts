@@ -8,6 +8,7 @@ declare module "websocket" {
   import { HttpServer } from "http";
   import * as socket from 'socket';
   import WebApp = require("edgeros:webapp");
+  import { EOS } from 'middleware';
 
   interface ClientOptions {
     saddr: object;
@@ -49,7 +50,7 @@ declare module "websocket" {
     class WsServerChannel {
       path: string;
       headers: any[];
-      eos: object; // EdgerOS account information.
+      eos: EOS; // EdgerOS account information.
 
       /**
        * Broadcast data to all websocket clients.

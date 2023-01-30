@@ -5,6 +5,23 @@ declare module 'edgeros:inetaddr' {
 
 declare module "inetaddr" {
   namespace inetaddr {
+    const AF_INET = 2;
+    const AF_INET6 = 10;
+    const INADDR_NONE = '255.255.255.255';
+    const INADDR_LOOPBACK = '127.0.0.1';
+    const INADDR_ANY = '0.0.0.0';
+    const INADDR_BROADCAST = '255.255.255.255';
+    const IN6ADDR_ANY = '::';
+    const IN6ADDR_LOOPBACK = '::1';
+    const IN6ADDR_NODELOCAL_ALLNODES = 'ff01::1';
+    const IN6ADDR_LINKLOCAL_ALLNODES = 'ff02::1';
+    const IN6ADDR_LINKLOCAL_ALLROUTERS = 'ff01::2';
+    /**
+     * Get the domain value corresponding to the IP address.
+     * This function is available in EdgerOS 1.9.5 and later.
+     * @param addr string
+     */
+    function domain(addr: string): typeof AF_INET | typeof AF_INET6;
     /**
      * Check if the input string is a valid IPv4 address, valid return true, otherwise false.
      *

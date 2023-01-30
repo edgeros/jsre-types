@@ -7,7 +7,7 @@ declare module "router/rttable" {
   interface RttableRouting {
     dest?: string; // {string} Destination address.
     genmask?: string; // {string} Netmask.
-    gateway?: string; // {string} Gateway address.
+    gateway?: string; // {string} Gateway address. default: `0.0.0.0` or `::`.
     lock?: boolean;
     flags?: string; // {Integer} Route entry flags.
     metric?: string; // {Integer} Route metric.
@@ -23,6 +23,7 @@ declare module "router/rttable" {
       RTF_DYNAMIC: number; // This route is a dynamic route.
 
       list(domain: number): RttableRouting[];
+      add(domain: number, flags: number, dest: string, genmask: string, gateway?: string, ifname?: string, metric?: number): boolean;
       change(domain: number, flags: number, dest: string, genmask: string, gateway: string, ifname?: string, metric?: number): boolean;
       delete(domain: number, flags: number, dest: string, genmask?: string, gateway?: string, ifname?: string): boolean;
       default(domain: number, gateway: string, ifname?: string, metric?: number): boolean;

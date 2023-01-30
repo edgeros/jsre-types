@@ -7,7 +7,7 @@ declare module "tls" {
   import socket = require('edgeros:socket');
 
   interface SockAddr {
-    domain: socket.AF_INET | socket.AF_INET6 | tls.AF_INET | tls.AF_INET6;
+    domain: socket.AF_INET | socket.AF_INET6 | typeof tls.AF_INET | typeof tls.AF_INET6;
     addr: string;
     port: number;
   }
@@ -17,22 +17,32 @@ declare module "tls" {
     time: number;
   }
 
-  interface TlsClientOptions {
+  interface TlsServerOptions {
     name: string;
-    ca: string;
+    ca?: string;
     cert: string;
     key: string;
-    passwd: string;
-    ipcert: boolean;
-    renegotiate: string;
+    passwd?: string;
+    ipcert?: boolean;
+    renegotiate?: string;
+    handshakeTimeout?: number;
+  }
+
+  interface TlsClientOptions {
+    rejectUnauthorinzed?: boolean;
+    loadDefaultCerts?: boolean;
+    ca?: string;
+    server?: string;
+    renegotiate?: boolean;
+    handshakeTimeout?: number;
   }
 
   interface certOptions {
     name: string;
-    ca: string;
+    ca?: string;
     cert: string;
     key: string;
-    passwd: string;
+    passwd?: string;
   }
 
   class Tls {
@@ -237,10 +247,17 @@ declare module "tls" {
   }
 
   namespace tls {
-    type AF_INET = 2;
-    type AF_INET6 = 10;
-    const AF_INET: AF_INET;
-    const AF_INET6: AF_INET6;
+    const AF_INET = 2;
+    const AF_INET6 = 10;
+    const INADDR_NONE = '255.255.255.255';
+    const INADDR_LOOPBACK = '127.0.0.1';
+    const INADDR_ANY = '0.0.0.0';
+    const INADDR_BROADCAST = '255.255.255.255';
+    const IN6ADDR_ANY = '::';
+    const IN6ADDR_LOOPBACK = '::1';
+    const IN6ADDR_NODELOCAL_ALLNODES = 'ff01::1';
+    const IN6ADDR_LINKLOCAL_ALLNODES = 'ff02::1';
+    const IN6ADDR_LINKLOCAL_ALLROUTERS = 'ff01::2';
     /**
      * Create a Tls server and bind to the specified address.
      *
@@ -251,7 +268,7 @@ declare module "tls" {
      * @param backlog Number of outstanding connections. default: 5.
      * @param dev The network interface you want to bind. default: not bind.
      */
-    function createServer(opt: TlsClientOptions, sockaddr: SockAddr, backlog: number, dev?: string): Tls;
+    function createServer(opt: TlsServerOptions, sockaddr: SockAddr, backlog: number, dev?: string): Tls;
 
     /**
      * Create a Tls client and connects to the specified remote host. Use synchronous mode.

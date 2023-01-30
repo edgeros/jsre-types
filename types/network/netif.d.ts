@@ -39,8 +39,8 @@ declare module "netif" {
   }
 
   interface IfIp6Addr {
-    ip6addr: string;
-    prefix: string;
+    ip6addr: string; // Whether to use DHCP to get the IP address.
+    prefix: string; // Whether to use DHCPv6 to get the IPv6 address.
   }
 
   namespace netif {
@@ -177,6 +177,12 @@ declare module "netif" {
        * @param ifaddr6 Network interface address.
        */
       setAddr6(ifaddr6: IfIp6Addr): boolean;
+
+      /**
+       * Delete the specified network interface IPv6 address.
+       * @param ifaddr6 Network interface address. default: delete all IPv6 address except linklocal scope.
+       */
+      delAddr6(ifaddr6?: IfIp6Addr[]): boolean;
 
       /**
        * Enable the specified network interface to allow sending and receiving packets.

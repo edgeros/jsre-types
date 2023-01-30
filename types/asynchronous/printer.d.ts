@@ -9,9 +9,9 @@ declare module "async/printer" {
 
   export default class Printer {
     constructor(name: string); // name must be a printer name that has been added to the system.
-    static list(): Array<Pick<Printers, 'uri'|'name'|'model'|'state'>>;
+    static list(): Promise<Array<Pick<Printers, 'uri'|'name'|'model'|'state'>>>;
     name: string;
-    print(output: Buffer | Readable, format: string, info: string, opt?: Partial<PrintOpt>): number;
-    state(): PrinterState;
+    print(output: Buffer | Readable, format: string, info: string, opt?: Partial<PrintOpt>): Promise<number>;
+    state(): Promise<PrinterState>;
   }
 }

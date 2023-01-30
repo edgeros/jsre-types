@@ -6,9 +6,10 @@ declare module "socket.io" {
   import EventEmitter = require("edgeros:events");
   import { HttpServer } from "edgeros:http";
   import WebApp = require("edgeros:webapp");
+  import { EOS } from 'middleware';
 
-  interface handshakeInfo {
-    eos: object;
+  interface HandshakeInfo {
+    eos: EOS;
     headers: object;
     time: string;
     address: string;
@@ -198,7 +199,7 @@ declare module "socket.io" {
     /**
      * The handshake details:
      */
-    handshake: handshakeInfo;
+    handshake: HandshakeInfo;
 
     /**
      * Get remote address.

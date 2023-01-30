@@ -8,10 +8,11 @@ declare module "websynctable" {
   import { Buffer } from "edgeros:buffer";
   import { HttpServer } from "edgeros:http";
   import WebApp = require("edgeros:webapp");
+  import { EOS } from 'middleware';
 
   interface ClientOptions {
     url: string;
-    eos: object;
+    eos: EOS;
     channel: object;
     close: () => void;
   }

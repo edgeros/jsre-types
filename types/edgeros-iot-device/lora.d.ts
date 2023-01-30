@@ -15,6 +15,12 @@ declare module 'lora' {
       constructor();
 
       /**
+       * Get whether the current system support LoRaWAN, If not supported, this module cannot be used.
+       * This API is available on EdgerOS 1.9.9 and later.
+       */
+      support(): boolean;
+
+      /**
        * Get the total number of LoRa devices managed in the system.
        *
        * @param callback Callback function.

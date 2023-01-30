@@ -705,6 +705,16 @@ declare module "middleware" {
         toString(endsWithSlash?: boolean): string; // Get path string.
       }
     }
+
+    interface User {
+      acoid: string; // EdgerOS user unique ID, also known as acoinfo ID.
+      nickname: string; // Nickname of this user.
+    }
+    interface EOS {
+      user: User;
+      token: string; // This field is the original token string.
+      channel: 'local' | 'cloud'; // Indicates the access source, 'local' means local access, 'cloud' means access through EdgerOS Cloud.
+    }
   }
   export = middleware;
 }

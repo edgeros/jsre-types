@@ -1,4 +1,4 @@
-declare module 'edgeros:printter' {
+declare module 'edgeros:printer' {
   import Printer = require('printer');
   export = Printer;
 }
@@ -38,6 +38,7 @@ declare module "printer" {
   type CommonCallback = (error: Error) => void;
   class Printer {
     constructor(name: string); // name must be a printer name that has been added to the system.
+    static support(): boolean;
     static list(callback: ListCallback): void;
     static scan(callback: ScanCallback): void;
     static add(uri: string, name: string, callback: CommonCallback): void;

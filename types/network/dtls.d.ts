@@ -6,7 +6,7 @@ declare module 'edgeros:dtls' {
 declare module "dtls" {
   import socket = require('edgeros:socket');
   interface SockAddr {
-    domain: socket.AF_INET | socket.AF_INET6 | dtls.AF_INET | dtls.AF_INET6; // Address domain: `socket.AF_INET` or `socket.AF_INET6`.
+    domain: socket.AF_INET | socket.AF_INET6 | typeof dtls.AF_INET | typeof dtls.AF_INET6; // Address domain: `socket.AF_INET` or `socket.AF_INET6`.
     addr: string; // Address.
     port: string; // Port.
   }
@@ -19,6 +19,7 @@ declare module "dtls" {
     passwd?: string; // Private key password. default: no password.
     ipcert?: boolean; // If the client does not send the SNI option, whether to find the corresonding IP signature certificate. default: false.
     renegotiate?: boolean; // If this server support renegotiate. default: false.
+    handshakeTimeout?: number; // TLS handshake maximum timeout (2000 ~ 120000). default: 60000.
   }
 
   interface DtlsClientOptions {
@@ -28,12 +29,13 @@ declare module "dtls" {
     cert?: string; // Client certificate.
     key?: string; // Private key of client certificate.
     passwd?: string; // Private key password. default: no password.
-    server?: string; // Set the server host name (usually is the server domain name) to check against the received server certificate. default: undefined.
+    server?: string; // Set the server host name (usually is the server host name) to check against the received server certificate. default: undefined.
     renegotiate?: boolean; // If this client support renegotiate. default: false.
+    handshakeTimeout?: number; // TLS handshake maximum timeout (2000 ~ 120000). default: 60000.
   }
 
   interface certOptions {
-    name: string; // Server domain name.
+    name: string; // Server host name.
     ca: string; // Optional trusted CA certificates. default: no CA certificates.
     cert: string; // Server certificate.
     key: string; // Private key of server certificate.
@@ -195,10 +197,17 @@ declare module "dtls" {
   }
 
   namespace dtls {
-    type AF_INET = 2;
-    type AF_INET6 = 10;
-    const AF_INET: AF_INET;
-    const AF_INET6: AF_INET6;
+    const AF_INET = 2;
+    const AF_INET6 = 10;
+    const INADDR_NONE = '255.255.255.255';
+    const INADDR_LOOPBACK = '127.0.0.1';
+    const INADDR_ANY = '0.0.0.0';
+    const INADDR_BROADCAST = '255.255.255.255';
+    const IN6ADDR_ANY = '::';
+    const IN6ADDR_LOOPBACK = '::1';
+    const IN6ADDR_NODELOCAL_ALLNODES = 'ff01::1';
+    const IN6ADDR_LINKLOCAL_ALLNODES = 'ff02::1';
+    const IN6ADDR_LINKLOCAL_ALLROUTERS = 'ff01::2';
     /**
      * Create a Datagram TLS server and bind to the specified address.
      *

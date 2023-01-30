@@ -52,6 +52,11 @@ declare module "socket" {
     const AF_INET: AF_INET;
     const AF_INET6: AF_INET6;
     /**
+     * Get the domain type of the specified socket file, possible values can be `socket.AF_INET` or `socket.AF_INET6`.
+     * @param domain Socket file descriptor or IP address.
+     */
+    function domain(domain: number | string): number;
+    /**
      * Create a socket, the domain can be socket.AF_INET or socket.AF_INET6. type can be:
      *
      * Returns: {number} Returns socket file descriptor.

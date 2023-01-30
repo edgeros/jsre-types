@@ -29,6 +29,18 @@ declare module 'buffer' {
     type BufferEncoding = "ascii" | "utf-8" | "base64" | "hex";
     type WithImplicitCoercion<T> = T | { valueOf(): T };
 
+    type TypedArray = Int8Array
+      | Uint8Array
+      | Uint8ClampedArray
+      | Int16Array
+      | Uint16Array
+      | Int32Array
+      | Uint32Array
+      | Float32Array
+      | Float64Array
+      | BigInt64Array
+      | BigUint64Array;
+
     interface BufferConstructor {
       MAX_LENGTH: number;
       MAX_STRING_LENGTH: number;
@@ -98,6 +110,9 @@ declare module 'buffer' {
        * @param encoding Encoding name.
        */
       isEncoding(encoding: string): encoding is BufferEncoding;
+
+      isUtf8(input: Buffer | TypedArray | ArrayBuffer): boolean;
+      isTypedArray(input: any): boolean;
 
       byteLength(str: string, encoding?: BufferEncoding): number;
 

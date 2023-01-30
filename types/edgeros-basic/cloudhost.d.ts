@@ -3,6 +3,11 @@ declare module 'edgeros:cloudhost/connector' {
   export = Connector;
 }
 
+declare module 'edgeros:cloudhost/storage' {
+  import Storage = require('cloudhost/storage');
+  export = Storage;
+}
+
 declare module "cloudhost/connector" {
   import { ConnectOpt } from "cloudhost/connector";
   import EventEmitter = require('edgeros:events');
@@ -52,13 +57,28 @@ declare module "cloudhost/connector" {
       graph: TQuality; // Graphics quality: 'low', 'medium' or 'high'. default: auto select.
       network: TQuality; // Network quality: 'low', 'medium' or 'high'. default: auto select.
     }
+    interface Auth {
+      mode: Mode[];
+    }
+    type Mode = 'rdp' | 'tls' | 'nla' | 'ext';
     interface ConnectOpt {
       login: Login; // Login option.
+      auth: Auth; // Authentication options.default: auto select
       quality: Quality; // Quality option. default: auto detect.
-      security: Partial<Security>; // Security connection options.
-      printer: boolean; // Whether to map local printers to cloud hosts.
-      auxstorage: boolean; // Whether to map auxiliary storage to the cloud host.
+      security: Partial<Security>; // Security connection options. Optional according to auth mode.
+      printer: boolean; // Whether to map local printers to cloud hosts. default: false.
+      auxstorage: string; // Current App auxiliary storage to the cloud host. default: not mapped.
     }
   }
   export = Connector;
+}
+
+declare module "cloudhost/storage" {
+  namespace Storage {
+    function plugin(channel: number, path: string, callback: (error: Error) => void): void;
+    function plugin(channel: number, path: string, name: string, callback: (error: Error) => void): void;
+
+    function plugout(channel: number, path: string, callback?: (error: Error) => void): void;
+  }
+  export = Storage;
 }

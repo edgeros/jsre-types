@@ -15,11 +15,11 @@ declare module "async/account" {
 
   namespace asyncAccount {
     interface AccountStatic {
-      list(simple?: boolean): any[];
-      groups(): any[];
+      list(simple?: boolean): Promise<any[]>;
+      groups(): Promise<any[]>;
       info(acoid: string): Promise<Info>;
       mname(): Promise<string>;
-      update(callback: UpdateCallback): void;
+      update(callback: UpdateCallback): Promise<null>;
       gpdate(callback: (event: 'add' | 'delete' | 'update', group: string, previous?: string) => void): void;
     }
   }

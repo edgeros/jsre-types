@@ -9,7 +9,11 @@ declare module "thermal" {
    */
   namespace thermal {
     class Thermal {
-      constructor()
+      constructor();
+      /**
+       * Whether there is an thermal device, if there is no `new` operation will throw an exception.
+       */
+      static exists(): boolean;
       /**
        * Close thermal object.
        */

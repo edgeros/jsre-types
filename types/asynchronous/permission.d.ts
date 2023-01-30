@@ -4,39 +4,13 @@ declare module 'edgeros:async/permission' {
 }
 
 declare module 'async/permission' {
-  interface PermissionsItems {
-    ainn?: boolean;
-    alarm?: boolean;
-    share?: boolean;
-    notify?: boolean;
-    advnwc?: boolean;
-    network?: boolean;
-    display?: boolean;
-    rtsp?: boolean;
-    lora?: boolean;
-    coap?: boolean;
-    wallpaper?: boolean;
-    account?: boolean;
-    printer?: boolean;
-    auxstorage?: boolean;
-    mqtt?: {publish: boolean; subscribe: boolean};
-    mediacenter?: {readable: boolean; writable: boolean; removable: boolean};
-    vehicle?: {
-      media: boolean,
-      geolocation: boolean,
-      diagnostics: boolean,
-      cockpit: boolean,
-      drive: boolean,
-    };
-    device?: any[];
-  }
-
+  import { PermissionsItems } from 'permission';
   namespace intenal {
-    function update(callback: (perm: PermissionsItems) => void): void;
-    function check(permChk: PermissionsItems): Promise<boolean>;
+    function update(callback: (perm: Partial<PermissionsItems>) => void): Promise<null>;
+    function check(permChk: Partial<PermissionsItems>): Promise<boolean>;
     function device(devid: string): Promise<boolean>;
-    function fetch(): Promise<PermissionsItems>;
-    function isDenied(error: string | Error): string;
+    function fetch(): Promise<Partial<PermissionsItems>>;
+    function isDenied(error: string | Error): Promise<string>;
   }
   export = intenal;
 }

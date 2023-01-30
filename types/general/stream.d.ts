@@ -282,6 +282,14 @@ declare module "stream" {
       _transform(chunk: any, encoding: BufferEncoding, callback: TransformCallback): void;
       _flush(callback: TransformCallback): void;
     }
+
+    interface ThrottleOptions {
+      rate: number; // Read rate: Number of bytes read per second.
+    }
+    class Throttle extends Readable {
+      rate: number; // Read rate: Number of bytes read per second.
+      constructor(src: Readable, opts?: {}, streamOpts?: ReadableOptions);
+    }
   }
   export = internal;
 }

@@ -13,6 +13,7 @@ declare module "sigslot" {
     slot(...args: any): any;
     on(...args: any): void;
     off(...args: any): void;
+    has(...args: any): void;
     emit(...args: any): void;
     delete(...args: any): void;
   }
@@ -100,6 +101,8 @@ declare module "sigslot" {
       on(event: string, func?: (arg: any, msg: string | object) => void, arg?: any): void;
 
       off(event?: string, func?: (...arg: any) => void): void;
+
+      has(event: string, func?: () => void): boolean;
 
       /**
        * Publish a specified event, The message can be a string or an object.

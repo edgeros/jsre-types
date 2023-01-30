@@ -6,7 +6,7 @@ declare module 'edgeros:udp' {
 declare module "udp" {
   import socket = require('edgeros:socket');
   interface SockAddr {
-    domain: socket.AF_INET | socket.AF_INET6 | udp.AF_INET | udp.AF_INET6;
+    domain: socket.AF_INET | socket.AF_INET6 | typeof udp.AF_INET | typeof udp.AF_INET6;
     addr: string;
     port: number;
   }
@@ -223,10 +223,17 @@ declare module "udp" {
   }
 
   namespace udp {
-    type AF_INET = 2;
-    type AF_INET6 = 10;
-    const AF_INET: AF_INET;
-    const AF_INET6: AF_INET6;
+    const AF_INET = 2;
+    const AF_INET6 = 10;
+    const INADDR_NONE = '255.255.255.255';
+    const INADDR_LOOPBACK = '127.0.0.1';
+    const INADDR_ANY = '0.0.0.0';
+    const INADDR_BROADCAST = '255.255.255.255';
+    const IN6ADDR_ANY = '::';
+    const IN6ADDR_LOOPBACK = '::1';
+    const IN6ADDR_NODELOCAL_ALLNODES = 'ff01::1';
+    const IN6ADDR_LINKLOCAL_ALLNODES = 'ff02::1';
+    const IN6ADDR_LINKLOCAL_ALLROUTERS = 'ff01::2';
     /**
      * Create a Udp server and bind to the specified address.
      *

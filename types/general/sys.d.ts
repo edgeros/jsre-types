@@ -20,11 +20,12 @@ declare module "sys" {
       'OTHER';
 
     interface DeviceInformation {
-      type: DeviceType;
-      serial: string;
-      firmware: string;
-      product: string;
-      media: string;
+      size: number; // Block device size in MB. EdgerOS 1.9.8 add this member.
+      type: DeviceType; // Block device type.
+      serial: string; // Block device serial number.
+      firmware: string; // Block device firmware infomation.
+      product: string; // Block device product infomation.
+      media: string; // Storage media information.
     }
     interface Sys {
       // Get the application installation ID number. This function is valid only in the EdgerOS environment.
