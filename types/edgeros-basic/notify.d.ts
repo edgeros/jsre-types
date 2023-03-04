@@ -14,11 +14,11 @@ declare module "notify" {
     function push(topic: string, message: string, extra?: object): boolean;
 
     /**
-     * Send sharing information to the specified application.
+     * Send sharing message to the specified application.
      * @param eapid EdgerOS App package ID (Bundle ID).
-     * @param info Information to be shared, JSON stringify cannot exceed 14KBytes.
+     * @param msg Information to be shared, JSON stringify cannot exceed 14KBytes.
      */
-    function share(eapid: string, info: object | string): boolean;
+    function share(eapid: string, msg: object): boolean;
   }
   export = notify;
 }

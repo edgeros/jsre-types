@@ -83,6 +83,11 @@ declare class Timer {
    isRepeat(): boolean;
 
    /**
+    * Check if `timer` has stopped. This method is available on EdgerOS 1.10.1 and above.
+    */
+   isStopped(): boolean;
+
+   /**
     * Set or get a running timer interval.
     * @param interval New interval
     */

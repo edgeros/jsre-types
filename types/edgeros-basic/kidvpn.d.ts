@@ -33,7 +33,7 @@ declare module "kidvpn" {
       dest: string; // Destination address.
       genmask: string; // Netmask.
       gateway?: string; // Gateway address. default: `0.0.0.0` or `::`
-      host: boolean; // `true` for host routing, `false` for subnet routing.
+      host: boolean; // `true` for host routing, `false` for subnet routing. default: false.
     }
   }
 
@@ -47,6 +47,8 @@ declare module "kidvpn" {
   }
 
   class KidVPN extends EventEmitter {
+    static ca(callback: (error: Error, ca: string) => void): void;
+    static certificate(callback: (error: Error, info: Record<string, any>) => void): void;
     id: number;
     ifname: string;
     constructor(mode: 'server' | 'client');

@@ -76,6 +76,7 @@ declare module "vsoa" {
     }
     type MethodValue = Method[keyof Method];
     interface RemoteClient extends EventEmitter {
+      authed: boolean;
       close(): void;
       isSubscribed(url: string): boolean;
       address(): SockAddr;
@@ -114,8 +115,9 @@ declare module "vsoa" {
     function fetch(url: string, timeout?: number): Promise<RPCFetchRes>;
 
     class Server extends EventEmitter {
+      working: boolean;
       constructor(opt: ServerOpt);
-      close(): void;
+      close(removeListeners?: boolean): void;
       start(saddr: Saddr, tlsOpt?: object): void;
       count(): number;
       address(): object; // socket address.

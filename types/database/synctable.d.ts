@@ -5,10 +5,11 @@ declare module "edgeros:synctable" {
 
 declare module "synctable" {
   import { Buffer } from "buffer";
+  import EventEmitter = require('edgeros:events');
 
   namespace synctable {
     class Synctable {
-      constructor(name: string);
+      constructor(name: string, emitter?: EventEmitter);
       size: number;
 
       close(): void;

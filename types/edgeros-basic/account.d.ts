@@ -11,6 +11,11 @@ declare module 'account' {
     extra: object; // {object} Account extra information.
   }
 
+  interface Remarks {
+    acoid: string;
+    remark: string;
+  }
+
   namespace Account {
     interface account {
       /**
@@ -43,6 +48,7 @@ declare module 'account' {
        */
       list(callback: (error: Error, list: any[]) => void, simple?: boolean): string[];
       groups(callback: (error: Error, list: any[]) => void): void;
+      remarks(acoid: string, callback: (error: Error, list: Remarks[]) => void): void;
 
       /**
        * Update or add an account information to the current device.

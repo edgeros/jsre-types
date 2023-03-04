@@ -7,7 +7,7 @@
     "no-reference-import": false,
     "no-var-keyword": false,
     "no-single-declare-module": false,
-    "no-unnecessary-class": false,
+    "no-unnecessary-class": ["allow-empty-class", "allow-constructor-only", "allow-static-only"],
     "strict-export-declare-modifiers": false
   }
 }

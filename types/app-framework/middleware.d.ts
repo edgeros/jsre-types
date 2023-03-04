@@ -715,6 +715,20 @@ declare module "middleware" {
       token: string; // This field is the original token string.
       channel: 'local' | 'cloud'; // Indicates the access source, 'local' means local access, 'cloud' means access through EdgerOS Cloud.
     }
+
+    interface Rewrites {
+      from: string;
+      to: string | ((context: string) => string);
+    }
+    interface History {
+      index: string;
+      rewrites: Rewrites[];
+      verbose: boolean;
+      logger: (...args: any) => any;
+      htmlAcceptHeaders: string[];
+      disableDotRule: boolean;
+    }
+    function history(options?: History): any;
   }
   export = middleware;
 }

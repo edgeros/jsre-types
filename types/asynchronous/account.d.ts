@@ -11,12 +11,18 @@ declare module "async/account" {
     extra?: object;
   }
 
+  interface Remarks {
+    acoid: string;
+    remark: string;
+  }
+
   type UpdateCallback = (event: 'add' | 'delete' | 'update', acoid: string) => void;
 
   namespace asyncAccount {
     interface AccountStatic {
       list(simple?: boolean): Promise<any[]>;
       groups(): Promise<any[]>;
+      remarks(acoid: string): Promise<Remarks[]>;
       info(acoid: string): Promise<Info>;
       mname(): Promise<string>;
       update(callback: UpdateCallback): Promise<null>;

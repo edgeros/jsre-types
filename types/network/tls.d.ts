@@ -17,26 +17,6 @@ declare module "tls" {
     time: number;
   }
 
-  interface TlsServerOptions {
-    name: string;
-    ca?: string;
-    cert: string;
-    key: string;
-    passwd?: string;
-    ipcert?: boolean;
-    renegotiate?: string;
-    handshakeTimeout?: number;
-  }
-
-  interface TlsClientOptions {
-    rejectUnauthorinzed?: boolean;
-    loadDefaultCerts?: boolean;
-    ca?: string;
-    server?: string;
-    renegotiate?: boolean;
-    handshakeTimeout?: number;
-  }
-
   interface certOptions {
     name: string;
     ca?: string;
@@ -258,6 +238,27 @@ declare module "tls" {
     const IN6ADDR_NODELOCAL_ALLNODES = 'ff01::1';
     const IN6ADDR_LINKLOCAL_ALLNODES = 'ff02::1';
     const IN6ADDR_LINKLOCAL_ALLROUTERS = 'ff01::2';
+
+    interface TlsServerOptions {
+      name: string;
+      ca?: string;
+      cert: string;
+      key: string;
+      passwd?: string;
+      ipcert?: boolean;
+      renegotiate?: string;
+      handshakeTimeout?: number;
+    }
+
+    interface TlsClientOptions {
+      rejectUnauthorinzed?: boolean;
+      loadDefaultCerts?: boolean;
+      ca?: string;
+      server?: string;
+      renegotiate?: boolean;
+      handshakeTimeout?: number;
+    }
+
     /**
      * Create a Tls server and bind to the specified address.
      *

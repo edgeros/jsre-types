@@ -23,7 +23,7 @@ declare module "http" {
     saddr: object;
     method?: string; // Http method, default: GET.
     path?: string; // The request uri path, default: url parsed path.
-    timeout?: number; // The request timeout (ms). If the request times out, `HttpClient` will close.
+    timeout?: number; // The request timeout (ms). If the request times out, `HttpClient` will close. default: 10000.
     headers?: object; // header key must be lowercase.
     host?: string; // The domain name or IP address of the server to which the request is sent. default: url host.
     post?: string | Buffer | object; // The request post data, default: undefined.
@@ -199,7 +199,7 @@ declare module "http" {
       url: string;
 
       /**
-       * HTTP request host (without port)
+       * HTTP request host (from header 'host' content)
        */
       host: string;
 
@@ -212,6 +212,8 @@ declare module "http" {
        * UNBIND, ACL, REPORT, MKACTIVITY, CHECKOUT, MERGE, MSEARCH, NOTIFY
        */
       method: string;
+
+      protocol: string;
 
       /**
        * HTTP response status.

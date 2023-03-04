@@ -15,6 +15,7 @@ declare module "cloudhost/connector" {
   type CommonCallback = (error: Error) => void;
   class Connector extends EventEmitter {
     static support(): boolean;
+    static statis(channel: number, callback: (error: Error, statis: Record<string, any>) => void): void;
     /**
      * Create a remote host connection and project the remote host screen
      * and audio to the local display channel. The `opt.printer`

@@ -17,6 +17,8 @@ declare module "async/kidvpn" {
   }
 
   class KidVPN extends EventEmitter {
+    static ca(): string;
+    static certificate(): Record<string, any>;
     id: number;
     ifname: string;
     constructor(mode: 'server' | 'client');

@@ -30,6 +30,8 @@ declare module "core" {
 
     method: string;
 
+    protocol: string;
+
     headers: object; // TODO: This property inherit from `HttpServerRequest`.
 
     body: Buffer | string | Record<string, any>;
