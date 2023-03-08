@@ -22,6 +22,10 @@ declare module "advnwc" {
       mac?: string; // {string} Ethernet MAC address.
    }
 
+   interface AddOpt {
+      nforward: boolean;
+   }
+
    namespace advnwc {
       /**
        * Get the current machine's LAN or WAN network interface list,
@@ -120,7 +124,8 @@ declare module "advnwc" {
          ipEnd: string,
          portStart: number,
          portEnd: number,
-         callback: (error: Error, index: number) => void
+         callback: (error: Error, index: number) => void,
+         opt?: AddOpt
       ): void;
 
       /**

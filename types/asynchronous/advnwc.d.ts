@@ -46,6 +46,10 @@ declare module "async/advnwc" {
     bufSize?: number;
   }
 
+  interface AddOpt {
+    nforward: boolean;
+ }
+
   namespace asyncAdvnwc {
     interface AdvnwcStatic {
       netifs(lan: boolean): Promise<any[]>;
@@ -70,7 +74,15 @@ declare module "async/advnwc" {
         ipStart?: string,
         ipEnd?: string,
         portStart?: number,
-        portEnd?: number
+        portEnd?: number,
+        opt?: AddOpt
+      ): Promise<number>;
+      npfAdd(
+        rule: Rule | 'MAC',
+        ifname: string,
+        allow: boolean,
+        mac: string,
+        opt?: AddOpt
       ): Promise<number>;
       npfDelete(ifname: string, index?: number): Promise<boolean>;
       npfList(ifname?: string, index?: number): Promise<NpfRule[] | NpfRule>;

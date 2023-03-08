@@ -132,6 +132,7 @@ declare module "vsoa" {
         target: Record<string, any>,
         setter?: (param: T, payload: { params?: T, data?: Buffer }) => number
       ): void;
+      sendTimeout(timeout: number, curclis?: boolean): void;
       isSubscribed(url: string): boolean;
       createStream(timeout?: number): ServerDuplex;
 
