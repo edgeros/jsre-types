@@ -32,7 +32,7 @@ declare module "sys" {
       appid(): number;
 
       // Get the application package ID number. This function is valid only in the EdgerOS environment
-      epaid(): string;
+      eapid(): string;
       /**
        * The current task sleeps for a specified number of milliseconds.
        * If wakeupByInt is true, if a Timer or Sigslot interrupt occurs,
