@@ -7,7 +7,7 @@ declare module "printer" {
   import { Readable } from "stream";
   import { Printers, Jobs, PrinterState, PrintOpt } from "printer";
   namespace Printer {
-    type PrinterState = 'idle' | 'stopped' | 'processing';
+    type PrinterState = 'idle' | 'stopped' | 'processing' | 'offline';
     interface Printers {
       id: string;
       uri: string;

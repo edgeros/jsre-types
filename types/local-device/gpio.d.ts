@@ -75,6 +75,9 @@ declare module "gpio" {
        * @param flags GPIO open flags.
        */
       setMode(flags: number): void;
+
+      getBrightness(): number;
+      setBrightness(level: number): boolean;
     }
   }
   export = gpio.Gpio;

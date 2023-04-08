@@ -27,6 +27,8 @@ declare module "sys" {
       product: string; // Block device product infomation.
       media: string; // Storage media information.
     }
+
+    type PowerLevel = 'top' | 'fast' | 'normal' | 'slow';
     interface Sys {
       // Get the application installation ID number. This function is valid only in the EdgerOS environment.
       appid(): number;
@@ -278,6 +280,9 @@ declare module "sys" {
       setTz(tzStr: string): void;
 
       getTz(): number;
+
+      setPower(level: PowerLevel): void;
+      getPower(): PowerLevel;
 
       /**
        * method can be: 'force'(reboot force) or 'shutdown'(shutdown this machine).

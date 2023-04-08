@@ -185,6 +185,7 @@ declare module "http" {
        * @param chunk Http body data. default: undefined.
        */
       end(chunk?: string | number | boolean | object | Buffer): void;
+      destroy(error?: Error): this;
 
       /**
        * Get whether the current network connection is connected.
@@ -458,6 +459,7 @@ declare module "http" {
        * @param [chunk] Http post data. default: undefined.
        */
       end(chunk: string | number | boolean | object | Buffer): void;
+      destroy(error?: Error): this;
 
       on(event: "response" | "end" | "close" | "error" | "finish" | 'aborted', callback: (res?: HttpClientResponse) => void): this;
       on(event: 'error', callback: (error: Error) => void): this;
