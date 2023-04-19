@@ -231,6 +231,7 @@ interface Object {
 interface JSON {
   // [key: string]: any;
   byteLength(obj: object): number;
+  parseBuffer(buffer: Buffer): any;
 }
 interface Array<T> {
   // [key: string]: any;
