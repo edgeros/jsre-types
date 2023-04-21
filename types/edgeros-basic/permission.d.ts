@@ -7,7 +7,7 @@ declare module "permission" {
   interface Vehicle {
     media: boolean;
     geolocation: boolean;
-    diagnostics: boolean;
+    diagnostic: boolean;
     cockpit: boolean;
     drive: boolean;
   }

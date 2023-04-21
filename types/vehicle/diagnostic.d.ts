@@ -1,15 +1,15 @@
-declare module 'edgeros:vehicle/diagnostics' {
-  import Diagnostics = require('vehicle/diagnostics');
-  export = Diagnostics;
+declare module 'edgeros:vehicle/diagnostic' {
+  import Diagnostic = require('vehicle/diagnostic');
+  export = Diagnostic;
 }
 
-declare module 'vehicle/diagnostics' {
-  import { Bms, Thermal } from 'vehicle/diagnostics';
+declare module 'vehicle/diagnostic' {
+  import { Bms, Thermal } from 'vehicle/diagnostic';
   import EventEmitter = require('edgeros:events');
 
   type Callback = (error: Error) => void;
 
-  namespace Diagnostics {
+  namespace Diagnostic {
     interface Statistics {
       [key: string]: any;
     }
@@ -61,12 +61,12 @@ declare module 'vehicle/diagnostics' {
     }
   }
 
-  class Diagnostics {
+  class Diagnostic {
     bms: Bms;
     thermal: Thermal;
     request(callback: Callback): void;
     release(): void;
   }
 
-  export = Diagnostics;
+  export = Diagnostic;
 }

@@ -245,6 +245,7 @@
 /// <reference path="./vehicle/ac.d.ts" />
 /// <reference path="./vehicle/basic.d.ts" />
 /// <reference path="./vehicle/camera.d.ts" />
+/// <reference path="./vehicle/radar.d.ts" />
 /// <reference path="./vehicle/diagnostic.d.ts" />
 /// <reference path="./vehicle/drive.d.ts" />
 /// <reference path="./vehicle/ve.d.ts" />

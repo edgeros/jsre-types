@@ -53,7 +53,7 @@ declare module 'vehicle/basic' {
       | 8;                  // Charge Achieved
 
     interface Power {
-      residual: number;            // Battery remaining 0 - 100%
+      residual: number;            // Residual power 0 - 100%
       energy: number;              // Residual energy (Kwh)
       health: number;              // Battery health 0 - 100%
       discharge: number;           // Discharge power (Kw)
