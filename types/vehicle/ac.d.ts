@@ -8,31 +8,31 @@ declare module 'vehicle/ac' {
   import EventEmitter = require('edgeros:events');
 
   namespace AC {
-    type BlowerModSt = 1  // Face
-      | 2                 // Foot
-      | 3                 // Window
-      | 4                 // Face & Foot
-      | 5                 // Face & Window
-      | 6                 // Foot & Window
-      | 7;                // Face & Foot & Window
+    type BlowerModSt = 1    // Face
+      | 2                   // Foot
+      | 3                   // Window
+      | 4                   // Face & Foot
+      | 5                   // Face & Window
+      | 6                   // Foot & Window
+      | 7;                  // Face & Foot & Window
 
-      type AirCondSt = 0 | 1; // `0`: OFF `1`: ON
+      type AirCondSt = 0 | 1;    // `0`: OFF `1`: ON
 
     interface AcInfo {
-      airCondSt: AirCondSt;               // AirCondSt.
-      insideTemp: number;                 // Temperature inside the car.
-      outsideTemp: number;                // Temperature outside the car.
-      lhTemp: string;                     // Left front temperature.
-      rhTemp: string;                     // Right front temperature.
-      blowerModSt: BlowerModSt;           // Blower mode.
-      blowerSpd: number;                  // Blower speed. (`0` - `10`) `0`: Stop.
-      cycleThr: number;                   // `0`: Internal circulation `100`: External circulation (`0`-`100`).
-      leftChnlExptTemp: number;           // Left channel outlet expected temperature.
-      rightChnlExptTemp: number;          // Right channel outlet expected temperature.
-      leftBlowerFaceAirOutTemp: number;   // Air outlet temperature on the left blowing face.
-      rightBlowerFaceAirOutTemp: number;  // Air outlet temperature on the right blowing face.
-      leftBlowerFootAirOutTemp: number;   // Air outlet temperature on the left blowing foot.
-      rightBlowerFootAirOutTemp: number;  // Air outlet temperature on the right blowing foot.
+      airCondSt: AirCondSt;                  // AirCondSt.
+      insideTemp: number;                    // Temperature inside the car.
+      outsideTemp: number;                   // Temperature outside the car.
+      lhTemp: string;                        // Left front temperature.
+      rhTemp: string;                        // Right front temperature.
+      blowerModSt: BlowerModSt;              // Blower mode.
+      blowerSpd: number;                     // Blower speed. (`0` - `10`) `0`: Stop.
+      cycleThr: number;                      // `0`: Internal circulation `100`: External circulation (`0`-`100`).
+      leftChnlExptTemp?: number;             // Left channel outlet expected temperature.
+      rightChnlExptTemp?: number;            // Right channel outlet expected temperature.
+      leftBlowerFaceAirOutTemp?: number;     // Air outlet temperature on the left blowing face.
+      rightBlowerFaceAirOutTemp?: number;    // Air outlet temperature on the right blowing face.
+      leftBlowerFootAirOutTemp?: number;     // Air outlet temperature on the left blowing foot.
+      rightBlowerFootAirOutTemp?: number;    // Air outlet temperature on the right blowing foot.
     }
 
     interface Temp {

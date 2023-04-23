@@ -22,7 +22,7 @@ declare module 'vehicle/basic' {
       readyLightSt: ReadyLightSt;    // ReadyLightSt.
       odometer: number;              // Total kilometers traveled.
       residualOdometer: number;      // Residual kilometers.
-      energyConsumption: number;     // Power consumption per 100 kilometers.
+      energyConsumption: number;     // Average consumption per 100 kilometers.
     }
 
     interface Drive {
@@ -65,7 +65,7 @@ declare module 'vehicle/basic' {
 
     interface Status {
       speed: number;                 // Current speed.
-      instPowerConsum: number;       // Instantaneous energy consumption.
+      instPowerConsum: number;       // Instantaneous energy consumption (Kwh).
       acAnionSt: AcAnionSt;
       latAccSensorValue: number;     // Lateral acceleration.
       longAccSensorValue: number;    // Longitudinal acceleration.
