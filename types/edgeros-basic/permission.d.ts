@@ -31,7 +31,7 @@ declare module "permission" {
       mqtt: {publish: boolean; subscribe: boolean}; // {object} MQTT Client sub object.
       mediacenter: {readable: boolean; writable: boolean; removable: boolean};
       vehicle: Vehicle;
-      device: any[];
+      devices: any[];
     }
     function update(callback: (perm: Partial<PermissionsItems>) => void): void;
     function check(permChk: Partial<PermissionsItems>, callback: (res: boolean) => void): void;
