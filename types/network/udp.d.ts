@@ -16,6 +16,10 @@ declare module "udp" {
      * The Udp object socket file descriptor. The iosched module can use this descriptor for event detection.
      */
     sockFd: number;
+
+    bind(saddr: SockAddr): boolean;
+    disconnect(): boolean;
+
     connect(sockaddr: Record<string, any>): boolean; // sockaddr TODO: Remote address.
 
     /**
@@ -220,6 +224,9 @@ declare module "udp" {
      * @param enable Whether to enable multicast loop.
      */
     setMulticastLoop(enable: boolean): boolean;
+
+    getConnAssignLocalAddr(): boolean;
+    setUdpConnAssignLocalAddr(enable: boolean): boolean;
   }
 
   namespace udp {
@@ -234,6 +241,9 @@ declare module "udp" {
     const IN6ADDR_NODELOCAL_ALLNODES = 'ff01::1';
     const IN6ADDR_LINKLOCAL_ALLNODES = 'ff02::1';
     const IN6ADDR_LINKLOCAL_ALLROUTERS = 'ff01::2';
+
+    function create(domain?: socket.AF_INET | socket.AF_INET6): Udp;
+
     /**
      * Create a Udp server and bind to the specified address.
      *

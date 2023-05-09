@@ -121,6 +121,13 @@ declare module "socket" {
     function connect(sockFd: number, remoteAddr?: SockAddr, timeout?: number): boolean;
 
     /**
+     * UDP disconnect, equivalent to udp object clear remote address set.
+     * This function is valid on EdgerOS 2.0.0 and above.
+     * @param sockFd UDP socket file descriptor.
+     */
+    function disconnect(sockFd: number): boolean;
+
+    /**
      * The socket.send() function shall initiate transmission of a message from the specified socket to its peer.
      *
      * Returns: {Integer} The number of bytes actually sent, negative error.
@@ -441,6 +448,21 @@ declare module "socket" {
      * @param enable Whether to enable multicast loop.
      */
     function setMulticastLoop(sockFd: number, enable: boolean): boolean;
+
+    /**
+     * Get whether to assign a local address when UDP connects.
+     * This function is valid on EdgerOS 2.0.0 and above.
+     * @param sockFd UDP socket file descriptor.
+     */
+    function getUdpConnAssignLocalAddr(sockFd: number): boolean;
+
+    /**
+     * Set whether to assign a local address when UDP connects.
+     * This function is valid on EdgerOS 2.0.0 and above.
+     * @param sockFd UDP socket file descriptor.
+     * @param enable Whether to assign a local address when UDP connects.
+     */
+    function setUdpConnAssignLocalAddr(sockFd: number, enable: boolean): boolean;
 
     function sockaddr(addr?: string, port?: number): SockAddr;
     function sockaddr6(addr?: string, port?: number, scope?: number): SockAddr;
