@@ -28,6 +28,8 @@ declare module "fdisk" {
       partition: Array<Pick<Partition, "active"|"fstype"|"size"> & { name: string }>,
       type: "GPT" | "MBR"
     ): boolean;
+
+    function umount(blkdev: string, force?: boolean): boolean;
     function remount(blkdev: string): boolean;
   }
   export = fdisk;
