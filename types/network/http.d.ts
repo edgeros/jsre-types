@@ -330,7 +330,7 @@ declare module "http" {
      */
     function get(url: string, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<HttpClient>;
     function get(url: string, callback: (res: HttpClientResponse) => void, options?: HttpClientRequestOptions, tlsOpt?: object): HttpClient | Promise<HttpClient>;
-    function fetch(url: string, options?: FetchtOptions): Promise<HttpClientResponse>;
+    function fetch(url: string, options?: FetchtOptions): Promise<FetchReponse>;
     class HttpServer extends EventEmitter {
       constructor();
 
