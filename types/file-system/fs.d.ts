@@ -381,6 +381,7 @@ declare module "fs" {
      */
     function tmpfile(prefix?: string, ext?: string): File;
     function umount(volume: string): boolean;
+    function transmode(mode?: string): string;
     function createReadStream(path: string, options?: ReadStreamOptions): ReadStream;
     function createWriteStream(path: string, options?: WriteStreamOptions): WriteStream;
     class File {
