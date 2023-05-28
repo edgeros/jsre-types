@@ -145,6 +145,16 @@ declare module "tcp" {
     flyAway(): void;
 
     /**
+     * This function is used to judge whether the TCP connection has received complete data.
+     * This function must follow the `recv` and `recvfrom` functions.
+     * When these two functions return a **negative** number,
+     * it means that the TCP connection is disconnected.
+     * You can judge whether the reception is complete through the `isEOF` function.
+     * This function is valid on EdgerOS 2.0.0 and above.
+     */
+    isEOF(): boolean;
+
+    /**
      * The tcp.sockName() function shall retrieve the locally-bound name of the specified socket.
      *
      * Returns: {object} Local sockaddr.

@@ -4,29 +4,30 @@ declare module 'edgeros:advnwc' {
 }
 
 declare module "advnwc" {
-   interface Rule {
-      ifname?: string; // {string} Network interface name.
-      index?: number; // {Integer} Index number of this rule.
-      rule?: string | 'MAC' | "IP" | "TCP" | "UDP"; // {string} Type of this rule: 'IP', 'TCP' or 'UDP'.
-      policy?: string; // {string} Policy of this rule.
-      ipStart?: string; // {string} Starting IP address.
-      ipEnd?: string; // {string} End IP address.
-      portStart?: number; // {Integer} Starting TCP or UDP port.
-      portEnd?: number; // {Integer} End TCP or UDP port.
-      prio?: number; // {Integer} Priority.
-      reliable?: boolean; // {Boolean} Whether to enable reliable reception guarantee.
-      upLimit?: number; // {Integer} Uplink speed limit.
-      downLimit?: number; // {Integer} Downlink speed limit.
-      bufSize?: number; // {Integer} Buffer size bytes.
-      allow?: boolean; // {Boolean} Whether to allow this packet.
-      mac?: string; // {string} Ethernet MAC address.
-   }
-
-   interface AddOpt {
-      nforward: boolean;
-   }
-
    namespace advnwc {
+      interface Rule {
+         ifname?: string; // {string} Network interface name.
+         index?: number; // {Integer} Index number of this rule.
+         rule?: string | 'MAC' | "IP" | "TCP" | "UDP"; // {string} Type of this rule: 'IP', 'TCP' or 'UDP'.
+         policy?: string; // {string} Policy of this rule.
+         ipStart?: string; // {string} Starting IP address.
+         ipEnd?: string; // {string} End IP address.
+         portStart?: number; // {Integer} Starting TCP or UDP port.
+         portEnd?: number; // {Integer} End TCP or UDP port.
+         prio?: number; // {Integer} Priority.
+         reliable?: boolean; // {Boolean} Whether to enable reliable reception guarantee.
+         upLimit?: number; // {Integer} Uplink speed limit.
+         downLimit?: number; // {Integer} Downlink speed limit.
+         bufSize?: number; // {Integer} Buffer size bytes.
+         allow?: boolean; // {Boolean} Whether to allow this packet.
+         nforward?: boolean; // {Boolean} Only denied routing forwarding when blocking.
+         mac?: string; // {string} Ethernet MAC address.
+      }
+
+      interface AddOpt {
+         nforward: boolean;
+      }
+
       /**
        * Get the current machine's LAN or WAN network interface list,
        * if the current machine is not a router, when getting the WAN list,

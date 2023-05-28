@@ -26,6 +26,7 @@ declare module "async/advnwc" {
     index: number;
     rule: Rule | 'MAC';
     allow: boolean;
+    nforward?: boolean;
     mac?: string;
     ipStart?: string;
     ipEnd?: string;
