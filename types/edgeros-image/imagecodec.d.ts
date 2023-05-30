@@ -16,15 +16,21 @@ declare module "imagecodec" {
       'jpg', 'png', 'bmp', 'tga', 'hdr'
     }
 
+    type Components = typeof COMPONENTS_DEFAULT | typeof COMPONENTS_GREY | typeof COMPONENTS_GREY_ALPHA | typeof COMPONENTS_RGB | typeof COMPONENTS_RGB_ALPHA;
     interface ImageObject {
       width: number; // {Integer} Image width.
       height: number; // {Integer} Image height.
-      components: number; // {Integer} Image components bytes.
+      components: Components; // {Integer} Image components bytes.
       buffer?: Buffer; // {Buffer} Image pixel data buffer.
     }
 
-    interface ImageOptions {
-      components: number; // Image components. Valid `components` can choose from `imagecodec`
+    interface DecodeImage {
+      components: Components; // Image components. Valid `components` can choose from `imagecodec`
+    }
+
+    interface EncodeImage {
+      stride: number;
+      quality: number;
     }
 
     /**
@@ -34,7 +40,7 @@ declare module "imagecodec" {
      * @param [opt] Decode options.
      * @returns Image pixel object.
      */
-    function decode(path: string | Buffer, opt?: ImageOptions): ImageObject;
+    function decode(path: string | Buffer, opt?: DecodeImage): ImageObject;
 
     /**
      * Compress the original pixel data of the image and store it in the specified path.
@@ -43,7 +49,7 @@ declare module "imagecodec" {
      * it must contain the file extensions supported by the current module, they include: '*.jpg', '*.png', '*.bmp', '*.tga', '*.hdr'.
      * @param opt Encode options.
      */
-    function encode(image: ImageObject, path: string | FormatString, opt?: ImageOptions): boolean;
+    function encode(image: ImageObject, path: string | FormatString, opt?: Partial<EncodeImage>): boolean;
 
     /**
      * Image conversion.
