@@ -29,7 +29,7 @@ declare module "mediadecoder" {
   }
 
   interface VideoBuffer {
-    arrayBuffer: number; // {Buffer} Preview video buffer.
+    arrayBuffer: Buffer; // {Buffer} Preview video buffer.
     width: number; // {Integer} Preview window width.
     height: number; // {Integer} Preview window height.
     pixelBytes: number; // {Integer} Bytes of preview video buffer pixel.
