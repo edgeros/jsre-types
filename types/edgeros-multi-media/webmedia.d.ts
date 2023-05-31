@@ -16,7 +16,6 @@ declare module "webmedia" {
       path?: string; // {string} Media stream path, default to opts.path.
       tls?: object; // {TLS option} TLS options.
     }
-
     interface DataChannel {
       protocol?: string; // {string} Transport protocol : ws(ws, wss).
       server?: string; // {WsServer} Use outside WsServer as ws data channel proxy server.
@@ -24,7 +23,6 @@ declare module "webmedia" {
       path?: string; // {string} Media data channel path, default to opts.path.
       tls?: object; // {TLS option} TLS options.
     }
-
     interface WebMediaServerOption {
       mode?: number; // {object} 1 - STREAM mode: Only support stream channel. 2 - COMPOUND mode: support both stream and data/event channel, default: 1.
       path?: string; // {string} Media source url path, default: '/'.
@@ -34,13 +32,11 @@ declare module "webmedia" {
       dataChannel?: DataChannel; // {object} Data channel options.
       ser?: HttpServer | typeof WebApp;
     }
-
     interface MediaServer {
       source?: MediaSource;
       cliMgr?: ClientMgr;
       streamPipe?: (...args: any) => void;
       dataPipe?: (...args: any) => void;
-
       start(): void;
       stop(): void;
       resume(): void;
@@ -53,7 +49,6 @@ declare module "webmedia" {
       sendData(client: MediaClient | undefined, opts: object | undefined, chunk: Buffer): void;
       sendEvent(event: string, ...args: any[]): void;
       sendEvent(client: MediaClient | undefined, event: string, ...args: any[]): void;
-
       on(event: "start" | "stop" | "end" | "pause" | "resume", callback: (server: MediaServer) => void): void;
       on(event: "open" | "close", callback: (server: MediaServer, client: MediaClient) => void): void;
     }
@@ -91,12 +86,10 @@ declare module "webmedia" {
       opts: object; // {object} No The message options.
       data: string | object | any[]; // *{string \	object \	Array}*	No	Message data. Array for client.emit() event,
     }
-
     interface MediaSource {
       source?: string; // {string} Media source type. 'flv'|'rtsp_netcam'|[user defined media source].
       inOpts?: object; // {object} Media source defined input options.
       outOpts?: object; // {object} Media source defined output options.
-
       server?: MediaServer;
       /**
        * Media server mode. 1 - STREAM mode; 2 - COMPOUND mode. Refer to
@@ -105,14 +98,12 @@ declare module "webmedia" {
       getCliMgr(): ClientMgr;
       sendStream(chunk: Buffer): void;
       sendData(opts: object, chunk: string | object | any[]): void;
-
       sendStreamHeader(chunk: Buffer): void;
       sendDataHeader(opts: object, chunk: string | object | any[]): void;
       end(): void;
       start(): void;
       stop(): void;
       pushStream(chunk: Buffer): void;
-
       on(event: "start" | "stop", callback: () => void): void;
       on(event: eventType, client: MediaClient, opts: WebMediaServerOption, data: MediaDataChannelProtocol): void;
     }

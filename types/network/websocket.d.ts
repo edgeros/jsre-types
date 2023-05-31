@@ -9,6 +9,8 @@ declare module "websocket" {
   import * as socket from 'socket';
   import WebApp = require("edgeros:webapp");
   import { EOS } from 'middleware';
+  import EventEmitter = require("edgeros:events");
+  import { TlsClientOptions } from 'edgeros:tls';
 
   interface ClientOptions {
     saddr: object;
@@ -18,101 +20,111 @@ declare module "websocket" {
     protocal: string;
   }
 
+  enum MODE {
+    MASTER = 0,
+    UPGRADE = 1,
+    SUB = 2
+  }
+
+  interface MSG {
+    from: number;
+    to: number;
+    code: number;
+    masterName: string;
+    subName: string;
+    serOpt: { tls: boolean, name: string };
+  }
+
+  interface ServerOpt {
+    mode: MODE;
+    name: string;
+    subMode: string;
+    subs: number;
+    initMsg: MSG;
+    connectTimeout: number;
+  }
+
+  interface Addr {
+    domain: number;
+    addr: string;
+    port: number;
+  }
+
+  class Channel extends EventEmitter {}
+
+  class Server extends EventEmitter {
+    constructor(ChannelClass: Channel, serOpt: ServerOpt, saddr: object, tlsOpt?: TlsClientOptions);
+
+    groupName(): { group: string, name: string };
+
+    // start(dev: string): boolean;
+    stop(): void;
+    port(): number;
+  }
+
+  interface WebsocketServerOpt {
+    mode: MODE.MASTER | MODE.UPGRADE;
+  }
+
+  interface WebsocketClientOpt {
+    sync: boolean;
+    path: string;
+    timeout: number;
+  }
+
+  class WebsocketServer extends Server {
+    constructor(serOpt: WebsocketServerOpt, path: string, server?: Server);
+    constructor(serOpt: WebsocketServerOpt, path: string, saddr: HttpServer | typeof WebApp, tlsOpt?: TlsClientOptions);
+
+    start(): void;
+    broadcast(chunk: string | number | boolean | Record<string, any> | Buffer): void;
+
+    on(event: "start" | "stop", listener: () => void): this;
+    on(event: "connection", listener: (channel: WsServerChannel) => void): this;
+  }
+
+  class WsServerChannel {
+    path: string;
+    headers: any[];
+    eos: EOS; // EdgerOS account information.
+
+    /**
+     * Broadcast data to all websocket clients.
+     *
+     * @param chunk Data tobe broadcast.
+     */
+    send(chunk: string | Buffer | number | boolean | object): void;
+
+    /**
+     * Close the connection with server. When the connection is closed normally, the server will send an error code to the client.
+     *
+     * @param code The error code.
+     * @param reason The close reason.
+     */
+    close(code: number, reason?: string): void;
+
+    on(event: "open" | "close", listener: () => void): this;
+    on(event: "message", listener: (msg: string | Buffer) => void): this;
+  }
+
+  class WebsocketClient extends EventEmitter {
+    constructor(saddr: Addr, tlsOpt: TlsClientOptions);
+
+    open(url: string, options: Partial<WebsocketClientOpt>): this;
+    close(code?: number, reason?: string): void;
+    ping(timeout?: number, callback?: (pongTag: string) => void): string;
+    send(chunk: string | Buffer | number | boolean | object): void;
+
+    on(event: "open" | "close", listener: () => void): this;
+    on(event: "message" | "ping", listener: (msg: string | Buffer) => void): this;
+  }
+
   namespace websocket {
-    class WsServer {
-      /**
-       * Start websocket server.
-       */
-      start(): void;
-
-      /**
-       * Stop websocket server.
-       */
-      stop(): void;
-
-      /**
-       * When the server starts with the MASTER module, wsServer.port() gets the port of the server,
-       * otherwise it returns undefined.
-       */
-      port(): number | undefined;
-
-      /**
-       * Broadcast data to all websocket clients.
-       *
-       * @param chunk Data tobe broadcast.
-       */
-      broadcast(chunk: string | Buffer | number | boolean | object): void;
-
-      on(event: "start" | "stop", listener: () => void): this;
-      on(event: "connection", listener: (channel: WsServerChannel) => void): this;
+    class WsClient extends WebsocketClient {
+      static createClient(url: string, options?: ClientOptions, tlsOpt?: TlsClientOptions): WebsocketClient;
     }
-
-    class WsServerChannel {
-      path: string;
-      headers: any[];
-      eos: EOS; // EdgerOS account information.
-
-      /**
-       * Broadcast data to all websocket clients.
-       *
-       * @param chunk Data tobe broadcast.
-       */
-      send(chunk: string | Buffer | number | boolean | object): void;
-
-      /**
-       * Close the connection with server. When the connection is closed normally, the server will send an error code to the client.
-       *
-       * @param code The error code.
-       * @param reason The close reason.
-       */
-      close(code: number, reason?: string): void;
-
-      on(event: "open" | "close", listener: () => void): this;
-      on(event: "message", listener: (msg: string | Buffer) => void): this;
-    }
-
-    class WsClient {
-      /**
-       * This method create WsClient object and connect to server.
-       *
-       * Returns: {WebsocketClient } The websocket client object.
-       *
-       * @param url Websocket url.
-       * @param options Has the following properties:
-       * @param tlsOpt TLS securely connections options. default: undefined, means use TCP connection.
-       *
-       */
-      static createClient(url: string, options?: object, tlsOpt?: object): void;
-
-      /**
-       * Close the connection with server. When the connection is closed normally, the server will send an error code to the client.
-       *
-       * @param code The error code.
-       * @param reason The close reason.
-       */
-      close(code?: number, reason?: string): void;
-
-      /**
-       * When the client sends a ping message with tag, the server will reply with a pong message,
-       * and the pong message will carry the tag of the ping message.
-       * The client will verify the tag to determine whether it is an error. Ping-pong message keep connection alive.
-       *
-       * Returns: {string} Ping tag.
-       *
-       * @param timeout Wait timeout in milliseconds. default: 30 seconds.
-       * @param callback Pong response callback.
-       */
-      ping(timeout?: number, callback?: (pongTag: string) => void): string;
-
-      /**
-       * Send data to server.
-       *
-       * @param chunk Data tobe broadcast.
-       */
-      send(chunk: string | Buffer | number | boolean | object): void;
-
-      on(event: "open" | "close", listener: () => void): this;
-      on(event: "message" | "ping", listener: (msg: string | Buffer) => void): this;
+    class WsServer extends WebsocketServer {
+      static createServer(path: string, saddr?: HttpServer | typeof WebApp | object, tlsOpt?: TlsClientOptions): WebsocketServer;
     }
     /**
      * This method creates websocket server.
@@ -127,9 +139,9 @@ declare module "websocket" {
      *                  WebApp object, the same to HttpServer.
      * @param tlsOpt TLS securely connections options. default: undefined, means use TCP onnection.
      */
-    function createServer(path: string, saddr?: HttpServer | typeof WebApp | object, tlsOpt?: object): WsServer;
+    function createServer(path: string, saddr?: HttpServer | typeof WebApp | object, tlsOpt?: TlsClientOptions): WebsocketServer;
 
-    function createClient(url: string, options?: ClientOptions, tlsOpt?: object): WsClient;
+    function createClient(url: string, options?: ClientOptions, tlsOpt?: TlsClientOptions): WebsocketClient;
   }
   export = websocket;
 }

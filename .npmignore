@@ -1,2 +1,5 @@
 .gitignore
 .idea
+.DS_Store
+vscode/*
+!.vscode/extensions.json
