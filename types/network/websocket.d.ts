@@ -76,7 +76,7 @@ declare module "websocket" {
     constructor(serOpt: WebsocketServerOpt, path: string, server?: Server);
     constructor(serOpt: WebsocketServerOpt, path: string, saddr: HttpServer | typeof WebApp, tlsOpt?: TlsClientOptions);
 
-    start(): void;
+    start(): boolean;
     broadcast(chunk: string | number | boolean | Record<string, any> | Buffer): void;
 
     on(event: "start" | "stop", listener: () => void): this;

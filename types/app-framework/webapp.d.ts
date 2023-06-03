@@ -64,7 +64,7 @@ declare module "webapp" {
       /**
        * Start app server. The app's setting must be done before this operator.
        */
-      start(): this;
+      start(): boolean;
 
       /**
        * Stop app server.

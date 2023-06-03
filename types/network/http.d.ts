@@ -391,9 +391,9 @@ declare module "http" {
       /**
        * Start http server.
        *
-       * @returns this.
+       * @returns boolean
        */
-      start(): this;
+      start(): boolean;
 
       /**
        * Stop http server.

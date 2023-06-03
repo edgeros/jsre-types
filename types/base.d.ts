@@ -171,6 +171,7 @@
 /// <reference path="./edgeros-basic/printer.d.ts" />
 /// <reference path="./edgeros-basic/cloudhost.d.ts" />
 /// <reference path="./edgeros-basic/kidvpn.d.ts" />
+/// <reference path="./edgeros-basic/sharedpipe.d.ts" />
 
 /*----------------------------------------------*
  *                                              *

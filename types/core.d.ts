@@ -38,8 +38,6 @@ declare module "core" {
 
     path: string;
 
-    params: Record<string, any>;
-
     cookies: Record<string, any>;
 
     get(field: string): any;

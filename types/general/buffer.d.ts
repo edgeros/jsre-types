@@ -71,8 +71,8 @@ declare module 'buffer' {
        * Creates a new Buffer from an array of numbers.
        * The numbers are converted to integers first and their modulo 256 remainder is used for constructing the buffer.
        * @param array Array.
-       * @param offset Offset of array. default: 0.
-       * @param length Number if elements copied. default: array.length.
+       * @param offset Bytes offset of ArrayBuffer. default: 0.
+       * @param length Number of bytes copied. default: arrayBuffer.byteLength - offset.
        */
       new (array: Uint8Array | number | ArrayBuffer | SharedArrayBuffer | ReadonlyArray<any> | Buffer, offset?: number, length?: number): Buffer;
 
@@ -99,6 +99,8 @@ declare module 'buffer' {
        */
       from(str: WithImplicitCoercion<string> | { [Symbol.toPrimitive](hint: 'string'): string }, encoding?: BufferEncoding): Buffer;
 
+      copyBytesFrom(view: TypedArray, offset?: number, length?: number): Buffer;
+
       /**
        * Returns true if obj is an instance of Buffer. Returns false otherwise.
        * @param obj object to test.
@@ -112,6 +114,7 @@ declare module 'buffer' {
       isEncoding(encoding: string): encoding is BufferEncoding;
 
       isUtf8(input: Buffer | TypedArray | ArrayBuffer): boolean;
+      isAscii(input: Buffer | TypedArray | ArrayBuffer): boolean;
       isTypedArray(input: any): boolean;
 
       byteLength(str: string, encoding?: BufferEncoding): number;
