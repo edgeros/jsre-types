@@ -24,7 +24,7 @@ declare module "thingnn" {
   }
 
   namespace thingnn {
-    const PIX_FMT_RGB24: number;
+    const PIX_FMT_BGR24: number;
     const PIX_FMT_BGR2RGB24: number;
     const PIX_FMT_GRAY2RGB24: number;
     const PIX_FMT_RGBA2RGB24: number;
