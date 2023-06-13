@@ -210,11 +210,7 @@ declare module "middleware" {
       }
 
       interface DiskStorageOptions {
-        destination?: string | ((
-          req: Request,
-          file: File,
-          callback: (error: Error | null, destination: string) => void
-        ) => void) | undefined;
+        destination?: string;
         filename?(
           req: Request,
           file: File,
