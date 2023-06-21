@@ -305,6 +305,12 @@ declare module "sys" {
       tmpdir(): string;
 
       /**
+       * Set or get current process security region.
+       * @param newRegion Current process new security region.
+       */
+      secRegion(newRegion?: number): number;
+
+      /**
        * Get the maximum number of task can create in current process.
        *
        * Returns: {Integer} The maximum number of task can create in current process.

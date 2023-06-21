@@ -460,6 +460,13 @@ declare module "socket" {
     function setMulticastLoop(sockFd: number, enable: boolean): boolean;
 
     /**
+     * Get or set the specified socket security region.
+     * @param sockFd Socket file descriptor.
+     * @param newRegion New security region.
+     */
+    function secRegion(sockFd: number, newRegion?: number): number;
+
+    /**
      * Get whether to assign a local address when UDP connects.
      * This function is valid on EdgerOS 2.0.0 and above.
      * @param sockFd UDP socket file descriptor.
