@@ -53,6 +53,14 @@ declare module "fs" {
   }
   type readEventTypes = "close" | "open" | "ready" | "data" | "end" | "error" | "pause" | "readable" | "resume";
   type writEventTypes = "close" | "open" | "ready" | "drain" | "error" | "finish" | "pipe" | "unpipe";
+
+  type FileChangeType = "create" | "delete" | "modify" | "rename" | "attributes";
+  class Watcher {
+    ref(): this;
+    unref(): this;
+    close(): void;
+  }
+
   namespace fs {
     let F_OK: number;
     let R_OK: number;
@@ -382,6 +390,8 @@ declare module "fs" {
     function tmpfile(prefix?: string, ext?: string): File;
     function umount(volume: string): boolean;
     function transmode(mode?: string): string;
+    function watch(dirname: string, listener: (event: FileChangeType, filename: string, origname: string) => void): Watcher;
+    function watch(dirname: string, options: {recursive?: boolean}, listener: (event: FileChangeType, filename: string, origname: string) => void): Watcher;
     function createReadStream(path: string, options?: ReadStreamOptions): ReadStream;
     function createWriteStream(path: string, options?: WriteStreamOptions): WriteStream;
     class File {
