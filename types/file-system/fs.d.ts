@@ -554,7 +554,7 @@ declare module "fs" {
       destroy(err?: Error): this; // See stream.Readable from detail.
       isPaused(): boolean; // See stream.Readable from detail.
       pause(): this; // See stream.Readable from detail.
-      pipe(destination: WriteStream, options?: ReadStreamOptions): WriteStream; // See stream.Readable from detail.
+      pipe(destination: WriteStream, options?: { end?: boolean }): WriteStream; // See stream.Readable from detail.
       read(size?: number): Buffer | null; // See stream.Readable from detail.
       resume(): this; // See stream.Readable from detail.
       unpipe(destination?: WriteStream): this; // See stream.Readable from detail.
