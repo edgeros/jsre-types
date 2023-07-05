@@ -10,6 +10,7 @@ declare module "mobile" {
       isOpened(): boolean;
       open(): void;
       close(): void;
+      nr5g(): boolean;
       checkImei(): boolean;
       checkImsi(): boolean;
       checkSim(): boolean;
