@@ -8,7 +8,7 @@ declare module "fs" {
   interface fsStatInfo {
     dev: string; // Device ID of device containing file.
     ino: number; // File inode number.
-    mode: string; // File mode, The file type can be judged by this member.
+    mode: number; // File mode, The file type can be judged by this member.
     nlink: number; // Number of hard links to the file.
     uid: number; // User ID of file.
     gid: number; // Group ID of file.
@@ -205,13 +205,13 @@ declare module "fs" {
      */
     function stat(path: string, followLink?: boolean): fsStatInfo;
 
-    function S_ISDIR(mode: string): boolean; // If true it is a directory.
-    function S_ISCHR(mode: string): boolean; // If true it is a character device.
-    function S_ISBLK(mode: string): boolean; // If true it is block device.
-    function S_ISREG(mode: string): boolean; // If true it is general data file.
-    function S_ISLNK(mode: string): boolean; // If true it is link file.
-    function S_ISFIFO(mode: string): boolean; // If ture it is fifo/pipe file.
-    function S_ISSOCK(mode: string): boolean; // If true it is socket file.
+    function S_ISDIR(mode: number): boolean; // If true it is a directory.
+    function S_ISCHR(mode: number): boolean; // If true it is a character device.
+    function S_ISBLK(mode: number): boolean; // If true it is block device.
+    function S_ISREG(mode: number): boolean; // If true it is general data file.
+    function S_ISLNK(mode: number): boolean; // If true it is link file.
+    function S_ISFIFO(mode: number): boolean; // If ture it is fifo/pipe file.
+    function S_ISSOCK(mode: number): boolean; // If true it is socket file.
 
     /**
      * Set file or directory permissions. Only privileged mode allows setting execution permissions.
@@ -288,7 +288,7 @@ declare module "fs" {
      * @param recursion Whether to recursively fill in the missing directory. default: false.
      * @return Whether create directory is successfull.
      */
-    function mkdir(path: string, mode?: string, recursion?: boolean): boolean;
+    function mkdir(path: string, mode?: number, recursion?: boolean): boolean;
 
     /**
      * Delete a directory. If there are other files or subdirectories in the directory and recursion is false,
