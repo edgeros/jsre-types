@@ -106,7 +106,7 @@ declare module "fs" {
      * @param flags Open flags, detailed in the following. default: 'r'.
      * @param mode If it is a new file, specify the file permissions. default:0o666.
      */
-    function open(path: string, flags?: number, mode?: number): File;
+    function open(path: string, flags?: string, mode?: number): File;
 
     /**
      * Remove file. If the file is already open when this function is called,

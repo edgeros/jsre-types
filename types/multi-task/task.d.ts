@@ -201,6 +201,8 @@ declare module "task" {
         delete(key: string): void;
       };
 
+      static features: Map<any, any>;
+
       /**
        * Get the task ID created before, If the return 0, the task ID is invalid.
        */
