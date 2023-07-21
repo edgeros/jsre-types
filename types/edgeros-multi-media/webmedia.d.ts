@@ -10,26 +10,33 @@ declare module "webmedia" {
 
   namespace webmedia {
     interface StreamChannel {
-      protocol?: string; // {string} Transport protocol : xhr(http, https) | ws(ws, wss).
-      server?: HttpServer; // {HttpServer | WsServer} Use outside HttpServer or WsServer as xhr stream channel proxy server.
-      saddr?: string; // {Socket saddr} If server option not defined, create inside stream channel proxy server.
-      path?: string; // {string} Media stream path, default to opts.path.
-      tls?: object; // {TLS option} TLS options.
+      protocol?: string;    // {string} Transport protocol : xhr(http, https) | ws(ws, wss).
+      server?: HttpServer;  // {HttpServer | WsServer} Use outside HttpServer or WsServer as xhr stream channel proxy server.
+      saddr?: string;       // {Socket saddr} If server option not defined, create inside stream channel proxy server.
+      path?: string;        // {string} Media stream path, default to opts.path.
+      tls?: object;         // {TLS option} TLS options.
     }
     interface DataChannel {
-      protocol?: string; // {string} Transport protocol : ws(ws, wss).
-      server?: string; // {WsServer} Use outside WsServer as ws data channel proxy server.
-      saddr?: object; // {Socket saddr} If server option not defined, create inside data channel proxy server.
-      path?: string; // {string} Media data channel path, default to opts.path.
-      tls?: object; // {TLS option} TLS options.
+      protocol?: string;  // {string} Transport protocol : ws(ws, wss).
+      server?: string;    // {WsServer} Use outside WsServer as ws data channel proxy server.
+      saddr?: object;     // {Socket saddr} If server option not defined, create inside data channel proxy server.
+      path?: string;      // {string} Media data channel path, default to opts.path.
+      tls?: object;       // {TLS option} TLS options.
     }
+
+    interface ServerMediaSource {
+      source: string;
+      inOpts: Record<string, any>;
+      outOpts: Record<string, any>;
+    }
+
     interface WebMediaServerOption {
-      mode?: number; // {object} 1 - STREAM mode: Only support stream channel. 2 - COMPOUND mode: support both stream and data/event channel, default: 1.
-      path?: string; // {string} Media source url path, default: '/'.
-      connectLimits?: number; // {Integer} Connection limits, default: 3.
-      mediaSource?: MediaSource; // {object} Media source options.
-      streamChannel?: StreamChannel; // {object} Stream channel options.
-      dataChannel?: DataChannel; // {object} Data channel options.
+      mode?: number;                    // {object} 1 - STREAM mode: Only support stream channel. 2 - COMPOUND mode: support both stream and data/event channel, default: 1.
+      path?: string;                    // {string} Media source url path, default: '/'.
+      connectLimits?: number;           // {Integer} Connection limits, default: 3.
+      mediaSource?: ServerMediaSource;  // {object} Media source options.
+      streamChannel?: StreamChannel;    // {object} Stream channel options.
+      dataChannel?: DataChannel;        // {object} Data channel options.
       ser?: HttpServer | typeof WebApp;
     }
     interface MediaServer {
@@ -79,18 +86,15 @@ declare module "webmedia" {
     type eventType = "error" | "open" | "close" | "pause" | "resume" | "data" | "message";
 
     interface MediaDataChannelProtocol {
-      id: string; // {string}	Yes	Client id. Generate by server.
-      type: number; // {Integer}	Yes	Message type. 1 - send; 2 - call; 3 - reply.
-      event: eventType; // {string} Yes Message event type.
-      eventId: number; // {Integer} No Message event id. Valid from call/reply message.
-      opts: object; // {object} No The message options.
-      data: string | object | any[]; // *{string \	object \	Array}*	No	Message data. Array for client.emit() event,
+      id: string;                     // Client id. Generate by server.
+      type: number;                   // Message type. 1 - send; 2 - call; 3 - reply.
+      event: eventType;               // Message event type.
+      eventId: number;                // Message event id. Valid from call/reply message.
+      opts: object;                   // The message options.
+      data: string | object | any[];  // Message data. Array for client.emit() event,
     }
     interface MediaSource {
-      source?: string; // {string} Media source type. 'flv'|'rtsp_netcam'|[user defined media source].
-      inOpts?: object; // {object} Media source defined input options.
-      outOpts?: object; // {object} Media source defined output options.
-      server?: MediaServer;
+      server: MediaServer;
       /**
        * Media server mode. 1 - STREAM mode; 2 - COMPOUND mode. Refer to
        */

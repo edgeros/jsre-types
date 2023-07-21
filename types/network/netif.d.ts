@@ -40,7 +40,7 @@ declare module "netif" {
 
   interface IfIp6Addr {
     ip6addr: string; // Whether to use DHCP to get the IP address.
-    prefix: string; // Whether to use DHCPv6 to get the IPv6 address.
+    prefix: number; // Whether to use DHCPv6 to get the IPv6 address.
   }
 
   namespace netif {

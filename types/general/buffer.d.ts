@@ -135,7 +135,7 @@ declare module 'buffer' {
        * @param buf1 -
        * @param buf2 -
        */
-      compare(buf1: Uint8Array, buf2: Uint8Array): number;
+      compare(buf1: Buffer, buf2: Buffer): number;
 
       /**
        * Is same as new Buffer(...)
@@ -225,7 +225,7 @@ declare module 'buffer' {
        * @param [sourceStart] source buffer start offset. default: 0.
        * @param [sourceEnd] source buffer end offset (not include). default: source.length.
        */
-      copy(target: Uint8Array, targetStart?: number, sourceStart?: number, sourceEnd?: number): number;
+      copy(target: Buffer, targetStart?: number, sourceStart?: number, sourceEnd?: number): number;
       /**
        * This function returns with a newly created buffer which contains the bytes of the `buf` buffer between `start` and `end`.
        * The `slice()` method returns a **shallow copy** (memory reference) of a portion of a `TypedArray` into a new `TypedArray` object.

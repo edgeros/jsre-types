@@ -4,16 +4,20 @@ declare module 'edgeros:router/rttable' {
 }
 
 declare module "router/rttable" {
+  import socket = require('edgeros:socket');
+
   interface RttableRouting {
-    dest?: string; // {string} Destination address.
-    genmask?: string; // {string} Netmask.
-    gateway?: string; // {string} Gateway address. default: `0.0.0.0` or `::`.
+    dest?: string;     // Destination address.
+    genmask?: string;  // Netmask.
+    gateway?: string;  // Gateway address. default: `0.0.0.0` or `::`.
     lock?: boolean;
-    flags?: string; // {Integer} Route entry flags.
-    metric?: string; // {Integer} Route metric.
-    refcnt?: string; // {Integer} Route reference count.
-    ifname?: string; // {string} Route network interface.
+    flags?: number;    // Route entry flags.
+    metric?: number;   // Route metric.
+    refcnt?: number;   // Route reference count.
+    ifname?: string;   // Route network interface.
   }
+
+  type Domain = socket.AF_INET | socket.AF_INET6;
 
   namespace routerrttable {
     interface RttableStatic {
@@ -22,11 +26,11 @@ declare module "router/rttable" {
       RTF_HOST: number; // This route is a host route.
       RTF_DYNAMIC: number; // This route is a dynamic route.
 
-      list(domain: number): RttableRouting[];
-      add(domain: number, flags: number, dest: string, genmask: string, gateway?: string, ifname?: string, metric?: number): boolean;
-      change(domain: number, flags: number, dest: string, genmask: string, gateway: string, ifname?: string, metric?: number): boolean;
-      delete(domain: number, flags: number, dest: string, genmask?: string, gateway?: string, ifname?: string): boolean;
-      default(domain: number, gateway: string, ifname?: string, metric?: number): boolean;
+      list(domain: Domain): RttableRouting[];
+      add(domain: Domain, flags: number, dest: string, genmask: string, gateway?: string, ifname?: string, metric?: number): boolean;
+      change(domain: Domain, flags: number, dest: string, genmask: string, gateway: string, ifname?: string, metric?: number): boolean;
+      delete(domain: Domain, flags: number, dest: string, genmask?: string, gateway?: string, ifname?: string): boolean;
+      default(domain: Domain, gateway?: string, ifname?: string, metric?: number): boolean;
     }
   }
   let rttable: routerrttable.RttableStatic;

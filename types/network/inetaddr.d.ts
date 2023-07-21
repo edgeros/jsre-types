@@ -84,7 +84,7 @@ declare module "inetaddr" {
      * @param addr2 Addr2
      * @returns Returns results.
      */
-    function compare(addr1: string, addr2: string): boolean;
+    function compare(addr1: string, addr2: string): number;
 
     /**
      * Get subnet address by IP address and netmask.
@@ -118,7 +118,7 @@ declare module "inetaddr" {
      * @param addr IP address in network byte order.
      * @return IP address string.
      */
-    function ntoa(addr: string): string;
+    function ntoa(addr: number | number[]): string;
 
     /**
      * Host to network sequence 32-bit integer conversion.

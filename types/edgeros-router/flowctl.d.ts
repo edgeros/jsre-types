@@ -25,7 +25,7 @@ declare module "router/flowctl" {
       get(ifname?: string): FlowctlRule[];
       get(index: number): FlowctlRule;
       // ifname or index
-      delete(ifname: string | number): boolean;
+      delete(ifname?: string | number): boolean;
     }
   }
   let flowctl: routerflowctl.FlowctlStatic;

@@ -15,7 +15,7 @@ declare module "router/natctl" {
 
   interface SessionResult {
     ipaddr: string;
-    session: number;
+    sessions: number;
   }
 
   interface FragmentResult {

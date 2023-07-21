@@ -402,7 +402,7 @@ declare module "fs" {
        * @param flags Open flags, detailed in the following. default: 'r'.
        * @param mode If it is a new file, specify the file permissions. default:0o666.
        */
-      constructor(path: string, flags?: number, mode?: number);
+      constructor(path: string, flags?: string, mode?: number);
 
       /**
        * Close this file and reclaiming file descriptors. If user forgets to call this function,
