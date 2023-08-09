@@ -5,7 +5,7 @@ declare module 'edgeros:printer' {
 
 declare module "printer" {
   import { Readable } from "stream";
-  import { Printers, Jobs, PrinterState, PrintOpt } from "printer";
+  import { Printers, Jobs, PrinterState, PrintOpt, Caps } from "printer";
   namespace Printer {
     type PrinterState = 'idle' | 'stopped' | 'processing' | 'offline';
     interface Printers {
@@ -32,6 +32,13 @@ declare module "printer" {
       format: string;
       appid: number;
     }
+
+    interface Caps {
+      color: boolean;
+      sides: 1 | 2;
+      copies: number;
+      range: boolean;
+    }
   }
   type ListCallback = (error: Error, printers: Array<Pick<Printers, 'uri'|'name'|'model'|'state'>>) => void;
   type ScanCallback = (error: Error, printers: Array<Pick<Printers, 'id'|'uri'|'info'|'class'|'model'|'location'>>) => void;
@@ -56,6 +63,7 @@ declare module "printer" {
     print(output: Buffer | Readable, format: string, info: string, callback: (error: Error, id: number) => void): void;
     print(output: Buffer | Readable, format: string, info: string, opt: Partial<PrintOpt>, callback: (error: Error, id: number) => void): void;
     state(callback: (error: Error, state: PrinterState | 'offline') => void): void;
+    capabilities(callback: (error: Error, caps: Caps) => void): void;
   }
   export = Printer;
 }

@@ -424,7 +424,7 @@ declare module "http" {
       /**
        * open
        *
-       * @param timeout Request timeout, If the request times out, `HttpClient` will close. default: wait connect forever.
+       * @param timeout Connect timeout(ms), If the request times out, `HttpClient` will close. default: 5000.
        * @param async true - return `Promise` object; false - return client object, default: false.
        * @returns The http client request object or promise object. depend on `async` param.
        */

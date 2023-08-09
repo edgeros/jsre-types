@@ -78,7 +78,7 @@ declare module "master" {
      * @param callback Callback function to get whether the wallpaper set successfully.
      * @param option Set options.
      */
-    function wallpaper(acoid: string, chunkOrPath: Buffer | string, callback?: (error: Error) => void, option?: object): void;
+    function wallpaper(acoid: string, chunkOrPath: Buffer | string, callback?: (error: Error) => void, option?: {priority: 'personal' | 'default'}): void;
 
     /**
      * Create an alarm. Regardless of whether the application is closed or not, a preset push message will be generated when the alarm expires.

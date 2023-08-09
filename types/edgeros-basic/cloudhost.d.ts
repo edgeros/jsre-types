@@ -39,6 +39,8 @@ declare module "cloudhost/connector" {
      */
     isConnected(): boolean;
 
+    screenshot(callback: (error: Error, picture: Buffer) => void): void;
+
     on(event: 'connect' | 'disconnect', handler: () => void): this;
     on(event: 'error', handler: CommonCallback): this;
   }

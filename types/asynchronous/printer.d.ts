@@ -5,7 +5,7 @@ declare module 'edgeros:async/printer' {
 
 declare module "async/printer" {
   import { Readable } from "stream";
-  import { PrinterState, Printers, PrintOpt } from 'printer';
+  import { PrinterState, Printers, PrintOpt, Caps } from 'printer';
 
   export default class Printer {
     constructor(name: string); // name must be a printer name that has been added to the system.
@@ -13,5 +13,6 @@ declare module "async/printer" {
     name: string;
     print(output: Buffer | Readable, format: string, info: string, opt?: Partial<PrintOpt>): Promise<number>;
     state(): Promise<PrinterState>;
+    capabilities(): Promise<Caps>;
   }
 }
