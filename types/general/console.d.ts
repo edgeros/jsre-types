@@ -78,14 +78,14 @@ declare module 'console' {
       /**
        * Print the current call stack.
        */
-      trace(): void;
+      trace(btArray?: string[]): void;
 
       /**
        * Get the current call stack.
        *
        * @returns Returns.
        */
-      backtrace(): any[];
+      backtrace(nativeStack?: boolean): string[];
 
       /**
        * If the console output is a standard terminal device or file,
