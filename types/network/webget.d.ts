@@ -63,7 +63,8 @@ declare module "webget" {
 
       on(event: "response", callback: (info: WebGetOnResponseResult) => void): this;
       on(event: "data", callback: (chunk: Buffer, info: { offset: number, completeSize: number }) => void): this;
-      on(event: "end" | "error", callback: CallbackFunction): this;
+      on(event: "end", callback: CallbackFunction): this;
+      on(event: "error", callback: (e: Error) => void): this;
     }
   }
 

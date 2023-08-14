@@ -271,7 +271,7 @@ declare module "udp" {
      */
     function createByFd(sockFd: number): Udp;
 
-    function sockaddr(host?: number | string, port?: number): SockAddr;
+    const sockaddr: typeof socket.sockaddr;
   }
   export = udp;
 }

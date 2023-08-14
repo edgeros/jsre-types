@@ -129,7 +129,7 @@ declare module "tty" {
        *
        * @param opt New option object.
        */
-      setOption(opt: TtyOption): boolean;
+      setOption(opt: Partial<TtyOption>): boolean;
 
       /**
        * The hardware option is an object with following members:

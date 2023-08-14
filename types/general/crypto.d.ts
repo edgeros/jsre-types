@@ -317,8 +317,6 @@ declare module "crypto" {
 
     interface keyPairOptions {
       modulusLength: number;
-      publicKey: string;
-      privateKey: string;
     }
     enum keyPairType {
       'rsa', 'ec'

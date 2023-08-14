@@ -40,7 +40,7 @@ declare module "tls" {
      * @param remoteAddr Remote connector address. default: undefined (does not care).
      * @param timeout Wait timeout in milliseconds. default: undefined means wait forever.
      */
-    accept(remoteAddr: SockAddr, timeout?: number): Tls;
+    accept(remoteAddr?: SockAddr, timeout?: number): Tls;
     accept(unused: any, callback: (tls: Tls, remoteAddr: SockAddr) => void): Tls;
 
     /**
@@ -304,6 +304,8 @@ declare module "tls" {
      */
     function createByFd(name: string, sockFd: number, timeout?: number): Tls;
     function createByFd(name: string, sockFd: number, callback: (tls: Tls) => void): Tls;
+
+    const sockaddr: typeof socket.sockaddr;
   }
   export = tls;
 }

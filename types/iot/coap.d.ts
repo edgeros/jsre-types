@@ -40,7 +40,7 @@ declare module "coap" {
      *                - token Coap token used to identification resources.
      *                - options The request coap options. See CoapPackage.options.
      */
-    end(chunk?: string | object | Buffer, opts?: {confirm: boolean, token: Buffer, Options: object}): void;
+    end(chunk?: string | object | Buffer, opts?: {confirm: boolean, token: Buffer, options: object}): void;
 
     /**
      * In observe mode, the serve will continue to reply to the data monitored by the client until the client calls reset to end the process.

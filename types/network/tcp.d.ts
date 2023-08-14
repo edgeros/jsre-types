@@ -330,6 +330,8 @@ declare module "tcp" {
      * @param sockFd Socket file descriptor, MUST tcp socket.
      */
     function createByFd(sockFd: number): Tcp;
+
+    const sockaddr: typeof socket.sockaddr;
   }
   export = tcp;
 }

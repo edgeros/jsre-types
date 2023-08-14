@@ -18,6 +18,7 @@ declare module "http_util" {
   }
 
   namespace http_util {
+    const IP: IP;
     /**
      * Format http path. The http path begin with `/` and omit the end `/`.
      * @param path String of http path.

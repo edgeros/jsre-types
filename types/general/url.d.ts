@@ -45,7 +45,7 @@ declare module 'url' {
        * @param url URL object create by URL.parse().
        * @param options Format options.
        */
-      static format(url: string, options?: formatOptions): string;
+      static format(url: URLOptions, options?: formatOptions): string;
 
       /**
        * Create a local file URL object.

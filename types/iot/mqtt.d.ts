@@ -43,7 +43,7 @@ declare module "mqtt" {
      *
      * Returns: {Boolean} Current MQTT connection status. true is connected, otherwise false.
      */
-    isConnected(): void;
+    isConnected(): boolean;
 
     /**
      * Get whether the send queue contains messages that are not acknowledged by the server.
@@ -72,7 +72,7 @@ declare module "mqtt" {
      * @param callback Subscribe callback function.
      *                  error {Error} Identifies the subscribe error information, if it is undefined, it means success.
      */
-    subscribe(topic: string, options?: MqttOption, callback?: (error: Error) => void): void;
+    subscribe(topic: string, options?: Partial<MqttOption>, callback?: (error: Error) => void): void;
 
     /**
      * The client subscribes to a given topic.
@@ -85,7 +85,7 @@ declare module "mqtt" {
     unsubscribe(topic: string, callback?: (error: Error) => void): void;
 
     on(event: "connect" | "disconnect" | "close" | "error", callback: (...args: any) => void): this;
-    on(event: "message", callback: (topic?: string, message?: string, qos?: number, packetId?: number) => void): this;
+    on(event: "message", callback: (data: {topic: string, message: string, qos: number, packetId: number}) => void): this;
   }
 
   namespace mqtt {

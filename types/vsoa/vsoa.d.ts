@@ -122,15 +122,15 @@ declare module "vsoa" {
       count(): number;
       address(): object; // socket address.
       onclient: (cli: RemoteClient, connect: boolean) => void;
-      ondata: (cli: RemoteClient, url: string, payload: { params?: Record<string, any>, data?: Buffer }, quick: boolean) => void;
+      ondata: (cli: RemoteClient, url: string, payload: { param?: Record<string, any>, data?: Buffer }, quick: boolean) => void;
       publish(url: string, payload?: Payload | boolean): void;
       publish(url: string, payload: Payload, quick?: boolean): void;
       syncer<T extends Record<string, any> | string>(
         cli: Client,
         request: RPCRequest,
-        payload: { params?: T, data?: Buffer },
+        payload: { param?: T, data?: Buffer },
         target: Record<string, any>,
-        setter?: (param: T, payload: { params?: T, data?: Buffer }) => number
+        setter?: (param: T, payload: { param?: T, data?: Buffer }) => number
       ): void;
       sendTimeout(timeout: number, curclis?: boolean): void;
       isSubscribed(url: string): boolean;

@@ -11,11 +11,11 @@ declare module 'dgram' {
   }
 
   interface SockOptions {
-    type: string; // The family of socket. Must be either `upd4` or `upd6`. Required.
-    fd: number; // Use this file descriptor to create.
-    ipv6Only: boolean; // Setting `ipv6Only` to `true` will disable dual-stack support, i.e., binding to address `::` won't make `0.0.0.0` be bound. default: false.
-    recvBufferSize: number; // Sets the `SO_RCVBUF` socket value.
-    sendBufferSize: number; // Sets the `SO_SNDBUF` socket value.
+    type: 'udp4' | 'udp6'; // The family of socket. Must be either `udp4` or `udp6`. Required.
+    fd?: number; // Use this file descriptor to create.
+    ipv6Only?: boolean; // Setting `ipv6Only` to `true` will disable dual-stack support, i.e., binding to address `::` won't make `0.0.0.0` be bound. default: false.
+    recvBufferSize?: number; // Sets the `SO_RCVBUF` socket value.
+    sendBufferSize?: number; // Sets the `SO_SNDBUF` socket value.
     lookup?: (host: string, domain?: string, callback?: (...args: any) => void) => void; // Custom lookup function. default: dns.lookup(hostname[, domain], callback).
   }
 
@@ -42,6 +42,7 @@ declare module 'dgram' {
     bind(port?: number, address?: string, callback?: () => void): void;
     bind(options: BindOptions, callback?: () => void): void;
 
+    connect(port: number, callback?: (...args: any) => void): void;
     connect(port: number, address: string, callback?: (...args: any) => void): void;
     disconnect(): void;
     address(): AddressInfo;

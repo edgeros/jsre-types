@@ -4,8 +4,9 @@ declare module 'edgeros:gpio' {
 }
 
 declare module "gpio" {
+  import EventEmitter = require('edgeros:events');
   namespace gpio {
-    class Gpio {
+    class Gpio extends EventEmitter {
       /**
        * ORead gpio.value can get the current level status of GPIO.
        * If this GPIO is output mode, write 1 to output high level and 0 to output low level.
@@ -78,6 +79,8 @@ declare module "gpio" {
 
       getBrightness(): number;
       setBrightness(level: number): boolean;
+
+      on(event: 'interrupt', listener: () => void): this;
     }
   }
   export = gpio.Gpio;

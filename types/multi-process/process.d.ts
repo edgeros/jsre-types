@@ -9,6 +9,8 @@ declare module "process" {
     status: number;
   }
 
+  type Priority = 'low' | 'normal' | 'high' | 'realtime';
+
   namespace process {
     interface SpawnOpt {
       path: string; // Executable file path that new require process execution.
@@ -109,7 +111,7 @@ declare module "process" {
      *              'high'
      *              'realtime'
      */
-    function priority(pid: number, prio: number): void;
+    function priority(pid: number, prio: Priority): void;
 
     /**
      * Set the current process as the memory guard process.

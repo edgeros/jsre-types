@@ -14,9 +14,8 @@ declare module "pipe" {
        *
        * @param name Network interface name.
        * @param flags Create flags.
-       * @param write Is this a write point. default: false.
        */
-      constructor(name: string, flags: string, write: boolean);
+      constructor(name: string, flags: 'r' | 'w' | 'rw');
 
       /**
        * Get the pipe file descriptor, which can be asynchronous using with iosched module.

@@ -8,7 +8,7 @@ declare module "dtls" {
   interface SockAddr {
     domain: socket.AF_INET | socket.AF_INET6 | typeof dtls.AF_INET | typeof dtls.AF_INET6; // Address domain: `socket.AF_INET` or `socket.AF_INET6`.
     addr: string; // Address.
-    port: string; // Port.
+    port: number; // Port.
   }
 
   interface DtlsServerOptions {
@@ -36,10 +36,10 @@ declare module "dtls" {
 
   interface certOptions {
     name: string; // Server host name.
-    ca: string; // Optional trusted CA certificates. default: no CA certificates.
+    ca?: string; // Optional trusted CA certificates. default: no CA certificates.
     cert: string; // Server certificate.
     key: string; // Private key of server certificate.
-    passwd: string; // Private key password. default: no password.
+    passwd?: string; // Private key password. default: no password.
   }
 
   class Dtls {
@@ -79,8 +79,8 @@ declare module "dtls" {
      * @param string string to be send.
      * @param timeout Wait timeout in milliseconds. default: undefined means wait forever.
      */
-    send(string: string, timeout?: number): object;
-    send(buffer: Buffer, offset?: number, length?: number, timeout?: number): object;
+    send(string: string, timeout?: number): number;
+    send(buffer: Buffer, offset?: number, length?: number, timeout?: number): number;
 
     /**
      * The dtls.recv() function shall receive a message from a connection-mode socket.

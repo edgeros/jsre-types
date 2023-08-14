@@ -213,7 +213,7 @@ declare module "netif" {
        * Set or get the TCP acknowledgment packet sending frequency of the specified network interface.
        * @param freq TCP acknowledgment packet sending frequency (2 ~ 10).
        */
-      ackFreq(freq: number): number;
+      ackFreq(freq?: number): number;
 
       /**
        * Get or set this network interface security region.

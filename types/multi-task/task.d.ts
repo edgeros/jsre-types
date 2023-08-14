@@ -177,7 +177,7 @@ declare module "task" {
        * @param callback Callback function
        * @param args Any number of any type callback parameters.
        */
-      cleanup(callback: (...args: any) => void, ...args: any): void;
+      static cleanup(callback: (...args: any) => void, ...args: any): void;
 
       /**
        * Get current task message event file descriptor. Only for iosched readable event detection in current tasks.
