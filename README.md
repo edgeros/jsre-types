@@ -10,6 +10,41 @@ mode and many other powerful utilities that may ease your development.
 
 For more information please check [EdgerOS API](https://www.edgeros.com/edgeros/api/).
 
+## Usage
+
+- In the pure `js` projects, you need to create the `jsconfig.json` file in the root directory and configure it as follows:
+
+```json
+{
+  "compilerOptions": {
+      "module": "commonjs",
+      "target": "es6",
+      "typeRoots": [
+          "node_modules/@edgeros"
+      ],
+      "types": [
+          "jsre-types"
+      ]
+  }
+}
+```
+
+- In the `ts` project, configure `typeRoots` as follows:
+
+```json
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/@edgeros"
+    ],
+  }
+}
+
+```
+
 ## About version
 
 This package's *major* and *minor* version number will keep in sync with EdgerOS

@@ -510,6 +510,17 @@ declare module "fs" {
       truncate(offset: number): boolean;
 
       /**
+       * This function shall ensure that any required storage for regular file data
+       * starting at `offset` and continuing for `length` bytes is allocated on the file system storage media.
+       * If `file.allocate` returns `true`, subsequent writes to the specified file data
+       * shall not fail due to the lack of free space on the file system storage media.
+       *
+       * @param offset Offset.
+       * @param length Length.
+       */
+      allocate(offset: number, length: number): boolean;
+
+      /**
        * Compare the contents of two files, return `true` if they are the same, otherwise return `false`. If `target` is a `String`,
        * it means to the target file path.
        *
