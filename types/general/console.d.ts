@@ -17,6 +17,13 @@ declare module 'console' {
        * console output object, whether to print the attributes of the object recursively. Default: `false`.
        */
       inspectEnable: boolean;
+
+      /**
+       * Setting this property to `true` will print timestamp before print information.
+       * The default is `true`.
+       */
+      timestampEnable: boolean;
+
       /**
        * Setting this property to true will print `console.tag()` information.
        * The default is `false`.
