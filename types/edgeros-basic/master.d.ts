@@ -21,7 +21,7 @@ declare module "master" {
      * Each application can inform the EdgerOS operating system of the desired log mode through a description file(desc.json).
      * They include: 'file', 'console', 'null'(fast mode), 'file' mode means that all console output of the application will be saved in the system log file,
      * 'console' mode means directly observe the application output through the EdgerOS IDE plug-in, and 'null' mode means no log will be saved.
-     * When the application selects the 'file' mode, the system will record the latest log output within 64-128KB.
+     * When the application selects the 'file' mode, the system will record the latest log output within 64-256KB.
      * The system can call master.log() function to notify EdgerOS to copy the log to the file specified by file.
      * EdgerOS will copy the current application log in append form. At this file, EdgerOS will erase the original log files after success,
      * ensuring that the logs copied by each application request are not duplicated.

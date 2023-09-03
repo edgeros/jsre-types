@@ -82,6 +82,13 @@ declare module "cloudhost/storage" {
     function plugin(channel: number, path: string, name: string, callback: (error: Error) => void): void;
 
     function plugout(channel: number, path: string, callback?: (error: Error) => void): void;
+
+    /**
+     * Check storage plugin possibility on specified display channel. This function is available on EdgerOS 2.1.1 and above.
+     * @param channel The display channel.
+     * @param callback Callback.
+     */
+    function possible(channel: number, callback: (error: Error) => void): void;
   }
   export = Storage;
 }
