@@ -203,7 +203,7 @@ declare module "fs" {
      * @param path File path.
      * @param followLink If the target is link file, do we follow links. default: true.
      */
-    function stat(path: string, followLink?: boolean): fsStatInfo;
+    function stat(path: string, followLink?: boolean): fsStatInfo | undefined;
 
     function S_ISDIR(mode: number): boolean; // If true it is a directory.
     function S_ISCHR(mode: number): boolean; // If true it is a character device.
