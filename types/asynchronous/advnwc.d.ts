@@ -4,6 +4,9 @@ declare module 'edgeros:async/advnwc' {
 }
 
 declare module "async/advnwc" {
+  import EventEmitter = require('edgeros:events');
+  import { LAN } from 'edgeros:advnwc';
+
   type Rule = 'IP' | 'UDP' | 'TCP';
   type Policy = 's' | 'd' | 'sd';
   type Prio = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
@@ -32,6 +35,10 @@ declare module "async/advnwc" {
     ipEnd?: string;
     portStart?: number;
     portEnd?: number;
+    ipStartPairs?: string;
+    ipEndPairs?: string;
+    portStartSrc?: number;
+    portEndSrc?: number;
   }
 
   interface FlowRule {
@@ -52,8 +59,9 @@ declare module "async/advnwc" {
  }
 
   namespace asyncAdvnwc {
-    interface AdvnwcStatic {
+    interface AdvnwcStatic extends EventEmitter {
       netifs(lan: boolean): Promise<any[]>;
+      hosts(): LAN[];
       qosAdd(
         rule: Rule,
         ifname: string,
@@ -72,10 +80,10 @@ declare module "async/advnwc" {
         ifname: string,
         allow: boolean,
         mac: string,
-        ipStart?: string,
-        ipEnd?: string,
-        portStart?: number,
-        portEnd?: number,
+        ipStart: string,
+        ipEnd: string,
+        portStart: number,
+        portEnd: number,
         opt?: AddOpt
       ): Promise<number>;
       npfAdd(
@@ -83,6 +91,14 @@ declare module "async/advnwc" {
         ifname: string,
         allow: boolean,
         mac: string,
+        ipStart: string,
+        ipEnd: string,
+        portStart: number,
+        portEnd: number,
+        ipStartPairs: string,
+        ipEndPairs: string,
+        portStartSrc: number,
+        portEndSrc: number,
         opt?: AddOpt
       ): Promise<number>;
       npfDelete(ifname: string, index?: number): Promise<boolean>;
@@ -100,6 +116,7 @@ declare module "async/advnwc" {
       ): Promise<number>;
       flowDelete(ifname: string, index?: number): Promise<boolean>;
       flowList(ifname?: string, index?: number): Promise<FlowRule[] | FlowRule>;
+      on(event: 'host', listener: () => void): this;
     }
   }
   let advnwc: asyncAdvnwc.AdvnwcStatic;

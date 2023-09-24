@@ -14,6 +14,10 @@ declare module "advnwc" {
          ipEnd?: string; // {string} End IP address.
          portStart?: number; // {Integer} Starting TCP or UDP port.
          portEnd?: number; // {Integer} End TCP or UDP port.
+         ipStartPairs?: string;
+         ipEndPairs?: string;
+         portStartSrc?: number;
+         portEndSrc?: number;
          prio?: number; // {Integer} Priority.
          reliable?: boolean; // {Boolean} Whether to enable reliable reception guarantee.
          upLimit?: number; // {Integer} Uplink speed limit.
@@ -28,6 +32,15 @@ declare module "advnwc" {
          nforward: boolean;
       }
 
+      interface LAN {
+         name: string;
+         addr: string;
+         type: 'Phone' | 'Pad' | 'PC' | 'Printer' | 'TV' | 'Camera' | 'Device' | 'Unknown';
+         model: string;
+         mac?: string;
+         vendor?: string;
+      }
+
       /**
        * Get the current machine's LAN or WAN network interface list,
        * if the current machine is not a router, when getting the WAN list,
@@ -40,6 +53,8 @@ declare module "advnwc" {
          lan: boolean,
          callback: (error: Error, list: string[] | object) => void
       ): void;
+
+      function hosts(callback: (error: Error, list: LAN[]) => void): void;
 
       /**
        * Add a QoS rule, and the EdgerOS network protocol stack will process the queued data packets
@@ -114,6 +129,10 @@ declare module "advnwc" {
        * @param ipEnd End IP address.
        * @param portStart Starting TCP or UDP port.
        * @param portEnd End TCP or UDP port.
+       * @param ipStartPairs Starting IP address pairs.
+       * @param ipEndPairs End IP address, pairs.
+       * @param portStartSrc Starting TCP or UDP source port.
+       * @param portEndSrc End TCP or UDP source port.
        * @param callback Callback function.
        */
       function npfAdd(
@@ -125,6 +144,22 @@ declare module "advnwc" {
          ipEnd: string,
          portStart: number,
          portEnd: number,
+         callback: (error: Error, index: number) => void,
+         opt?: AddOpt
+      ): void;
+      function npfAdd(
+         rule: string | "MAC" | "IP" | "TCP" | "UDP",
+         ifname: string,
+         allow: boolean,
+         mac: string,
+         ipStart: string,
+         ipEnd: string,
+         portStart: number,
+         portEnd: number,
+         ipStartPairs: string,
+         ipEndPairs: string,
+         portStartSrc: number,
+         portEndSrc: number,
          callback: (error: Error, index: number) => void,
          opt?: AddOpt
       ): void;

@@ -172,6 +172,7 @@
 /// <reference path="./edgeros-basic/cloudhost.d.ts" />
 /// <reference path="./edgeros-basic/kidvpn.d.ts" />
 /// <reference path="./edgeros-basic/sharedpipe.d.ts" />
+/// <reference path="./edgeros-basic/eoslog.d.ts" />
 
 /*----------------------------------------------*
  *                                              *

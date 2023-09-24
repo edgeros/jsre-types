@@ -74,7 +74,7 @@ declare module "vsoa" {
       NO_PERMISSIONS: 5;
       NO_MEMORY: 6;
     }
-    type MethodValue = Method[keyof Method];
+    type MethodValue = Method[keyof Method] | keyof Method;
     interface RemoteClient extends EventEmitter {
       authed: boolean;
       close(): void;
