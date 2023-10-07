@@ -269,6 +269,8 @@ declare module "tls" {
       handshakeTimeout?: number;
     }
 
+    function createSerCtx(opt: TlsServerOptions): Tls;
+
     /**
      * Create a Tls server and bind to the specified address.
      *
