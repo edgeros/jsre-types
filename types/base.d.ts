@@ -60,6 +60,7 @@
 /// <reference path="./network/dgram.d.ts" />
 /// <reference path="./network/querystring.d.ts" />
 /// <reference path="./network/ping.d.ts" />
+/// <reference path="./network/ftpd.d.ts" />
 /// <reference path="./network/http.d.ts" />
 /// <reference path="./network/http_proxy.d.ts" />
 /// <reference path="./network/http_util.d.ts" />

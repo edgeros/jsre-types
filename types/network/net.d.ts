@@ -163,6 +163,7 @@ declare module "net" {
       readonly remotePort?: number;
       readonly timeout: number | undefined;
       readonly readyState: string;
+      readonly encrypted: boolean;
 
       /**
        * events.EventEmitter
@@ -293,7 +294,7 @@ declare module "net" {
     }
 
     function connect(options: NetConnectOpts): Socket;
-    function createConnection(options: NetConnectOpts): Socket;
+    function createConnection(options: NetConnectOpts, connectListener?: () => void): Socket;
     function createServer(group: string, subs: number, subMode?: string, saddr?: object, tlsOpt?: object): Server;
     function createSubServer(group: string): Server;
 
