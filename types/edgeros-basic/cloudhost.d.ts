@@ -41,7 +41,8 @@ declare module "cloudhost/connector" {
 
     screenshot(callback: (error: Error, picture: Buffer) => void): void;
 
-    on(event: 'connect' | 'disconnect', handler: () => void): this;
+    on(event: 'connect', handler: () => void): this;
+    on(event: 'disconnect', handler: (info: { passive: boolean }) => void): this;
     on(event: 'error', handler: CommonCallback): this;
   }
   namespace Connector {

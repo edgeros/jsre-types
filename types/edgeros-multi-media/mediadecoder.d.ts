@@ -166,7 +166,7 @@ declare module "mediadecoder" {
        * @param event The name of the event.
        * @param listener The callback function of the event.
        */
-      on(event: "eof", listener: () => void): this;
+      on(event: "eof", listener: (info: { passive: boolean }) => void): this;
       on(event: "header" | "remux", listener: (video?: Header) => void): this;
       on(event: "video" | "audio", listener: (video?: Video) => void): this;
 

@@ -619,6 +619,8 @@ declare module "middleware" {
          */
         addUser(name: string, password: string, isAdmin?: boolean): SimpleUser;
 
+        delUser(name: string): SimpleUser;
+
         /**
          * Get all user objects included default user.
          * @param callback Callback function

@@ -17,6 +17,7 @@ declare module "ftpd" {
     }
 
     interface CNF {
+      addr: string;
       port: number;
       securePort: number;
       maxConnections: number;
@@ -24,10 +25,10 @@ declare module "ftpd" {
     }
 
     interface HDL {
-      upload: (username: string, filePath: string) => boolean;
-      download: (username: string, filePath: string) => boolean;
-      remove: (username: string, filePath: string) => boolean;
-      rename: (username: string, from: string, to: string) => boolean;
+      upload: (username: string, filePath: string) => boolean | Promise<boolean>;
+      download: (username: string, filePath: string) => boolean | Promise<boolean>;
+      remove: (username: string, filePath: string) => boolean | Promise<boolean>;
+      rename: (username: string, from: string, to: string) => boolean | Promise<boolean>;
     }
 
     interface User {
@@ -48,8 +49,10 @@ declare module "ftpd" {
 
     start(): void;
     stop(): void;
+    kick(username?: string): void;
 
     on(event: 'log' | 'debug', listener: (msg: string) => void): this;
+    on(event: 'login' | 'logout', listener: (info: { username: string, address: string, total: number }) => void): this;
   }
 
   export = FTPd;

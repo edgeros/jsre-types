@@ -103,6 +103,8 @@ declare class Timer {
     */
    resume(timeout?: number): boolean;
 
+   reset(count: number): boolean;
+
   /**
    * Causes a running timer to expire immediately. EdgerOS 1.7.1 and later versions support this feature.
    * Return {Boolean} Whether the operation was successful.
