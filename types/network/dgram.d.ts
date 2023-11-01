@@ -13,6 +13,7 @@ declare module 'dgram' {
   interface SockOptions {
     type: 'udp4' | 'udp6'; // The family of socket. Must be either `udp4` or `udp6`. Required.
     fd?: number; // Use this file descriptor to create.
+    reuseAddr: boolean;
     ipv6Only?: boolean; // Setting `ipv6Only` to `true` will disable dual-stack support, i.e., binding to address `::` won't make `0.0.0.0` be bound. default: false.
     recvBufferSize?: number; // Sets the `SO_RCVBUF` socket value.
     sendBufferSize?: number; // Sets the `SO_SNDBUF` socket value.

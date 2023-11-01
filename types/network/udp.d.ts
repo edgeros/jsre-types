@@ -126,6 +126,8 @@ declare module "udp" {
      */
     setTTL(timeToLive: number): boolean;
 
+    setReuseAddr(enable: boolean): boolean;
+
     /**
      * Permits sending of broadcast messages.
      *
@@ -251,7 +253,7 @@ declare module "udp" {
      *
      * @param sockaddr Local address.
      */
-    function createServer(sockaddr: SockAddr): Udp;
+    function createServer(sockaddr: SockAddr, reuseAddr?: boolean, dev?: string): Udp;
 
     /**
      * Create a Udp client and connects to the specified remote host. Use synchronous mode.
