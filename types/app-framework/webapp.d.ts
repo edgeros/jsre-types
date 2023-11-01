@@ -5,274 +5,214 @@ declare module 'edgeros:webapp' {
 
 declare module "webapp" {
   import Router = require('edgeros:router');
-  import { Request, Response } from "edgeros:core";
   import EventEmitter = require("edgeros:events");
-  interface SockAddr {
-    domain: number;
-    addr: string;
-    port: number;
+  import { HttpServer, HttpServerRequest, HttpServerResponse } from "edgeros:http";
+  import { CertOptions, TlsServerOptions } from "edgeros:tls";
+  import { SockAddr } from "edgeros:socket";
+  import middleware = require("edgeros:middleware");
+  import { Request, Response } from "edgeros:webapp";
+
+  class WebApp extends EventEmitter {
+    server: HttpServer;
+    engines: Record<string, any>;
+    settins: Record<string | symbol, any>;
+    cache: Record<string, any>;
+    locals: Record<string, any>;
+
+    constructor(serOpt: any, saddr: any, tlsOpt: TlsServerOptions);
+
+    static static: typeof middleware.serveStatic;
+    static Router: Router;
+    static create(group: string, subs: number, saddr: SockAddr, tlsOpt?: TlsServerOptions): WebApp;
+    static create(group: string, subs: number, taskFile: string, saddr: SockAddr, tlsOpt?: TlsServerOptions): WebApp;
+    static createSub(group?: string): WebApp;
+    static createApp(subs?: number): WebApp;
+
+    start(dev: string): void;
+    stop(stopAll: boolean | (() => void)): void;
+    stop(stopAll: boolean, cb: () => void): void;
+    stop(stopAll?: boolean, cb?: () => void): void;
+    port(): number;
+    mports(num: number): boolean;
+    addcert(opt: CertOptions): boolean;
+    get groupName(): { group: string, name: string };
+    isMaster(): boolean;
+    enabled(setting: string | symbol): boolean;
+    disabled(setting: string | symbol): boolean;
+    enable(setting: string | symbol): this;
+    disable(setting: string | symbol): this;
+    all(): Router;
+    route(path?: string): Router;
+    use(): Router;
+    use(handle: (err: Error, req: Request, res: Response, next: Router.NextFunction) => void): this;
+    use(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    use(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    unhandle(): Router;
+    engine(ext: string, fn: (...args: any) => void): this;
+    render(name: string, callback: (...args: any) => void): void;
+    render(name: string, options: Record<string, any>, callback: (...args: any) => void): void;
+    set(name: string, value?: any): any;
+
+    // 路由方法挂载
+    get(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    get(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    delete(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    delete(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    head(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    head(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    post(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    post(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    put(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    put(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    connect(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    conect(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    options(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    options(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    trace(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    trace(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    copy(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    copy(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    lock(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    lock(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    mkcol(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    mkcol(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    move(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    move(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    propfind(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    propfind(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    proppatch(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    proppatch(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    search(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    search(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    unlock(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    unlock(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    bind(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    bind(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    rebind(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    rebind(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    unbind(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    unbind(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    acl(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    acl(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    report(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    report(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    mkactivity(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    mkactivity(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    checkout(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    checkout(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    merge(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    merge(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    msearch(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    msearch(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    notify(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    notify(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    subscribe(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    subscribe(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    unsubscribe(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    unsubscribe(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    patch(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    patch(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    purge(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    purge(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    mkcalendar(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    mkcalendar(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    link(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    link(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    unlink(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    unlink(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+
+    source(handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    source(path: Router.MethodPath, handle: Router.RouteHandleFunction, ...handles: Router.RouteHandleFunction[]): this;
+    // end
   }
 
-  interface GroupName {
-    group: string;
-    name: string;
-  }
+  namespace WebApp {
+    interface Request extends HttpServerRequest {
+      app: WebApp;
+      url: string;
+      method: string;
+      protocol: string;
+      headers: Record<string, string>;
+      body: Buffer | string | Record<string, any>;
+      path: string;
+      cookies: Record<string, any>;
+      get(field: string): any;
+      header(field: string): string;
 
-  interface CertOptions {
-    name: string;
-    ca?: string;
-    cert: string;
-    key: string;
-    passwd?: string;
-  }
-
-  type HandleFunction = (...args: any) => void;
-  type MethodPath = string | RegExp | string[] | RegExp[];
-
-  interface NextFunction {
-    (err?: any): void;
-    (deferToNext: 'router' | 'route'): void;
-  }
-  type AppHandleFunction = (req?: Request, res?: Response, next?: NextFunction) => void;
-
-  type ReadyHandler = (totalSubs: number, openedSubs: number) => void;
-
-  // TODO: reason estack
-  type FinalHandler = (req: Request, res: Response, status: number, reason: any, estack: any) => void;
-
-  type TaskHandler = (arg: object, i: number) => void;
-
-  namespace webapp {
-    interface WebAppInstance extends EventEmitter {
-      groupName: GroupName;
-      locals: object;
-      /**
-       * Get whether the server object is the master server.
-       */
-      isMaster(): boolean;
-
-      /**
-       * This method adds a SNI (Server Name Indication) certificate to the tls server.
-       * SNI is an extension used to improve SSL or TLS for servers.
-       * It mainly solves the disadvantage that one server can only use one certificate (one domain name).
-       * With the support of the server for virtual hosts, one server can provide services for multiple domain names,
-       * so SNI must be supported to meet the demand.
-       * @param opt TLS server option.
-       */
-      addcert(opt: CertOptions): boolean;
-
-      /**
-       * Start app server. The app's setting must be done before this operator.
-       */
-      start(): boolean;
-
-      /**
-       * Stop app server.
-       * @param stopAll always true for `MASTER` mode, close all task servers.
-       * For `SUB` mode:
-       * true - stop all task servers;
-       * false - stop this sub server. default: false.
-       * @param cb Callback when `stop` event emit.
-       */
-      stop(stopAll?: boolean, cb?: HandleFunction): this;
-
-      /**
-       * When the server starts with the `MASTER` module, `app.port()` gets the port of the server, otherwise it returns `undefined`.
-       */
-      port(): number | undefined;
-
-      /**
-       * Routes an HTTP request, where METHOD is the HTTP method of the request,
-       * such as GET, PUT, POST, DELETE and so on, in lowercase.
-       * Thus, the actual methods are app.get(), app.post(), app.put(), app.delete() and so on.
-       *
-       * @param path The path for which the request handle function is invoked; can be any of:
-       *                  A string representing a path. default: '/' (root path)
-       *                  A path pattern.
-       *                  A regular expression pattern to match paths.
-       * @param handle handle
-       * @param handles The request handle function.
-       */
-      get(path: MethodPath, handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
-      get(handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
-      /**
-       *  Returns {any} return value of setting name.
-       *
-       * @param name setting name.
-       */
-      get(name: string): any;
-
-      /**
-       * Routes an HTTP request, where METHOD is the HTTP method of the request,
-       * such as GET, PUT, POST, DELETE and so on, in lowercase.
-       * Thus, the actual methods are app.get(), app.post(), app.put(), app.delete() and so on.
-       *
-       * @param path The path for which the request handle function is invoked; can be any of:
-       *                  A string representing a path. default: '/' (root path)
-       *                  A path pattern.
-       *                  A regular expression pattern to match paths.
-       * @param handle The request handle function.
-       * @param handles handles
-       */
-      put(path: MethodPath, handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
-      put(handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
-
-      /**
-       * Routes an HTTP request, where METHOD is the HTTP method of the request,
-       * such as GET, PUT, POST, DELETE and so on, in lowercase.
-       * Thus, the actual methods are app.get(), app.post(), app.put(), app.delete() and so on.
-       *
-       * @param path The path for which the request handle function is invoked; can be any of:
-       *                  A string representing a path. default: '/' (root path)
-       *                  A path pattern.
-       *                  A regular expression pattern to match paths.
-       * @param handle The request handle function.
-       * @param handles handles
-       */
-      post(path: MethodPath, handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
-      post(handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
-
-      /**
-       * Routes an HTTP request, where METHOD is the HTTP method of the request,
-       * such as GET, PUT, POST, DELETE and so on, in lowercase.
-       * Thus, the actual methods are app.get(), app.post(), app.put(), app.delete() and so on.
-       *
-       * @param path The path for which the request handle function is invoked; can be any of:
-       *                  A string representing a path. default: '/' (root path)
-       *                  A path pattern.
-       *                  A regular expression pattern to match paths.
-       * @param handle handle
-       * @param handles The request handle function.
-       */
-      delete(path: MethodPath, handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
-      delete(handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
-
-      /**
-       * Routes an HTTP request, where METHOD is the HTTP method of the request,
-       * such as GET, PUT, POST, DELETE and so on, in lowercase.
-       * Thus, the actual methods are app.get(), app.post(), app.put(), app.delete() and so on.
-       *
-       * @param path The path for which the request handle function is invoked; can be any of:
-       *                  A string representing a path. default: '/' (root path)
-       *                  A path pattern.
-       *                  A regular expression pattern to match paths.
-       * @param handle handle
-       * @param handles The request handle function.
-       */
-      all(path: MethodPath, handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
-      all(handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
-
-      /**
-       * Sets the Boolean setting name to false, where name is one of the properties from the app settings, see set(name[, value]).
-       * Calling app.set('foo', false) for a Boolean property is the same as calling app.disable('foo').
-       *
-       * @param name setting name.
-       */
-      disable(name: string): void;
-
-      /**
-       * Returns {Boolean} true if the Boolean setting name is disabled (false).
-       *
-       * @param name setting name.
-       */
-      disabled(name: string): boolean;
-
-      /**
-       * Sets the Boolean setting name to true, Calling app.set('foo', true) for a Boolean property is the same as calling app.enable('foo').
-       *
-       * @param name setting name.
-       */
-      enable(name: string): void;
-
-      /**
-       * Returns {Boolean} true if the Boolean setting name is enabled (false).
-       *
-       * @param name setting name.
-       */
-      enabled(name: string): boolean;
-
-      engine(ext: string, callback: (...args: any) => void): void;
-
-      /**
-       * Assigns setting name to value. You may store any value that you want, but certain names can be used to configure the behavior of the server.
-       *
-       * Returns {any} return value of setting name while value omited.
-       *
-       * @param name setting name.
-       * @param value setting value.
-       */
-      set(name: string, value?: any): any;
-
-      render(name: string, callback: (...args: any) => void): void;
-      render(name: string, options: object, callback: (...args: any) => void): void;
-
-      /**
-       * Returns an instance of a single route, which you can then use to handle HTTP verbs with optional middleware.
-       * Use app.route() to avoid duplicate route names (and thus typo errors).
-       *
-       *  Return {object} an instance of a Router.
-       *
-       * @param path route path.
-       */
-      route(path: MethodPath): object;
-
-      /**
-       * Mounts the specified middleware function or functions at the specified path:
-       * the middleware function is executed when the base of the requested path matches path.
-       *
-       *  Return {object} an instance of a Router.
-       *
-       * @param path route path.
-       * @param handle handle
-       * @param handles A middleware function or router object.
-       */
-      use(path: MethodPath, handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
-      use(handle: AppHandleFunction, ...handles: AppHandleFunction[]): void;
-      use(path: MethodPath, handle: Router): void;
-      use(handle: Router): void;
-
-      on(event: 'start' | 'stop', handler: () => void): this;
-      on(event: 'ready', handler: ReadyHandler): this;
-      on(event: 'final', handler: FinalHandler): this;
-      on(event: 'task', handler: TaskHandler): this;
+      on(event: 'data', cb: (buf: Buffer) => void): this;
+      on(event: 'end' | 'close', cb: () => void): this;
+      on(event: 'error', cb: (error: Error) => void): this;
     }
-    interface WebAppStatic {
-      /**
-       * This method creates a master-server. When the master-server starts,
-       * it can create a specified number(subs) of sub-servers (subs), refer to WebApp mult-task.
-       *
-       * Returns: {WebApp} WebApp object
-       *
-       * @param group Server group name(master server module). Usually the module name is used as the group name.
-       *              If the server work on mult-task mode(subs > 0) and taskFile is missing, the group must be supported as app module name.
-       * @param subs Sub task counts, if subs > 0, app run in multi-task mode.
-       * @param taskFile Sub task module name. default: use group as module name.
-       * @param saddr Server socket address. If the port of saddr is set to 0, the server port will be assigned automatically, and that can be get by app.port().
-       * @param tlsOpt TLS securely connections options. default: undefined, means use TCP connection.
-       */
-      create(group: string, subs: number, saddr: SockAddr, tlsOpt?: object): WebAppInstance;
-      create(group: string, subs: number, taskFile: string, saddr: SockAddr, tlsOpt?: object): WebAppInstance;
 
-      createApp(subs?: number): WebAppInstance;
+    interface Response extends HttpServerResponse {
+      app: WebApp;
+      write(chunk: string | number | boolean | object | Buffer): boolean;
 
-      /**
-       * Use this method to create a sub-server when the sub-server is not on the same module as the master-server.
-       *
-       * Returns: {WebApp} WebApp object
-       *
-       * @param group Server group name(master server module). Usually the module name is used as the group name.
-       *               If the server work on mult-task mode(subs > 0) and subMode is missing, the group must be supported as app module name.
-       */
-      createSub(group: string): WebAppInstance;
+      end(chunk?: string | number | boolean | object | Buffer): void;
 
-      Router: typeof Router;
+      send(body: string | number | boolean | object | Buffer): object | undefined; // TODO: *{WebResponse}* This `WebResponse` object: success. `undefined`: fail.
 
-      /**
-       * Start app server. The app's setting must be done before this operator.
-       */
-      static(root: string, options?: object): HandleFunction;
+      sendFile(path: string, options?: { root: string }): boolean;
+
+      status(code: number): this;
+      sendStatus(statusCode: number, reason?: string): object | undefined; // TODO: *{WebResponse}* This `WebResponse` object: success. `undefined`: fail.
+
+      json(obj: Record<string, any>, status?: number): object | undefined; // TODO: *{WebResponse}* This `WebResponse` object: success. `undefined`: fail.
+
+      render(view: string, options?: object, callback?: (err: Error, html: string) => void): void;
+      render(view: string, callback?: (err: Error, html: string) => void): void;
+
+      cookie(name: string, value: string | Record<string, any>, options?: middleware.CookieData): void;
+
+      clearCookie(name: string, options?: middleware.CookieData): void;
+
+      location(path: string): void;
+
+      redirect(status: number | string, path?: string): boolean;
+
+      type(type: string): this; // *{WebResponse}* This.
+
+      set(field: string | Record<string, any>, value?: string): this; // *{WebResponse}* this object.
+
+      header(field: string | Record<string, any>, value?: string): this; // *{WebResponse}* this object.
+
+      get(field: string): string;
+
+      on(event: 'end' | 'finish' | 'close', cb: () => void): this;
+      on(event: 'error', cb: (error: Error) => void): this;
     }
   }
-  const WebApp: webapp.WebAppStatic;
   export = WebApp;
 }

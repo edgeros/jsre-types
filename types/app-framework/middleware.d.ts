@@ -3,145 +3,214 @@ declare module 'edgeros:middleware' {
   export = middleware;
 }
 
+declare module "middleware/serve_static" {
+  import middleware = require("middleware");
+  export = middleware.serveStatic;
+}
+
 declare module "middleware" {
-  import { Request, Response } from "core";
+  import { Request, Response } from "webapp";
   import EventEmitter = require('edgeros:events');
-  type CommonFunction = (...args: any) => void;
+  import Router = require('edgeros:router');
+  import Sqlite3 = require('edgeros:sqlite3');
+  import { HttpClient, HttpClientResponse, HttpServer } from 'edgeros:http';
+  import WebApp = require('edgeros:webapp');
+  import HttpProxy = require('edgeros:HttpProxy');
+  import { HttpProxyOptions } from 'edgeros:HttpProxy';
+  import { TlsServerOptions } from 'edgeros:tls';
+  import { Readable, Writable } from 'edgeros:stream';
+  type TypeFunction = (req: Request) => string;
 
   namespace middleware {
+    // ***************************** bodyParser ********************************
     interface JSONParserOptions {
-      // {number | string} Controls the maximum request body size. If this is a number, then the value specifies the number of bytes;
-      // if it is a string, the value is passed to the bytes library for parsing. default: '100kb'.
       limit: number | string;
-      strict: boolean; // {Boolean} When set to true, will only accept arrays and objects; when false will accept anything JSON.parse accepts. Defaults to true.
-      reviver: string; // The reviver option is passed directly to JSON.parse as the second argument.
-      // {string | Array | Function} The type option is used to determine what media type the middleware will parse.
-      // This option can be a string, array of strings, or a function.
-      // If not a function, type option is passed directly to the type-is library and this can be an extension name (like json),
-      // a mime type (like application/json), or a mime type with a wildcard (like */* or */json).
-      // If a function, the type option is called as fn(req) and the request is parsed if it returns a truthy value.
-      // default: 'application/json'.
-      type: string | any[] | CommonFunction;
+      strict: boolean;
+      reviver: (this: any, key: string, value: any) => any;
+      type: string | string[] | TypeFunction;
     }
 
     interface RawParserOptions {
-      // {number | string} Controls the maximum request body size.
-      // If this is a number, then the value specifies the number of bytes;
-      // if it is a string, the value is passed to the bytes library for parsing. default: '100kb'.
       limit: number | string;
-      // {string | Array | Function} The type option is used to determine what media type the middleware will parse.
-      // This option can be a string, array of strings, or a function.
-      // If not a function, type option is passed directly to the type-is library and this can be an extension name (like json),
-      // a mime type (like application/json), or a mime type with a wildcard (like */* or */json).
-      // If a function, the type option is called as fn(req) and the request is parsed if it returns a truthy value.
-      // default: 'application/json'.
-      type: string | any[] | CommonFunction;
+      type: string | string[] | TypeFunction;
     }
     interface TextParserOptions {
-      // {number | string} Controls the maximum request body size.
-      // If this is a number, then the value specifies the number of bytes; if it is a string,
-      // the value is passed to the bytes library for parsing. default: '100kb'.
       limit: number | string;
-      // {string | Array | Function} The type option is used to determine what media type the middleware will parse.
-      // This option can be a string, array of strings, or a function.
-      // If not a function, type option is passed directly to the type-is library and this can be an extension name (like json),
-      // a mime type (like application/json), or a mime type with a wildcard (like */* or */json).
-      // If a function, the type option is called as fn(req) and the request is parsed if it returns a truthy value.
-      // default: 'application/json'.
-      type: string | any[] | CommonFunction;
+      type: string | string[] | TypeFunction;
     }
     interface UrlencodedParserOptions {
-      // { number | string } Controls the maximum request body size.If this is a number,
-      // then the value specifies the number of bytes;
-      // if it is a string, the value is passed to the bytes library for parsing.default: '100kb'.
       limit: number | string;
-      // { string | Array | Function } The type option is used to determine what media type the middleware will parse.
-      // This option can be a string, array of strings, or a function.
-      // If not a function, type option is passed directly to the type - is library and this can be an extension name(like urlencoded),
-      // a mime type(like application / x - www - form - urlencoded), or a mime type with a wildcard(like * /x-www-form-urlencoded).
-      // If a function, the type option is called as fn(req) and the request is parsed if it returns a truthy value.
-      // default: 'application/x - www - form - urlencoded'.
-      type: string | any[] | CommonFunction;
-      // { Integer } The parameterLimit option controls the maximum number of parameters
-      // that are allowed in the URL - encoded data.If a request contains more parameters than this value,
-      // a 413 will be returned to the client.default: 1000. }
+      type: string | string[] | TypeFunction;
       parameterLimit: number;
     }
 
     namespace bodyParser {
-      function json(options?: JSONParserOptions): any;
-      function raw(options?: RawParserOptions): any;
-      function text(options?: TextParserOptions): any;
-      function urlencoded(options?: UrlencodedParserOptions): any;
+      function json(options?: Partial<JSONParserOptions>): Router.RouteHandleFunction;
+      function raw(options?: RawParserOptions): Router.RouteHandleFunction;
+      function text(options?: TextParserOptions): Router.RouteHandleFunction;
+      function urlencoded(options?: UrlencodedParserOptions): Router.RouteHandleFunction;
     }
 
+    // **************************** serveStatic ********************************
     interface ServeStaticOptions {
-      acceptRanges?: boolean; // Boolean true Accept-Ranges
-      cacheControl?: boolean; // Boolean true Cache-Control
-      dotfiles?: string; // string
-      etag?: boolean; // Boolean true ETag
-      extensions?: boolean; // Boolean / Array false -
-      fallthrough?: boolean; // Boolean true -
-      immutable?: boolean; // Boolean false Cache-Control
-      index?: string[]; // Array ['index.html'] -
-      lastModified?: boolean; // Boolean true Last-Modified
-      maxAge?: string | number; // number / string 2592000000 Max-Age
-      setHeaders?: CommonFunction; // Function - -
-      highWaterMark?: number; // Integer - -
+      acceptRanges: boolean; // Boolean true Accept-Ranges
+      cacheControl: boolean; // Boolean true Cache-Control
+      dotfiles: string; // string
+      etag: boolean; // Boolean true ETag
+      extensions: boolean | string[]; // Boolean / Array false -
+      fallthrough: boolean; // Boolean true -
+      immutable: boolean; // Boolean false Cache-Control
+      index: string[]; // Array ['index.html'] -
+      lastModified: boolean; // Boolean true Last-Modified
+      maxAge: string | number; // number / string 2592000000 Max-Age
+      setHeaders: (res: Response, path: string, stat: Record<string, any>) => void; // Function - -
+      highWaterMark: number; // Integer - -
     }
 
-    function serveStatic(root: string, options?: ServeStaticOptions): void;
+    function serveStatic(root: string, options?: Partial<ServeStaticOptions>): Router.RouteHandleFunction;
+
+    // ***************************** session ***********************************
+    interface CookieData {
+      path: string;
+      httpOnly: boolean;
+      secure: boolean;
+      maxAge: number;
+      domain: string;
+      expires: Date;
+      sameSite: boolean | string;
+    }
+
+    interface SessionOptions {
+      cookie: session.Cookie;
+      genid: (req: Request) => string;
+      name: string;
+      resave: boolean;
+      rolling: boolean;
+      saveUninitialized: boolean;
+      secret: string | string[];
+      store: session.MemoryStore;
+      unset: 'destroy' | 'keep';
+    }
+    interface SqliteStoreOptions {
+      table: string;
+      db: string;
+      dir: string;
+      concurrentDb: boolean;
+    }
 
     namespace session {
-      function session(options: object): session.Session;
-      namespace session {
-        class Session {
-          id: string;
-          cookie: object;
-          static session(options: object): Session;
-          constructor(options: object);
-          regenerate(callback: CommonFunction): void;
-          destroy(callback: CommonFunction): void;
-          reload(callback: CommonFunction): void;
-          save(callback: CommonFunction): void;
-          touch(callback: CommonFunction): void;
-        }
+      function session(options: Partial<SessionOptions>): Router.RouteHandleFunction;
 
-        class Cookie {
-          constructor();
-          maxAge: number;
-          originalMaxAge: number;
-        }
+      class Store extends EventEmitter {
+        regenerate(req: Request, fn: (err: Error) => void): void;
+        load(sid: string, fn: (error: Error, session: Session) => void): void;
+        createSession(req: Request, session: Session): Session;
+      }
 
-        interface Store {
-          all(callback: (error: Error, sessions: any[]) => void): void;
-          destroy(sid: string, callback: (error: Error) => void): void;
-          clear(callback: (error: Error) => void): void;
-          length(callback: (error: Error) => void): void;
-          get(sid: string, callback: (error: Error, session: Session) => void): void;
-          set(sid: string, session: Session, callback: (error: Error) => void): void;
-          touch(sid: string, session: Session, callback: (error: Error) => void): void;
-        }
+      class Cookie {
+        constructor(options?: Partial<CookieData>);
+        get expires(): Date;
+        set expires(date: Date);
+        get maxAge(): number;
+        set maxAge(ms: number);
+        get data(): CookieData;
+        serialize(name: string, val: any): string;
+        toJSON(): CookieData;
+      }
+
+      class Session {
+        id: string;
+        cookie: Cookie;
+        req: Request;
+        constructor(req: Request, data: Record<string, any>);
+
+        touch(): this;
+        resetMaxAge(): this;
+        save(callback: (error: Error) => void): this;
+        reload(callback: (error: Error) => void): this;
+        destroy(callback: (error: Error) => void): this;
+        regenerate(callback: (error: Error) => void): this;
+      }
+
+      class MemoryStore extends Store {
+        sessions: Record<string, Session>;
+        all(callback: (error: Error, sessions: Session[]) => void): void;
+        destroy(sid: string, callback: (error: Error) => void): void;
+        clear(callback: (error: Error) => void): void;
+        length(callback: (error: Error, len: number) => void): void;
+        get(sid: string, callback: (error: Error, session: Session) => void): void;
+        set(sid: string, session: Session, callback: (error: Error) => void): void;
+        touch(sid: string, session: Session, callback: (error: Error) => void): void;
+      }
+
+      class SqliteStore extends Store {
+        table: string;
+        database: string;
+        db: Sqlite3;
+        constructor(options?: Partial<SqliteStoreOptions>);
+        close(): void;
+        get(sid: string, callback: (error: Error, session: Session) => void): void;
+        set(sid: string, session: Session, callback: (error: Error) => void): void;
+        destroy(sid: string, callback: (error: Error) => void): void;
+        length(callback: (error: Error, len: number) => void): void;
+        clear(callback: (error: Error) => void): void;
+        touch(sid: string, session: Session, callback: (error: Error) => void): void;
+        cleanup(): void;
       }
     }
 
-    interface MorganOptions {
-      immediate?: object; // {Boolean} Write log line on request instead of response. default: false
-      skip?: object; // {Function} Function to determine if logging is skipped,
-      stream?: object; // {object} Output stream for writing log lines, default: stdout stream.
+    // ***************************** WebProxy **********************************
+    interface WebProxyWsOptions {
+      tlsOpt: TlsServerOptions;
+      xfwd: boolean;
+      headers: Record<string, string>;
+      prependPath: boolean;
+      ignorePath: boolean;
+      changeOrigin: boolean;
     }
-    function morgan(format?: string | CommonFunction, options?: MorganOptions): any;
+    interface WebProxyWebOptions extends WebProxyWsOptions {
+      reqCallback(proxyReq: HttpClient, req: Request, res: Response): void;
+      resCallback(proxyRes: HttpClientResponse, req: Request, res: Response): void;
+    }
+
+    class WebProxy extends EventEmitter {
+      proxy: HttpProxy;
+      wsProxys: any[];
+      constructor(server: HttpServer | WebApp);
+
+      uninit(): void;
+      web(target: string | ((req: Request, opts: HttpProxyOptions) => string), opts?: Partial<WebProxyWebOptions>): Router.RouteHandleFunction;
+      web(path: string | RegExp, target: string | (() => void), opts?: Partial<WebProxyWebOptions>): Router.RouteHandleFunction;
+
+      ws(target: string | ((req: Request, opts: HttpProxyOptions) => string), opts?: Partial<WebProxyWsOptions>): void;
+      ws(path: string | RegExp, target: string | (() => void), opts?: Partial<WebProxyWsOptions>): void;
+      static create(server: HttpServer | WebApp): WebProxy;
+
+      on(event: 'request', listener: (proxyReq: HttpClient, req: Request, res: Response) => void): this;
+      on(event: 'response', listener: (proxyRes: HttpClientResponse, req: Request, res: Response) => void): this;
+    }
+
+    // ********************************* morgan ***********************************
+    interface MorganOptions {
+      immediate: object; // {Boolean} Write log line on request instead of response. default: false
+      skip: (req: Request, res: Response) => boolean; // {Function} Function to determine if logging is skipped,
+      stream: Writable; // {object} Output stream for writing log lines, default: stdout stream.
+    }
+    function morgan(format?: string | (() => unknown), options?: Partial<MorganOptions>): Router.RouteHandleFunction;
     namespace morgan {
+      // function compile(format: string): (...args: any) => unknown;
+      // function format(name: string, fmt: string | (() => void)): ReturnType<typeof morgan>;
       function token(name: string, fn: (req: object, res: object) => void): any;
     }
 
+    // ********************************* Busboy ********************************
     interface BusboyConfig {
-      headers?: object;
-      highWaterMark?: number;
-      fileHwm?: number;
-      defCharset?: string;
-      preservePath?: boolean;
-      limits?: {
+      headers: Record<string, string>;
+      highWaterMark: number;
+      fileHwm: number;
+      defCharset: string;
+      preservePath: boolean;
+      limits: {
         fieldNameSize?: number;
         fieldSize?: number;
         fields?: number;
@@ -151,23 +220,47 @@ declare module "middleware" {
         headerPairs?: number;
       };
     }
-    class Busboy {
-      constructor(config: BusboyConfig);
-      on(event: "file", listener: (fieldname: string, stream: object, filename: string, transferEncoding: string, mimeType: string) => void): void;
-      on(event: "field" | "finish" | "partsLimit" | "filesLimit" | "fieldsLimit", listener: (...args: any) => void): void;
+    class Busboy extends Writable {
+      constructor(config: Partial<BusboyConfig>);
+      emit(event: 'close' | 'drain' | 'finish'): boolean;
+      emit(event: 'error', err: Error): boolean;
+      emit(event: 'pipe' | 'unpipe', src: Readable): boolean;
+      emit(event: string | symbol, ...args: any[]): boolean;
+      on(event: 'close' | 'drain' | 'finish', listener: () => void): this;
+      on(event: 'error', listener: (err: Error) => void): this;
+      on(event: 'pipe' | 'unpipe', listener: (src: Readable) => void): this;
+      on(event: string | symbol, listener: (...args: any[]) => void): this;
+      on(event: "file", listener: (fieldname: string, stream: Readable, filename: string, transferEncoding: string, mimeType: string) => void): this;
+      on(event: "field", listener: (fieldname: string, fieldnameTruncated: boolean, valueTruncated: boolean, transferEncoding: string, mimeType: string) => void): this;
+      on(event: "partsLimit" | "filesLimit" | "fieldsLimit", listener: (...args: any) => void): this;
     }
 
-    interface NextFunction {
-      (err?: any): void;
-      (deferToNext: 'router' | 'route'): void;
+    // ********************************* jwt ***********************************
+    namespace jwt {
+      function decode(jwt: { header: any, payload: any, signature: string } | Record<string, any>, options?: { complete: boolean }): void;
+      function verify(jwtString: string, secretOrPublicKey: string, callback: (...args: any) => unknown): void;
+      function verify(jwtString: string, secretOrPublicKey: string, options: Record<string, any>, callback: (...args: any) => unknown): void;
+      function sign(payload: any, secretOrPrivateKey: string, callback: (...args: any) => unknown): void;
+      function sign(payload: any, secretOrPrivateKey: string, options: Record<string, any>, callback: (...args: any) => unknown): void;
+
+      class JsonWebTokenError extends Error {
+        name: string;
+        message: string;
+        constructor(message: string, error: Error);
+      }
+
+      class NotBeforeError extends JsonWebTokenError {
+        date: Date;
+        constructor(message: string, date: Date);
+      }
+
+      class TokenExpiredError extends JsonWebTokenError {
+        expiredAt: Date;
+        constructor(message: string, expiredAt: Date);
+      }
     }
-    interface RequestHandler {
-      (
-        req: Request,
-        res: Response,
-        next: NextFunction,
-      ): void;
-    }
+
+    // ********************************* multer ********************************
     function multer(opts: multer.Options): multer.Multer;
     namespace multer {
       interface MulterLimits {
@@ -188,7 +281,7 @@ declare module "middleware" {
         storage?: StorageEngine | undefined;
         dest?: string | undefined;
         limits?: MulterLimits;
-        preservePath?: string;
+        preservePath?: boolean;
         fileFilter?(
           req: Request,
           file: File,
@@ -222,11 +315,11 @@ declare module "middleware" {
       function memoryStorage(): StorageEngine;
 
       interface Multer {
-        single(fieldname: string): RequestHandler;
-        array(fieldname: string, maxCount?: number): RequestHandler;
-        fields(fields: any[]): RequestHandler;
-        none(): RequestHandler;
-        any(): RequestHandler;
+        single(fieldname: string): Router.RouteHandleFunction;
+        array(fieldname: string, maxCount?: number): Router.RouteHandleFunction;
+        fields(fields: any[]): Router.RouteHandleFunction;
+        none(): Router.RouteHandleFunction;
+        any(): Router.RouteHandleFunction;
       }
 
       type ErrorCode =
@@ -263,6 +356,7 @@ declare module "middleware" {
       }
     }
 
+    // ****************************** webdav ***********************************
     interface WebDAVServerOpt {
       requireAuthentification: boolean; // Define if your require to be authenticated.
       httpAuthentication: webdav.HTTPDigestAuthentication; // Define the object which will provide the authentication method (HTTP : Basic, Digest, custom, etc)
@@ -347,66 +441,19 @@ declare module "middleware" {
       static Hybrid: ResourceType;
       static NoResource: ResourceType;
     }
+    // webdav
     namespace webdav {
       class WebDAVServer extends EventEmitter {
         constructor(options: Partial<WebDAVServerOpt>);
-
-        /**
-         * Get the root file system which maped '/'.
-         * Returns: The root file system.
-         */
         rootFileSystem(): any;
-
-        /**
-         * Map/mount a file system to a path.
-         * @param path Path where to mount the file system.
-         * @param fs File system to mount.
-         * @param override Define if the mounting can override a previous mounted file system, default to false.
-         * @param callback Callback function.
-         */
         setFileSystem(path: string, fs: FileSystem, override?: boolean, callback?: (success: boolean) => void): void;
         setFileSystem(path: string, fs: FileSystem, callback?: (success: boolean) => void): void;
-
-        /**
-         * Remove a file system. Note that you can remove a file system by its path or by its reference.
-         * @param path Path of the file system or file system to remove.
-         * @param checkByReference Define if the file systems must be matched by reference or by its serializer's UID, default to true.
-         * @param callback Callbak function
-         */
         removeFileSystem(path: string | FileSystem, checkByReference?: boolean, callback?: (nbRemoved: boolean) => void): void;
         removeFileSystem(path: string | FileSystem, callback?: (nbRemoved: boolean) => void): void;
-
-        /**
-         * Get the mount path of a file system.
-         * @param fs File system.Define if the file systems must be matched by reference or by its serializer's UID, default to true.
-         * @param checkByReference Define if the file systems must be matched by reference or by its serializer's UID, default to true.
-         * @param callback Callback function
-         */
         getFileSystemPath(fs: FileSystem, checkByReference?: boolean, callback?: (path: Path | null) => void): void;
         getFileSystemPath(fs: FileSystem, callback: (path: Path | null) => void): void;
-
-        /**
-         * Get synchronously the file system managing the provided path.
-         * @param path Requested path
-         * @param callback
-         *          fileSystem The file system.
-         *          rootPath The mount path of the file system.
-         *          subPath The sub path from the mount path to the requested path.
-         */
         getFileSystem(path: Path, callback?: (fileSystem: FileSystem, rootPath: Path, subPath: Path) => void): void;
-
-        /**
-         * Get the list of file systems mounted on or under the parentPath.
-         * @param path Path from which list sub file systems.
-         * @param callback Callback function
-         */
         getChildFileSystems(path: Path, callback?: (children: Array<{ fs: FileSystem, path: Path }>) => void): void;
-
-        /**
-         * Events are triggered when a resource is accessed or modified. The server handles the events.
-         * @param event Name of the event.
-         * @param listener Listener function
-         */
         on(
           event: 'create' | 'before-create',
           listener: (
@@ -589,24 +636,9 @@ declare module "middleware" {
           ) => void
         ): this;
 
-        /**
-         * Remove a listener. Clear all the listeners of an event if listener not support.
-         * @param event Name of the event.
-         * @param listener Listener of the event.
-         */
         removeEvent(event: string, listener?: () => void): this;
-
-        /**
-         * Action to execute before an operation is executed when a HTTP request is received.
-         * @param manager Manager
-         */
-        beforeRequest(manager: (ctx: HTTPRequestContext, next: NextFunction) => void): void;
-        /**
-         * Action to execute after an operation is executed when a HTTP request is received.
-         * @param manager Manager
-         */
-        afterRequest(manager: (ctx: HTTPRequestContext, next: NextFunction) => void): void;
-
+        beforeRequest(manager: (ctx: HTTPRequestContext, next: Router.NextFunction) => void): void;
+        afterRequest(manager: (ctx: HTTPRequestContext, next: Router.NextFunction) => void): void;
         createExternalContext(): ExternalRequestContext;
       }
 
@@ -678,7 +710,7 @@ declare module "middleware" {
        * @param path Route path.
        * @param server WebDAVServer instance.
        */
-      function route(path: string, server: WebDAVServer): RequestHandler;
+      function route(path: string, server: WebDAVServer): Router.RouteHandleFunction;
 
       class PhysicalFileSystem {
         constructor(rootPath: string);
@@ -704,6 +736,7 @@ declare module "middleware" {
       }
     }
 
+    // ********************************* eos ***********************************
     interface User {
       acoid: string; // EdgerOS user unique ID, also known as acoinfo ID.
       nickname: string; // Nickname of this user.
@@ -713,7 +746,12 @@ declare module "middleware" {
       token: string; // This field is the original token string.
       channel: 'local' | 'cloud'; // Indicates the access source, 'local' means local access, 'cloud' means access through EdgerOS Cloud.
     }
+    function eos(req: Request & { eos: EOS }, res: Response, next: Router.NextFunction): Router.RouteHandleFunction;
 
+    // ********************************* authParser ****************************
+    function authParser(req: Request & { name: string, pass: string }, res: Response, next: Router.NextFunction): Router.RouteHandleFunction;
+
+    // ********************************* history *******************************
     interface Rewrites {
       from: string;
       to: string | ((context: string) => string);
@@ -726,7 +764,8 @@ declare module "middleware" {
       htmlAcceptHeaders: string[];
       disableDotRule: boolean;
     }
-    function history(options?: History): any;
+    function history(options?: History): Router.RouteHandleFunction;
   }
+
   export = middleware;
 }

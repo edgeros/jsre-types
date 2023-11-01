@@ -4,7 +4,6 @@
 /// <reference lib="esnext.bigint" />
 
 /// <reference path="./globals.d.ts" />
-/// <reference path="./core.d.ts" />
 
 /*----------------------------------------------*
  *                                              *

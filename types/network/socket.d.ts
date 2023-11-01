@@ -5,18 +5,16 @@ declare module 'edgeros:socket' {
 
 declare module "socket" {
   import { Buffer } from 'buffer';
-  interface SockAddr {
-    domain: number;
-    addr: string;
-    port: number;
-  }
-
-  interface SockLinger {
-    onoff: boolean;
-    time: number;
-  }
-
   namespace socket {
+    interface SockAddr {
+      domain: number;
+      addr: string;
+      port: number;
+    }
+    interface SockLinger {
+      onoff: boolean;
+      time: number;
+    }
     const SOCK_STREAM: number;
     const SOCK_DGRAM: number;
 

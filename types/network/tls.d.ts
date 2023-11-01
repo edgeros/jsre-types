@@ -5,6 +5,7 @@ declare module 'edgeros:tls' {
 
 declare module "tls" {
   import socket = require('edgeros:socket');
+  import { CertOptions } from 'edgeros:tls';
 
   interface SockAddr {
     domain: socket.AF_INET | socket.AF_INET6 | typeof tls.AF_INET | typeof tls.AF_INET6;
@@ -15,14 +16,6 @@ declare module "tls" {
   interface SockLinger {
     onoff: boolean;
     time: number;
-  }
-
-  interface certOptions {
-    name: string;
-    ca?: string;
-    cert: string;
-    key: string;
-    passwd?: string;
   }
 
   class Tls {
@@ -50,7 +43,7 @@ declare module "tls" {
      * so SNI must be supported to meet the demand.
      * @param opt The server option.
      */
-    addcert(opt: certOptions): boolean;
+    addcert(opt: CertOptions): boolean;
 
     /**
      * The Tls.send() function shall initiate transmission of a message from the specified socket to its peer.
@@ -249,6 +242,13 @@ declare module "tls" {
     const IN6ADDR_LINKLOCAL_ALLNODES = 'ff02::1';
     const IN6ADDR_LINKLOCAL_ALLROUTERS = 'ff01::2';
 
+    interface CertOptions {
+      name: string;
+      ca?: string;
+      cert: string;
+      key: string;
+      passwd?: string;
+    }
     interface TlsServerOptions {
       name: string;
       ca?: string;
