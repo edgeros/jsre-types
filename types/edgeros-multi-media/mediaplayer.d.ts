@@ -236,7 +236,7 @@ declare module "mediaplayer" {
     write(pos: number, buffer: Buffer, source: SourceString): boolean;
 
     on(event: 'eof', listener: () => void): this;
-    on(event: 'error', listener: (reason: string) => void): this;
+    on(event: 'error', listener: (reason: Error) => void): this;
     on(event: 'info', listener: (info: Info) => void): this;
     on(event: 'data', listener: (req: Data) => void): this;
   }

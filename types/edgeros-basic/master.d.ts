@@ -4,19 +4,29 @@ declare module 'edgeros:master' {
 }
 
 declare module "master" {
-  import { Buffer } from "edgeros:buffer";
-
-  interface ExtraInformation {
-    accounts: string[];
-  }
-
-  interface Machine {
-    product: object; // Basic product info.
-    vendor: object; // Machine vendor information.
-    version: number[]; // EdgerOS version `[x.y.z]`.
-  }
-
   namespace Master {
+    interface Extra {
+      accounts: string[];
+    }
+
+    interface Machine {
+      product: object; // Basic product info.
+      vendor: object; // Machine vendor information.
+      version: number[]; // EdgerOS version `[x.y.z]`.
+    }
+    interface Traffic {
+      generic: Generic;
+      multimedia: Multimedia;
+    }
+    interface Generic {
+      send: number;
+      recv: number;
+    }
+    interface Multimedia {
+      send: number;
+      recv: number;
+    }
+
     /**
      * Each application can inform the EdgerOS operating system of the desired log mode through a description file(desc.json).
      * They include: 'file', 'console', 'null'(fast mode), 'file' mode means that all console output of the application will be saved in the system log file,
@@ -80,6 +90,8 @@ declare module "master" {
      */
     function wallpaper(acoid: string, chunkOrPath: Buffer | string, callback?: (error: Error) => void, option?: {priority: 'personal' | 'default'}): void;
 
+    function traffic(): Traffic;
+
     /**
      * Create an alarm. Regardless of whether the application is closed or not, a preset push message will be generated when the alarm expires.
      * time is a UTC time, You have to guarantee that it is sometime in the future.
@@ -89,7 +101,7 @@ declare module "master" {
      * @param callback Callback function to get whether the alarm was created successfully.
      * @param extra Extra information. (EdgerOS 1.4.0 or later)
      */
-    function alarmAdd(time: Date | number | string, topic: string, msg: string, callback?: (error: Error, alarmid: number) => void, extra?: ExtraInformation): void;
+    function alarmAdd(time: Date | number | string, topic: string, msg: string, callback?: (error: Error, alarmid: number) => void, extra?: Extra): void;
 
     /**
      * Delete the timer for the current app installation that expires in a future time period.
