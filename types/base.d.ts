@@ -188,6 +188,7 @@
 *      EDGEROS EXTENSION Multi Media           *
 *                                              *
 *----------------------------------------------*/
+/// <reference path="./edgeros-multi-media/mediaplayer.d.ts" />
 /// <reference path="./edgeros-multi-media/mediadecoder.d.ts" />
 /// <reference path="./edgeros-multi-media/videooverlay.d.ts" />
 /// <reference path="./edgeros-multi-media/webmedia.d.ts" />
