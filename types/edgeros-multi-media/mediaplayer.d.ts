@@ -80,6 +80,14 @@ declare module "mediaplayer" {
     | 'hexadecagonal'
     | 'downmix';
 
+    interface BaseTrack {
+      author: string;
+      album: string;
+      genre: string;
+      composer: string;
+      copyright: string;
+      comment: string;
+    }
     interface Info {
       duration: number;
       video: VideoTrack[];
@@ -88,7 +96,7 @@ declare module "mediaplayer" {
       chapter: Chapter[];
     }
 
-    interface VideoTrack {
+    interface VideoTrack extends BaseTrack {
       id: number;
       duration: number;
       codec: string;
@@ -100,7 +108,7 @@ declare module "mediaplayer" {
       fps: number;
     }
 
-    interface AudioTrack {
+    interface AudioTrack extends BaseTrack {
       id: number;
       duration: number;
       codec: string;
@@ -113,7 +121,7 @@ declare module "mediaplayer" {
       channelLayout: ChannelLayout;
     }
 
-    interface SubtitleTrack {
+    interface SubtitleTrack extends BaseTrack {
       id: number;
       duration: number;
       codec: string;
@@ -210,7 +218,9 @@ declare module "mediaplayer" {
     position(): number;
     seek(position: number): Promise<unknown>;
     step(): Promise<number>;
+    hide(enable: boolean): void;
     capture(): Promise<Buffer>;
+    isHidden(): boolean;
     switchVideoTrack(videoTrackId: number): Promise<unknown>;
     currentVideoTrack(): number;
     switchAudioTrack(audioTrackId: number): Promise<unknown>;
