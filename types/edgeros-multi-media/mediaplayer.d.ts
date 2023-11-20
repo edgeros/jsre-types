@@ -16,6 +16,7 @@ declare module "mediaplayer" {
     interface Options {
       timeout: number;
       rtsptp: 'tcp' | 'udp';
+      persistent: boolean;
       headers: Record<string, string>;
     }
 
