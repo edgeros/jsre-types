@@ -28,7 +28,8 @@ declare module "webapp" {
     static createSub(group?: string): WebApp;
     static createApp(subs?: number): WebApp;
 
-    start(dev: string): void;
+    // start(dev: string): void;
+    start(): boolean;
     stop(stopAll: boolean | (() => void)): void;
     stop(stopAll: boolean, cb: () => void): void;
     stop(stopAll?: boolean, cb?: () => void): void;
