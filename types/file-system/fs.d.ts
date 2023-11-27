@@ -5,6 +5,7 @@ declare module 'edgeros:fs' {
 
 declare module "fs" {
   import { Buffer } from "buffer";
+  import { ReadStream, WriteStream } from 'edgeros:stream';
   interface fsStatInfo {
     dev: string; // Device ID of device containing file.
     ino: number; // File inode number.
@@ -553,51 +554,6 @@ declare module "fs" {
        * @param end File end position (not includes). default: file.size().
        */
       toString(start?: number, end?: number): string;
-    }
-    class ReadStream {
-      // The number of bytes that have been read so far.
-      bytesRead: number;
-      // The path to the file the stream is reading from as specified in the first argument to `fs.createReadStream()`.
-      path: string;
-      // This property is `true` if the underlying file has not been opened yet, i.e. before the `ready` event is emitted.
-      pending: boolean;
-
-      destroy(err?: Error): this; // See stream.Readable from detail.
-      isPaused(): boolean; // See stream.Readable from detail.
-      pause(): this; // See stream.Readable from detail.
-      pipe(destination: WriteStream, options?: { end?: boolean }): WriteStream; // See stream.Readable from detail.
-      read(size?: number): Buffer | null; // See stream.Readable from detail.
-      resume(): this; // See stream.Readable from detail.
-      unpipe(destination?: WriteStream): this; // See stream.Readable from detail.
-      destroyed: boolean; // See stream.Readable from detail.
-      readable: boolean; // See stream.Readable from detail.
-      readonly readableEnded: boolean; // See stream.Readable from detail.
-      readonly readableFlowing: boolean | null; // See stream.Readable from detail.
-      readonly readableHighWaterMark: number; // See stream.Readable from detail.
-      readonly readableLength: number; // See stream.Readable from detail.
-
-      on(event: readEventTypes, listener: (chunk?: any) => void): this;
-    }
-    class WriteStream {
-      bytesWritten: number;
-      path: string;
-      pending: boolean;
-      readonly destroyed: boolean;
-      readonly writable: boolean;
-      readonly writableEnded: boolean;
-      readonly writableFinished: boolean;
-      readonly writableHighWaterMark: number;
-      readonly writableLength: number;
-
-      destroy(error?: Error): this;
-      end(cb?: () => void): void;
-      end(chunk: string | Buffer, cb?: () => void): void;
-      end(chunk: string | Buffer, encoding: string, cb?: () => void): void;
-
-      write(chunk: string | Buffer, cb?: (error: Error | null | undefined) => void): boolean;
-      write(chunk: string | Buffer, encoding: string, cb?: (error: Error | null | undefined) => void): boolean;
-
-      on(event: writEventTypes, listener: (chunk?: any) => void): this;
     }
   }
   export = fs;

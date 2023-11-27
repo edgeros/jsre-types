@@ -4,7 +4,7 @@ declare module 'edgeros:rpc' {
 }
 
 declare module "rpc" {
-  import { ReadStream, WriteStream } from 'edgeros:fs';
+  import { ReadStream, WriteStream } from 'edgeros:stream';
   interface ToObj {
     addr: string | object;
   }

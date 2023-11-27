@@ -6,9 +6,10 @@ declare module 'edgeros:stream' {
 declare module "stream" {
   import { Buffer }  from 'buffer';
   import EventEmitter = require("edgeros:events");
+  import { WriteStream } from 'edgeros:stream';
 
   class internal extends EventEmitter {
-    pipe<T extends EdgerOS.WritableStream>(
+    pipe<T extends WriteStream>(
       destination: T,
       options?: {
         end?: boolean | undefined;
@@ -19,6 +20,52 @@ declare module "stream" {
   namespace internal {
     class Stream extends internal {
       constructor(opts?: ReadableOptions);
+    }
+
+    class ReadStream extends Readable {
+      // The number of bytes that have been read so far.
+      bytesRead: number;
+      // The path to the file the stream is reading from as specified in the first argument to `fs.createReadStream()`.
+      path: string;
+      // This property is `true` if the underlying file has not been opened yet, i.e. before the `ready` event is emitted.
+      pending: boolean;
+
+      destroy(err?: Error): this; // See stream.Readable from detail.
+      isPaused(): boolean; // See stream.Readable from detail.
+      pause(): this; // See stream.Readable from detail.
+      // pipe(destination: WriteStream, options?: { end?: boolean }): WriteStream; // See stream.Readable from detail.
+      read(size?: number): Buffer | null; // See stream.Readable from detail.
+      resume(): this; // See stream.Readable from detail.
+      // unpipe(destination?: WriteStream): this; // See stream.Readable from detail.
+      destroyed: boolean; // See stream.Readable from detail.
+      readable: boolean; // See stream.Readable from detail.
+      readonly readableEnded: boolean; // See stream.Readable from detail.
+      readonly readableFlowing: boolean | null; // See stream.Readable from detail.
+      readonly readableHighWaterMark: number; // See stream.Readable from detail.
+      readonly readableLength: number; // See stream.Readable from detail.
+
+      on(event: readEventTypes, listener: (chunk?: any) => void): this;
+    }
+    class WriteStream extends Writable {
+      bytesWritten: number;
+      path: string;
+      pending: boolean;
+      readonly destroyed: boolean;
+      readonly writable: boolean;
+      readonly writableEnded: boolean;
+      readonly writableFinished: boolean;
+      readonly writableHighWaterMark: number;
+      readonly writableLength: number;
+
+      destroy(error?: Error): this;
+      end(cb?: () => void): void;
+      end(chunk: string | Buffer, cb?: () => void): void;
+      end(chunk: string | Buffer, encoding: string, cb?: () => void): void;
+
+      write(chunk: string | Buffer, cb?: (error: Error | null | undefined) => void): boolean;
+      write(chunk: string | Buffer, encoding: string, cb?: (error: Error | null | undefined) => void): boolean;
+
+      on(event: writEventTypes, listener: (chunk?: any) => void): this;
     }
 
     type writEventTypes = "close" | "drain" | "error" | "finish" | "pipe" | "unpipe";
@@ -39,7 +86,7 @@ declare module "stream" {
       final?(): void;
     }
 
-    class Writable extends Stream implements EdgerOS.WritableStream {
+    class Writable extends Stream {
       readonly destroyed: boolean;
       readonly writable: boolean;
       readonly writableEnded: boolean;
@@ -124,7 +171,7 @@ declare module "stream" {
 
     type readEventTypes = "close" | "data" | "end" | "error" | "pause" | "readable" | "resume";
 
-    class Readable extends Stream implements EdgerOS.ReadableStream {
+    class Readable extends Stream {
       /**
        *
        * @param error Error which will be passed as payload in 'error' event.
@@ -147,7 +194,7 @@ declare module "stream" {
        * @param encoding The encoding to use.
        */
       setEncoding(encoding: string): this;
-      unpipe(destination?: EdgerOS.WritableStream): this;
+      unpipe(destination?: WriteStream): this;
       destroyed: boolean;
       /**
        * {Boolean} Is true if it is safe to call readable.read(), which means the stream has not been destroyed or emitted 'error' or 'end'.
@@ -177,7 +224,7 @@ declare module "stream" {
 
       constructor(opts?: ReadableOptions);
       unshift(chunk: string | Uint8Array, encoding?: BufferEncoding): void;
-      wrap(oldStream: EdgerOS.ReadableStream): this;
+      wrap(oldStream: ReadStream): this;
       off(event: string | string[], listener: (...args: any[]) => void): this;
       listenerCount(event: string): number;
       _construct(callback: (error?: Error | null) => void): void;

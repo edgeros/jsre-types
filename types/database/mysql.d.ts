@@ -5,6 +5,7 @@ declare module 'edgeros:mysql' {
 
 declare module "mysql" {
   import EventEmitter = require("edgeros:events");
+  import { ReadStream } from 'edgeros:stream';
   type DataTypes = 'DECIMAL'
   | 'TINY'
   | 'SHORT'
@@ -143,7 +144,7 @@ declare module "mysql" {
     on(event: 'fields', listener: (fields: any[]) => void): this;
     on(event: 'result', listener: (row: object) => void): this;
     on(event: 'end', listener: () => void): this;
-    stream(options?: ReadableOptions): EdgerOS.ReadableStream;
+    stream(options?: ReadableOptions): ReadStream;
   }
   class Connection {
     threadId: string;

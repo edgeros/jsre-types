@@ -4,7 +4,7 @@ declare module 'edgeros:mediacenter' {
 }
 
 declare module 'mediacenter' {
-  import { ReadStream } from 'edgeros:fs';
+  import { ReadStream } from 'edgeros:stream';
   namespace mediacenter {
     type ColumnsNameTypes = 'album' | 'ext' | 'acoid' | 'app' | 'digest' | 'time' | 'size';
 

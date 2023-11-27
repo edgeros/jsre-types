@@ -4,7 +4,7 @@ declare module 'edgeros:async/mediacenter' {
 }
 
 declare module "async/mediacenter" {
-  import { ReadStream } from 'edgeros:fs';
+  import { ReadStream } from 'edgeros:stream';
   namespace AsyncMediacenter {
     interface ColumnsOptions {
       name: string;
