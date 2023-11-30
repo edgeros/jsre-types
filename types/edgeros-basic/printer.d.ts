@@ -25,6 +25,9 @@ declare module "printer" {
         start: number; // Start page number. default: 1
         end: number; // End page number. default: last page number
       };
+      sides: 1 | 2 | 3;
+      media: string;
+      quality: string;
     }
     interface Jobs {
       id: number;
@@ -38,6 +41,8 @@ declare module "printer" {
       sides: 1 | 2;
       copies: number;
       range: boolean;
+      media: { support: string[], ready: string[] };
+      quality: string[];
     }
   }
   type ListCallback = (error: Error, printers: Array<Pick<Printers, 'uri'|'name'|'model'|'state'>>) => void;
