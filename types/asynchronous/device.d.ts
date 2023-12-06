@@ -20,7 +20,8 @@ declare module 'async/device' {
       desc: string;
       model: string;
       vendor: string;
-      version: number[] | string[];
+      version?: number[] | string[];
+      sn?: string;
     };
     server?: {
       coap: CoapInfo[];

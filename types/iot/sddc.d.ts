@@ -20,12 +20,11 @@ declare module "sddc" {
       desc: string; // {string} Device description information, usually a URL.
       model: string; // {string} Device model.
       vendor: string; // {string} Device manufacturer.
-      version: number[]; // {Array} Device software version, **optional**.
+      version?: number[]; // {Array} Device software version, **optional**.
+      sn?: string;
     }; // {object} Information reported by discovered devices.
     server: object; // {object} Server summary provided by new device.
-    security: {
-      req: boolean; // The device requests encrypted communication, but the current SDDC control terminal does not have a corresponding token.
-    };
+    security:  boolean; // The device requests encrypted communication, but the current SDDC control terminal does not have a corresponding token.
   }
 
   namespace sddc {
@@ -79,7 +78,7 @@ declare module "sddc" {
        */
       send(uid: string, msg: object | string, req?: boolean, callback?: (error: Error) => void, retries?: number, urgent?: boolean): void;
 
-      on(event: "found" | "update" | "lost" | "join", callback: (uid: string, info: SddcFoundParams) => void): void;
+      on(event: "found" | "update" | "lost" | "join", callback: (uid: string, info: SddcFoundParams, addr: string) => void): void;
       on(event: "refuse" | "message", callback: (uid: string, data: object) => void): void;
       on(event: "token", callback: (...args: any) => void): void;
     }

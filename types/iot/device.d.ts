@@ -29,7 +29,8 @@ declare module 'device' {
       desc: string; // Device description information.
       model: string; // Device model.
       vendor: string; // Device manufacturer.
-      version: number[]; // Device software version, optional.
+      version?: number[]; // Device software version, optional.
+      sn?: string;
     };
     server: {
       coap: CoAPInfo[];
