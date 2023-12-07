@@ -24,7 +24,7 @@ declare module "sddc" {
       sn?: string;
     }; // {object} Information reported by discovered devices.
     server: object; // {object} Server summary provided by new device.
-    security:  boolean; // The device requests encrypted communication, but the current SDDC control terminal does not have a corresponding token.
+    security: boolean; // The device requests encrypted communication, but the current SDDC control terminal does not have a corresponding token.
   }
 
   namespace sddc {

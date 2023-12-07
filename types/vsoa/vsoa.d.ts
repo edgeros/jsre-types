@@ -119,7 +119,7 @@ declare module "vsoa" {
       constructor(opt: ServerOpt);
       close(removeListeners?: boolean): void;
       start(saddr: Saddr, tlsOpt?: object): void;
-      count(): number;
+      count(link?: boolean): number;
       address(): object; // socket address.
       onclient: (cli: RemoteClient, connect: boolean) => void;
       ondata: (cli: RemoteClient, url: string, payload: { param?: Record<string, any>, data?: Buffer }, quick: boolean) => void;
