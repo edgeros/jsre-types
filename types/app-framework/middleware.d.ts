@@ -231,7 +231,7 @@ declare module "middleware" {
       on(event: 'pipe' | 'unpipe', listener: (src: Readable) => void): this;
       on(event: string | symbol, listener: (...args: any[]) => void): this;
       on(event: "file", listener: (fieldname: string, stream: Readable, filename: string, transferEncoding: string, mimeType: string) => void): this;
-      on(event: "field", listener: (fieldname: string, fieldnameTruncated: boolean, valueTruncated: boolean, transferEncoding: string, mimeType: string) => void): this;
+      on(event: "field", listener: (fieldname: string, fieldvalue: string, fieldnameTruncated: boolean, valueTruncated: boolean, transferEncoding: string, mimeType: string) => void): this;
       on(event: "partsLimit" | "filesLimit" | "fieldsLimit", listener: (...args: any) => void): this;
     }
 

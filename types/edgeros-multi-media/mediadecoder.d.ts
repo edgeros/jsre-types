@@ -5,8 +5,17 @@ declare module 'edgeros:mediadecoder' {
 
 declare module "mediadecoder" {
   import EventEmitter = require("edgeros:events");
-  import { MediaOption, Header, Video, VideoFormat, Fmt, AudioFormat, DestAudioFormat, PreviewVideoFormat, VideoBuffer, VideoOverlay, RemuxFormat } from 'edgeros:mediadecoder';
+  import { AudioTrack, Chapter, SubtitleTrack, VideoTrack } from 'edgeros:mediaplayer';
+  import { MediaOption, Header, Video, VideoFormat, Fmt, Info, AudioFormat, DestAudioFormat, PreviewVideoFormat, VideoBuffer, VideoOverlay, RemuxFormat } from 'edgeros:mediadecoder';
   namespace MediaDecoder {
+    interface Info {
+      duration: number;
+      video: VideoTrack[];
+      audio: AudioTrack[];
+      subtitle: SubtitleTrack[];
+      chapter: Chapter[];
+    }
+
     interface RemuxFormat {
       enable?: boolean;         // {Boolean} Does enable remux?
       enableAudio?: boolean;    // {Boolean} Does enable audio?
@@ -136,6 +145,7 @@ declare module "mediadecoder" {
     static PIX_FMT_BGR565: number;      // = 'BGR565' pixel format.
     static PIX_FMT_RGB565: number;      // = 'RGB565' pixel format.
 
+    static open(url: string, opts?: MediaOption, timeout?: number, callback?: (error: Error) => void): MediaDecoder;
     /**
      * Open the multimedia source with given `url`, The `MediaDecoder` object can provide services for multitasking.
      * You can use `opt.name` to specify the global name of this object,
@@ -152,6 +162,8 @@ declare module "mediadecoder" {
      * Close the media decoder.
      */
     close(): void;
+
+    info(): Info;
 
     /**
      * Start the media decoder. After call `start` successfully,
