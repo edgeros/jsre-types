@@ -4,7 +4,7 @@ declare module 'edgeros:vehicle/basic' {
 }
 
 declare module 'vehicle/basic' {
-  import { Chassis, Vehicle } from 'vehicle/basic';
+  import { Chassis, Vehicle, Geolocation } from 'vehicle/basic';
   import EventEmitter = require('edgeros:events');
 
   namespace Basic {
@@ -77,6 +77,8 @@ declare module 'vehicle/basic' {
       pos: Pos;
     }
 
+    type Mode = 'independent' | 'msb' | 'msa' | 'fast';
+
     type EpbStatus = 1    // Released
       | 2                 // Clamped
       | 3                 // Clamping
@@ -88,7 +90,7 @@ declare module 'vehicle/basic' {
       status: EpbStatus;
     }
 
-    interface Chassis extends EventEmitter {
+    class Chassis extends EventEmitter {
       info(callback: (error: Error, info: ChassisInfo) => void): void;
       drive(callback: (error: Error, drive: Drive) => void): void;
       power(callback: (error: Error, power: Power) => void): void;
@@ -98,7 +100,7 @@ declare module 'vehicle/basic' {
       on(event: 'power', listener: (power: Power) => void): this;
     }
 
-    interface Vehicle extends EventEmitter {
+    class Vehicle extends EventEmitter {
       status(callback: (error: Error, status: Status) => void): void;
       gear(callback: (error: Error, gear: Gear) => void): void;
       epb(callback: (error: Error, epb: Epb) => void): void;
@@ -107,15 +109,23 @@ declare module 'vehicle/basic' {
       on(event: 'gear', listener: (gear: Gear) => void): this;
       on(event: 'epb', listener: (epb: Epb) => void): this;
     }
+
+    class Geolocation extends EventEmitter {
+      mode(mode: Mode, callback: (error: Error, mode: Mode) => void): void;
+      mode(callback: (error: Error, mode: Mode) => void): void;
+
+      on(event: 'nmea', listener: (nmea: any) => void): this;
+    }
   }
 
   type Callback = (error: Error) => void;
 
   class Basic {
-    chassis: Chassis;
-    vehicle: Vehicle;
+    get chassis(): Chassis;
+    get vehicle(): Vehicle;
     request(callback: Callback): void;
     release(): void;
+    get geolocation(): Geolocation;
   }
 
   export = Basic;

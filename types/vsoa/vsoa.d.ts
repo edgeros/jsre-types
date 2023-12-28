@@ -90,10 +90,11 @@ declare module "vsoa" {
       on(event: 'unsubscribe', listener: (url: string | string[] | null) => void): this;
     }
     interface ClientOpt {
-      passwd?: string;
-      pingInterval?: number;
-      pingTimeout?: number;
-      pingLost?: number;
+      passwd: string;
+      pingInterval: number;
+      pingTimeout: number;
+      pingLost: number;
+      pingTurbo: number;
     }
     interface ProxyOpt extends ClientOpt {
       timeout: number;
@@ -140,12 +141,12 @@ declare module "vsoa" {
     }
 
     class Client extends EventEmitter {
-      constructor(opt?: ClientOpt);
+      constructor(opt?: Partial<ClientOpt>);
       connect(saddr: SockAddr | string, callback?: (error: Error, info: object | string) => void | object | number): void;
       connect(saddr: SockAddr | string, callback?: (error: Error, info: object | string) => void | object, tlsOpt?: object | number): void;
       connect(saddr: SockAddr | string, callback?: (error: Error, info: object | string) => void, tlsOpt?: object, timeout?: number): void;
       close(): void;
-      ping(callback: (error: Error) => void, timeout?: number): void;
+      ping(callback?: (error: Error) => void, timeout?: number): void;
       subscribe(url: string | string[], callback?: (error: Error) => void, timeout?: number): void;
       unsubscribe(url?: string | string[] | null, callback?: (error: Error) => void, timeout?: number): void;
       call(
@@ -196,6 +197,17 @@ declare module "vsoa" {
       start(): void;
       stop(): void;
       close(): void;
+    }
+
+    class Regulator extends EventEmitter {
+      constructor(client: Client, period: number);
+      static slot(client: Client, period: number, url: string): Regulator;
+      close(): void;
+      slot(url: string): this;
+      unslot(url: string): this;
+      period(period: number): this;
+
+      on(event: 'message', listener: (url: string, payload: Payload, quick: boolean) => void): this;
     }
   }
   export = vsoa;
