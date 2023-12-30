@@ -231,7 +231,7 @@ declare module "mediaplayer" {
     addAssStyle(style: Partial<ASS> | string): Promise<unknown>;
     addImage(name: string, buffer: Buffer): Promise<unknown>;
     addTips(level: string, event: Partial<ASSEvent> | Partial<ImageEvent>): Promise<number>;
-    clearTips(level: string): Promise<unknown>;
+    clearTips(level: string, id?: number): Promise<unknown>;
     addRtBarrage(event: Partial<ASSEvent> | string): Promise<number>;
     clearRtBarrage(id?: number): Promise<unknown>;
     openBarrage(buffer: Buffer): Promise<unknown>;
