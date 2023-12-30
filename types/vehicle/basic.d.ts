@@ -79,6 +79,12 @@ declare module 'vehicle/basic' {
 
     type Mode = 'independent' | 'msb' | 'msa' | 'fast';
 
+    interface Location {
+      lat: number;
+      lon: number;
+      alt: number;
+    }
+
     type EpbStatus = 1    // Released
       | 2                 // Clamped
       | 3                 // Clamping
@@ -113,6 +119,7 @@ declare module 'vehicle/basic' {
     class Geolocation extends EventEmitter {
       mode(mode: Mode, callback: (error: Error, mode: Mode) => void): void;
       mode(callback: (error: Error, mode: Mode) => void): void;
+      location(callback: (error: Error, location: Location) => void): void;
 
       on(event: 'nmea', listener: (nmea: any) => void): this;
     }
