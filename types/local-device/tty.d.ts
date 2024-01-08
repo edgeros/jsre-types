@@ -145,7 +145,7 @@ declare module "tty" {
        *
        * @param opt New option object.
        */
-      setHwOption(opt: TtyHwOption): boolean;
+      setHwOption(opt: TtyHwOption | string): boolean;
 
       /**
        * Get current receive buffer size in bytes.
