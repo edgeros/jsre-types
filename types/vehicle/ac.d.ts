@@ -47,6 +47,7 @@ declare module 'vehicle/ac' {
 
     interface Control {
       airCondSt: AirCondSt;
+      auto: boolean;
       cycleThr: number;
     }
   }

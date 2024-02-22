@@ -4,7 +4,7 @@ declare module 'edgeros:vehicle/diagnostic' {
 }
 
 declare module 'vehicle/diagnostic' {
-  import { Bms, Thermal } from 'vehicle/diagnostic';
+  import { Bms, Thermal, Fault } from 'vehicle/diagnostic';
   import EventEmitter = require('edgeros:events');
 
   type Callback = (error: Error) => void;
@@ -59,11 +59,19 @@ declare module 'vehicle/diagnostic' {
 
       on(event: 'status', listener: (thermal: ThermalStatus) => void): this;
     }
+
+    interface Fault extends EventEmitter {
+      sys(callback: (error: Error, fault: Record<string, any>) => void): void;
+      bms(callback: (error: Error, fault: Record<string, any>) => void): void;
+
+      on(event: 'sys' | 'bms', listener: (...args: any) => void): this;
+    }
   }
 
   class Diagnostic {
     bms: Bms;
     thermal: Thermal;
+    fault: Fault;
     request(callback: Callback): void;
     release(): void;
   }

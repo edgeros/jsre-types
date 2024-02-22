@@ -4,7 +4,7 @@ declare module 'edgeros:vehicle/basic' {
 }
 
 declare module 'vehicle/basic' {
-  import { Chassis, Vehicle, Geolocation } from 'vehicle/basic';
+  import { Chassis, Vehicle, Geolocation, Suspension } from 'vehicle/basic';
   import EventEmitter = require('edgeros:events');
 
   namespace Basic {
@@ -67,8 +67,9 @@ declare module 'vehicle/basic' {
       speed: number;                 // Current speed.
       instPowerConsum: number;       // Instantaneous energy consumption (Kwh).
       acAnionSt: AcAnionSt;
-      latAccSensorValue: number;     // Lateral acceleration.
-      longAccSensorValue: number;    // Longitudinal acceleration.
+      accLatVeh: number;             // Lateral acceleration.
+      accLonVeh: number;             // Longitudinal acceleration.
+      accVertVeh: number;            // Vertical acceleration
     }
 
     type Pos = 'P' | 'R' | 'N' | 'D' | 'S';
@@ -96,6 +97,13 @@ declare module 'vehicle/basic' {
       status: EpbStatus;
     }
 
+    interface Steering {
+      awsAngle: number;          // Front wheel steering angle.
+      rwsAngle: number;          // Rear wheel steering angle.
+      diameterDiff: number;      // Turning diameter difference.
+      diameterDiffPcnt: number;  // Turning diameter difference percentage.
+    }
+
     class Chassis extends EventEmitter {
       info(callback: (error: Error, info: ChassisInfo) => void): void;
       drive(callback: (error: Error, drive: Drive) => void): void;
@@ -110,10 +118,12 @@ declare module 'vehicle/basic' {
       status(callback: (error: Error, status: Status) => void): void;
       gear(callback: (error: Error, gear: Gear) => void): void;
       epb(callback: (error: Error, epb: Epb) => void): void;
+      steering(callback: (error: Error, steering: Steering) => void): void;
 
       on(event: 'status', listener: (status: Status) => void): this;
       on(event: 'gear', listener: (gear: Gear) => void): this;
       on(event: 'epb', listener: (epb: Epb) => void): this;
+      on(event: 'steering', listener: (epb: Steering) => void): this;
     }
 
     class Geolocation extends EventEmitter {
@@ -122,6 +132,21 @@ declare module 'vehicle/basic' {
       location(callback: (error: Error, location: Location) => void): void;
 
       on(event: 'nmea', listener: (nmea: any) => void): this;
+    }
+
+    class Suspension extends EventEmitter {
+      airspring(param: Record<string, any>, callback: (error: Error, param: Record<string, any>) => void): void;
+      airspring(callback: (error: Error, param: Record<string, any>) => void): void;
+
+      cdc(param: Record<string, any>, callback: (error: Error, param: Record<string, any>) => void): void;
+      cdc(callback: (error: Error, param: Record<string, any>) => void): void;
+
+      style(param: Record<string, any>, callback: (error: Error, param: Record<string, any>) => void): void;
+      style(callback: (error: Error, param: Record<string, any>) => void): void;
+
+      status(callback: (error: Error, param: Record<string, any>) => void): void;
+
+      on(event: 'airspring' | 'cdc' | 'style' | 'status', listener: (airspring: Record<string, any>) => void): this;
     }
   }
 
@@ -133,6 +158,7 @@ declare module 'vehicle/basic' {
     request(callback: Callback): void;
     release(): void;
     get geolocation(): Geolocation;
+    get suspension(): Suspension;
   }
 
   export = Basic;
