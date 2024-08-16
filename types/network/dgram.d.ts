@@ -4,6 +4,7 @@ declare module 'edgeros:dgram' {
 }
 
 declare module 'dgram' {
+  import EventEmitter = require('edgeros:events');
   interface SockAddr {
     domain: number;
     addr: string;
@@ -32,7 +33,7 @@ declare module 'dgram' {
     port?: number;
   }
 
-  class Dgram {
+  class Dgram extends EventEmitter {
     /**
      * Close the underlying socket and stop listening for data on it.
      * If a callback is provided, it is added as a listener for the 'close' event.
